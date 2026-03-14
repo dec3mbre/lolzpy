@@ -4,17 +4,18 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lolz-sdk"
-version = "0.1.0"
+version = "0.2.0"
 description = "Typed Python SDK for LOLZ Forum & Market APIs (sync + async)"
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 authors = [{ name = "Andre" }]
 keywords = ["lolz", "lolzteam", "zelenka", "api", "sdk"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Typing :: Typed",
@@ -46,7 +47,7 @@ Repository = "https://github.com/your-org/lolz-sdk"
 packages = ["lolz_sdk"]
 
 [tool.ruff]
-target-version = "py312"
+target-version = "py311"
 line-length = 120
 
 [tool.ruff.lint]
@@ -57,7 +58,7 @@ ignore = ["TC001", "TC002", "TC003"]
 "lolz_sdk/*/_models.py" = ["E501", "E741"]
 
 [tool.pyright]
-pythonVersion = "3.12"
+pythonVersion = "3.11"
 typeCheckingMode = "standard"
 include = ["lolz_sdk"]
 exclude = ["codegen", "tests"]
