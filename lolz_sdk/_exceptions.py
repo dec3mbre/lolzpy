@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import contextlib
+from collections.abc import Mapping
 from typing import Any
 
 
@@ -46,7 +48,11 @@ class ValidationError(LolzError):
     """Response validation error — the API returned data that doesn't match the expected schema."""
 
 
-def raise_for_status(status_code: int, response_data: Any = None, headers: dict[str, str] | None = None) -> None:
+def raise_for_status(
+    status_code: int,
+    response_data: Any = None,
+    headers: Mapping[str, str | None] | None = None,
+) -> None:
     """Raise an appropriate LolzError subclass based on the HTTP status code."""
     if 200 <= status_code < 400:
         return
@@ -66,10 +72,8 @@ def raise_for_status(status_code: int, response_data: Any = None, headers: dict[
         if headers:
             raw = headers.get("retry-after") or headers.get("Retry-After")
             if raw:
-                try:
+                with contextlib.suppress(ValueError, TypeError):
                     retry_after = float(raw)
-                except (ValueError, TypeError):
-                    pass
         raise RateLimitError(
             message, status_code=status_code, response_data=response_data, retry_after=retry_after
         )

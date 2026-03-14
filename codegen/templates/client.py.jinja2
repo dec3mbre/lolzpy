@@ -51,12 +51,13 @@ class Sync{{ group_name | pascal }}:
 {% if op.description %}
         """{{ op.description | truncate(200) }}"""
 {% endif %}
-{% if op.query_params or op.body_params %}
+{% if op.query_params %}
         params: dict[str, Any] = {}
 {% for p in op.query_params %}
         if {{ p.python_name }} is not None:
             params["{{ p.name }}"] = {{ p.python_name }}
 {% endfor %}
+{% endif %}
 {% if op.body_params %}
         json_data: dict[str, Any] = {}
 {% for p in op.body_params %}
@@ -64,10 +65,13 @@ class Sync{{ group_name | pascal }}:
             json_data["{{ p.name }}"] = {{ p.python_name }}
 {% endfor %}
 {% endif %}
-{% endif %}
         return self._client._request(
             "{{ op.http_method }}",
+{% if '{' in op.path_template %}
             f"{{ op.path_template }}",
+{% else %}
+            "{{ op.path_template }}",
+{% endif %}
 {% if op.query_params %}
             params=params,
 {% endif %}
@@ -111,12 +115,13 @@ class Async{{ group_name | pascal }}:
 {% if op.description %}
         """{{ op.description | truncate(200) }}"""
 {% endif %}
-{% if op.query_params or op.body_params %}
+{% if op.query_params %}
         params: dict[str, Any] = {}
 {% for p in op.query_params %}
         if {{ p.python_name }} is not None:
             params["{{ p.name }}"] = {{ p.python_name }}
 {% endfor %}
+{% endif %}
 {% if op.body_params %}
         json_data: dict[str, Any] = {}
 {% for p in op.body_params %}
@@ -124,10 +129,13 @@ class Async{{ group_name | pascal }}:
             json_data["{{ p.name }}"] = {{ p.python_name }}
 {% endfor %}
 {% endif %}
-{% endif %}
         return await self._client._request(
             "{{ op.http_method }}",
+{% if '{' in op.path_template %}
             f"{{ op.path_template }}",
+{% else %}
+            "{{ op.path_template }}",
+{% endif %}
 {% if op.query_params %}
             params=params,
 {% endif %}

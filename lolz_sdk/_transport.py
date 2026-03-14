@@ -7,12 +7,13 @@ import random
 import threading
 import time
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any, cast
 
 from curl_cffi.requests import AsyncSession, Response, Session
 from curl_cffi.requests.exceptions import RequestException, SessionClosed
 
-from lolz_sdk._exceptions import raise_for_status
+if TYPE_CHECKING:
+    from curl_cffi.requests.session import HttpMethod
 
 RETRYABLE_STATUS_CODES: frozenset[int] = frozenset({429, 500, 502, 503, 504})
 
@@ -147,10 +148,10 @@ def request_with_retry_sync(
 
     for attempt in range(config.max_retries + 1):
         try:
-            response = session.request(method, url, **kwargs)
+            response = session.request(cast("HttpMethod", method), url, **kwargs)
         except SessionClosed:
             raise
-        except (*_RETRYABLE_EXCEPTIONS, RequestException) as exc:
+        except (*_RETRYABLE_EXCEPTIONS, RequestException):
             if attempt >= config.max_retries:
                 raise
             delay = _calculate_delay(attempt, None, config)
@@ -181,10 +182,10 @@ async def request_with_retry_async(
 
     for attempt in range(config.max_retries + 1):
         try:
-            response = await session.request(method, url, **kwargs)
+            response = await session.request(cast("HttpMethod", method), url, **kwargs)
         except SessionClosed:
             raise
-        except (*_RETRYABLE_EXCEPTIONS, RequestException) as exc:
+        except (*_RETRYABLE_EXCEPTIONS, RequestException):
             if attempt >= config.max_retries:
                 raise
             delay = _calculate_delay(attempt, None, config)

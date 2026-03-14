@@ -185,9 +185,28 @@ def _resolve_ref(ref: str, spec: dict[str, Any]) -> dict[str, Any]:
 
 
 def _resolve_schema(schema: dict[str, Any], spec: dict[str, Any]) -> dict[str, Any]:
-    """Resolve $ref in a schema (one level)."""
+    """Recursively resolve all $ref pointers in a schema."""
     if "$ref" in schema:
-        return _resolve_ref(schema["$ref"], spec)
+        schema = _resolve_ref(schema["$ref"], spec)
+
+    # Resolve nested refs in array items
+    if "items" in schema:
+        schema = {**schema, "items": _resolve_schema(schema["items"], spec)}
+
+    # Resolve nested refs in oneOf / anyOf / allOf
+    for key in ("oneOf", "anyOf", "allOf"):
+        if key in schema and isinstance(schema[key], list):
+            schema = {**schema, key: [_resolve_schema(v, spec) for v in schema[key]]}
+
+    # Resolve nested refs in properties
+    if "properties" in schema and isinstance(schema["properties"], dict):
+        schema = {
+            **schema,
+            "properties": {
+                k: _resolve_schema(v, spec) for k, v in schema["properties"].items()
+            },
+        }
+
     return schema
 
 

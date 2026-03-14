@@ -12,7 +12,6 @@ from lolz_sdk._exceptions import (
 from lolz_sdk._transport import RetryConfig
 from lolz_sdk.forum._client import (
     AsyncAssets,
-    AsyncBatch as AsyncForumBatch,
     AsyncCategories,
     AsyncChatbox,
     AsyncConversations,
@@ -30,7 +29,6 @@ from lolz_sdk.forum._client import (
     AsyncThreads,
     AsyncUsers,
     SyncAssets,
-    SyncBatch as SyncForumBatch,
     SyncCategories,
     SyncChatbox,
     SyncConversations,
@@ -48,16 +46,19 @@ from lolz_sdk.forum._client import (
     SyncThreads,
     SyncUsers,
 )
+from lolz_sdk.forum._client import (
+    AsyncBatch as AsyncForumBatch,
+)
+from lolz_sdk.forum._client import (
+    SyncBatch as SyncForumBatch,
+)
 from lolz_sdk.market._client import (
     AsyncAutoPayments,
     AsyncCart,
     AsyncCategory,
     AsyncCustomDiscounts,
-    AsyncDefault as AsyncMarketBatch,
     AsyncImap,
-    AsyncList as AsyncMarketList,
     AsyncManaging,
-    AsyncManging,
     AsyncPayments,
     AsyncProfile,
     AsyncProxy,
@@ -67,19 +68,38 @@ from lolz_sdk.market._client import (
     SyncCart,
     SyncCategory,
     SyncCustomDiscounts,
-    SyncDefault as SyncMarketBatch,
     SyncImap,
-    SyncList as SyncMarketList,
     SyncManaging,
-    SyncManging,
     SyncPayments,
     SyncProfile,
     SyncProxy,
     SyncPublishing,
     SyncPurchasing,
 )
+from lolz_sdk.market._client import (
+    AsyncDefault as AsyncMarketBatch,
+)
+from lolz_sdk.market._client import (
+    AsyncList as AsyncMarketList,
+)
+from lolz_sdk.market._client import (
+    SyncDefault as SyncMarketBatch,
+)
+from lolz_sdk.market._client import (
+    SyncList as SyncMarketList,
+)
 
-__all__ = ["LolzSync", "LolzAsync", "RetryConfig", "LolzError", "AuthError", "RateLimitError", "NotFoundError", "ServerError", "ValidationError"]
+__all__ = [
+    "LolzSync",
+    "LolzAsync",
+    "RetryConfig",
+    "LolzError",
+    "AuthError",
+    "RateLimitError",
+    "NotFoundError",
+    "ServerError",
+    "ValidationError",
+]
 
 # Default base URLs
 _FORUM_BASE_URL = "https://prod-api.lolz.live"

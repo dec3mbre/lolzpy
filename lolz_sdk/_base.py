@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from curl_cffi.requests import AsyncSession, Response, Session
 from pydantic import BaseModel
@@ -15,6 +15,9 @@ from lolz_sdk._transport import (
     request_with_retry_async,
     request_with_retry_sync,
 )
+
+if TYPE_CHECKING:
+    from curl_cffi.requests.impersonate import BrowserTypeLiteral
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -74,7 +77,7 @@ class SyncAPIClient(BaseClient):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._session = Session(
-            impersonate=self._impersonate,
+            impersonate=cast("BrowserTypeLiteral", self._impersonate),
             proxy=self._proxy,
             timeout=self._timeout,
             headers=self._headers(),
@@ -130,7 +133,7 @@ class AsyncAPIClient(BaseClient):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._session = AsyncSession(
-            impersonate=self._impersonate,
+            impersonate=cast("BrowserTypeLiteral", self._impersonate),
             proxy=self._proxy,
             timeout=self._timeout,
             headers=self._headers(),
