@@ -23,7 +23,7 @@
 | **Полное покрытие Market API** (115 операций) | ✅ | Частичное |
 | **Полное покрытие Forum API** (151 операция) | ✅ | Частичное |
 | **Авто-генерация из OpenAPI** спецификаций | ✅ | ❌ Ручной код |
-| **Unit-тесты** | 114 тестов | 0 |
+| **Unit-тесты** | 166 тестов | 0 |
 | **CI/CD** (GitHub Actions) | ✅ | ❌ |
 | **PEP 561** (типизированный пакет) | ✅ | ❌ |
 | **Переключение sync/async** в рантайме | ✅ | ✅ |
@@ -56,9 +56,13 @@
 - **Документируемость** — модели служат живой документацией API
 
 ```python
-profile = lolz.market.profile.get()
-print(profile["user"]["username"])  # dec3mbre
-print(profile["user"]["user_id"])   # 4565608
+profile = lolz.market.profile.get()   # -> UserModel
+print(profile.username)   # dec3mbre
+print(profile.user_id)    # 4565608
+
+# Методы без $ref-модели возвращают dict[str, Any]
+result = lolz.forum.posts.create(thread_id=1, post_body="Hello")
+print(result["post"]["post_id"])
 ```
 
 ### Авто-генерация из OpenAPI
