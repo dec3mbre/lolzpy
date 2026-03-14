@@ -21,6 +21,11 @@ class UserModel(BaseModel):
     username: str
 
 
+class ItemModel(BaseModel):
+    item_id: int
+    title: str
+
+
 class StrictModel(BaseModel):
     value: int = Field(strict=True)
 
@@ -114,3 +119,56 @@ class TestParseResponseValidation:
         resp = make_response(200, json_data={"value": "not_an_int"})
         with pytest.raises(ValidationError):
             BaseClient._parse_response(resp, model=StrictModel)
+
+
+# ---------------------------------------------------------------------------
+# Wrapper key and list unwrapping
+# ---------------------------------------------------------------------------
+
+
+class TestParseResponseWrapperKey:
+    def test_singular_wrapper_unwraps(self):
+        resp = make_response(200, json_data={"user": {"user_id": 1, "username": "alice"}, "system_info": {}})
+        result = BaseClient._parse_response(resp, model=UserModel, wrapper_key="user")
+        assert isinstance(result, UserModel)
+        assert result.username == "alice"
+        assert result.user_id == 1
+
+    def test_list_wrapper_unwraps(self):
+        resp = make_response(
+            200,
+            json_data={
+                "items": [
+                    {"item_id": 1, "title": "Item A"},
+                    {"item_id": 2, "title": "Item B"},
+                ],
+                "system_info": {},
+            },
+        )
+        result = BaseClient._parse_response(resp, model=ItemModel, wrapper_key="items", is_list=True)
+        assert isinstance(result, list)
+        assert len(result) == 2
+        assert all(isinstance(item, ItemModel) for item in result)
+        assert result[0].title == "Item A"
+        assert result[1].item_id == 2
+
+    def test_empty_list_returns_empty(self):
+        resp = make_response(200, json_data={"items": [], "system_info": {}})
+        result = BaseClient._parse_response(resp, model=ItemModel, wrapper_key="items", is_list=True)
+        assert result == []
+
+    def test_missing_wrapper_key_raises_validation_error(self):
+        resp = make_response(200, json_data={"other": {"user_id": 1, "username": "alice"}})
+        with pytest.raises(ValidationError):
+            BaseClient._parse_response(resp, model=UserModel, wrapper_key="user")
+
+    def test_no_wrapper_key_validates_entire_dict(self):
+        resp = make_response(200, json_data={"user_id": 5, "username": "bob"})
+        result = BaseClient._parse_response(resp, model=UserModel)
+        assert isinstance(result, UserModel)
+        assert result.username == "bob"
+
+    def test_none_data_with_wrapper_key_returns_none(self):
+        resp = make_response(200, body=b"")
+        result = BaseClient._parse_response(resp, model=UserModel, wrapper_key="user")
+        assert result is None

@@ -5,7 +5,9 @@ from __future__ import annotations
 from unittest.mock import MagicMock
 
 from lolzpy.forum._client import SyncConversations, SyncPosts, SyncThreads, SyncUsers
+from lolzpy.forum._models import RespConversationModel, RespThreadModel, RespUserModel
 from lolzpy.market._client import SyncCategory, SyncManaging, SyncProfile, SyncPurchasing
+from lolzpy.market._models import UserModel
 
 
 def _mock_client() -> MagicMock:
@@ -164,3 +166,68 @@ class TestMarketProfile:
         args, kwargs = client._request.call_args
         assert args[0] == "GET"
         assert args[1] == "/me"
+
+
+# ---------------------------------------------------------------------------
+# Typed response model wiring
+# ---------------------------------------------------------------------------
+
+
+class TestTypedResponses:
+    def test_forum_users_get_passes_model_and_wrapper(self):
+        client = _mock_client()
+        users = SyncUsers(client)
+        users.get(user_id=1)
+
+        _, kwargs = client._request.call_args
+        assert kwargs["model"] is RespUserModel
+        assert kwargs["wrapper_key"] == "user"
+        assert "is_list" not in kwargs or kwargs.get("is_list") is False
+
+    def test_forum_threads_list_passes_list_model(self):
+        client = _mock_client()
+        threads = SyncThreads(client)
+        threads.list()
+
+        _, kwargs = client._request.call_args
+        assert kwargs["model"] is RespThreadModel
+        assert kwargs["wrapper_key"] == "threads"
+        assert kwargs["is_list"] is True
+
+    def test_forum_posts_list_passes_list_model(self):
+        client = _mock_client()
+        posts = SyncPosts(client)
+        posts.list()
+
+        _, kwargs = client._request.call_args
+        assert kwargs["model"] is RespThreadModel
+        assert kwargs["wrapper_key"] == "posts"
+        assert kwargs["is_list"] is True
+
+    def test_forum_conversations_list_passes_list_model(self):
+        client = _mock_client()
+        convos = SyncConversations(client)
+        convos.list()
+
+        _, kwargs = client._request.call_args
+        assert kwargs["model"] is RespConversationModel
+        assert kwargs["wrapper_key"] == "conversations"
+        assert kwargs["is_list"] is True
+
+    def test_market_profile_get_passes_model(self):
+        client = _mock_client()
+        profile = SyncProfile(client)
+        profile.get()
+
+        _, kwargs = client._request.call_args
+        assert kwargs["model"] is UserModel
+        assert kwargs["wrapper_key"] == "user"
+
+    def test_untyped_endpoint_has_no_model(self):
+        """Category.all has inline response schema — should not pass model."""
+        client = _mock_client()
+        category = SyncCategory(client)
+        category.all()
+
+        _, kwargs = client._request.call_args
+        assert "model" not in kwargs
