@@ -12,22 +12,26 @@ from typing import Any, Literal
 
 from lolzpy._internal.base_client import AsyncAPIClient, SyncAPIClient
 
-
 {% for group_name, operations in groups.items() %}
 
 # ===========================================================================
 # {{ group_name | title | replace("_", " ") }}
 # ===========================================================================
 
+{% for mode in ["sync", "async"] %}
+{% set is_async = (mode == "async") %}
+{% set prefix = "Async" if is_async else "Sync" %}
+{% set client_type = "AsyncAPIClient" if is_async else "SyncAPIClient" %}
+{% set mode_label = "Asynchronous" if is_async else "Synchronous" %}
 
-class Sync{{ group_name | pascal }}:
-    """Synchronous {{ group_name | title | replace("_", " ") }} API methods."""
+class {{ prefix }}{{ group_name | pascal }}:
+    """{{ mode_label }} {{ group_name | title | replace("_", " ") }} API methods."""
 
-    def __init__(self, client: SyncAPIClient) -> None:
+    def __init__(self, client: {{ client_type }}) -> None:
         self._client = client
 {% for op in operations %}
 
-    def {{ op.method_name }}(
+    {{ "async def" if is_async else "def" }} {{ op.method_name }}(
         self,
 {% for p in op.path_params %}
         {{ p.python_name }}: {{ p.python_type }},
@@ -81,7 +85,7 @@ class Sync{{ group_name | pascal }}:
             json_data["{{ p.name }}"] = {{ p.python_name }}
 {% endfor %}
 {% endif %}
-        return self._client._request(
+        return {{ "await " if is_async else "" }}self._client._request(
             "{{ op.http_method }}",
 {% if '{' in op.path_template %}
             f"{{ op.path_template }}",
@@ -105,90 +109,5 @@ class Sync{{ group_name | pascal }}:
         )
 {% endfor %}
 
-
-class Async{{ group_name | pascal }}:
-    """Asynchronous {{ group_name | title | replace("_", " ") }} API methods."""
-
-    def __init__(self, client: AsyncAPIClient) -> None:
-        self._client = client
-{% for op in operations %}
-
-    async def {{ op.method_name }}(
-        self,
-{% for p in op.path_params %}
-        {{ p.python_name }}: {{ p.python_type }},
 {% endfor %}
-{% for p in op.required_body_params %}
-        {{ p.python_name }}: {{ p.python_type }},
-{% endfor %}
-{% for p in op.required_query_params %}
-        {{ p.python_name }}: {{ p.python_type }},
-{% endfor %}
-{% if op.optional_query_params or op.optional_body_params %}
-        *,
-{% for p in op.optional_query_params %}
-        {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
-{% endfor %}
-{% for p in op.optional_body_params %}
-        {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
-{% endfor %}
-{% endif %}
-        **kwargs: Any,
-    ) -> dict[str, Any]:
-{% if op.description %}
-        """{{ op.description | truncate(200) }}"""
-{% endif %}
-{% if op.query_params %}
-        params: dict[str, Any] = {}
-{% for p in op.query_params %}
-        if {{ p.python_name }} is not None:
-            params["{{ p.name }}"] = {{ p.python_name }}
-{% endfor %}
-{% endif %}
-{% if op.is_multipart %}
-{% if op.form_params %}
-        data: dict[str, Any] = {}
-{% for p in op.form_params %}
-        if {{ p.python_name }} is not None:
-            data["{{ p.name }}"] = {{ p.python_name }}
-{% endfor %}
-{% endif %}
-{% if op.file_params %}
-        files: dict[str, Any] = {}
-{% for p in op.file_params %}
-        if {{ p.python_name }} is not None:
-            files["{{ p.name }}"] = {{ p.python_name }}
-{% endfor %}
-{% endif %}
-{% elif op.body_params %}
-        json_data: dict[str, Any] = {}
-{% for p in op.body_params %}
-        if {{ p.python_name }} is not None:
-            json_data["{{ p.name }}"] = {{ p.python_name }}
-{% endfor %}
-{% endif %}
-        return await self._client._request(
-            "{{ op.http_method }}",
-{% if '{' in op.path_template %}
-            f"{{ op.path_template }}",
-{% else %}
-            "{{ op.path_template }}",
-{% endif %}
-{% if op.query_params %}
-            params=params,
-{% endif %}
-{% if op.is_multipart %}
-{% if op.form_params %}
-            data=data,
-{% endif %}
-{% if op.file_params %}
-            files=files,
-{% endif %}
-{% elif op.body_params %}
-            json=json_data,
-{% endif %}
-            **kwargs,
-        )
-{% endfor %}
-
 {% endfor %}
