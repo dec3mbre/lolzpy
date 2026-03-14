@@ -32,6 +32,9 @@ class TemplateOperation:
     optional_query_params: list[ParsedParameter] = field(default_factory=list)
     required_body_params: list[ParsedParameter] = field(default_factory=list)
     optional_body_params: list[ParsedParameter] = field(default_factory=list)
+    is_multipart: bool = False
+    file_params: list[ParsedParameter] = field(default_factory=list)
+    form_params: list[ParsedParameter] = field(default_factory=list)
 
 
 def _prepare_operations(operations: list[ParsedOperation]) -> list[TemplateOperation]:
@@ -50,6 +53,8 @@ def _prepare_operations(operations: list[ParsedOperation]) -> list[TemplateOpera
         optional_query = [p for p in op.query_params if not p.required]
         required_body = [p for p in op.body_params if p.required]
         optional_body = [p for p in op.body_params if not p.required]
+        file_params = [p for p in op.body_params if p.is_file]
+        form_params = [p for p in op.body_params if not p.is_file]
 
         result.append(TemplateOperation(
             method_name=op.method_name,
@@ -64,6 +69,9 @@ def _prepare_operations(operations: list[ParsedOperation]) -> list[TemplateOpera
             optional_query_params=optional_query,
             required_body_params=required_body,
             optional_body_params=optional_body,
+            is_multipart=op.is_multipart,
+            file_params=file_params,
+            form_params=form_params,
         ))
     return result
 

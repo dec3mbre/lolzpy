@@ -2765,7 +2765,7 @@ class SyncUsers:
     def upload(
         self,
         user_id: Any,
-        avatar: str,
+        avatar: bytes,
         *,
         x: int | None = None,
         y: int | None = None,
@@ -2773,19 +2773,21 @@ class SyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Upload Avatar"""
-        json_data: dict[str, Any] = {}
-        if avatar is not None:
-            json_data["avatar"] = avatar
+        data: dict[str, Any] = {}
         if x is not None:
-            json_data["x"] = x
+            data["x"] = x
         if y is not None:
-            json_data["y"] = y
+            data["y"] = y
         if crop is not None:
-            json_data["crop"] = crop
+            data["crop"] = crop
+        files: dict[str, Any] = {}
+        if avatar is not None:
+            files["avatar"] = avatar
         return self._client._request(
             "POST",
             f"/users/{user_id}/avatar",
-            json=json_data,
+            data=data,
+            files=files,
             **kwargs,
         )
 
@@ -2828,7 +2830,7 @@ class SyncUsers:
     def upload_post(
         self,
         user_id: Any,
-        background: str,
+        background: bytes,
         *,
         x: int | None = None,
         y: int | None = None,
@@ -2836,19 +2838,21 @@ class SyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Upload Background"""
-        json_data: dict[str, Any] = {}
-        if background is not None:
-            json_data["background"] = background
+        data: dict[str, Any] = {}
         if x is not None:
-            json_data["x"] = x
+            data["x"] = x
         if y is not None:
-            json_data["y"] = y
+            data["y"] = y
         if crop is not None:
-            json_data["crop"] = crop
+            data["crop"] = crop
+        files: dict[str, Any] = {}
+        if background is not None:
+            files["background"] = background
         return self._client._request(
             "POST",
             f"/users/{user_id}/background",
-            json=json_data,
+            data=data,
+            files=files,
             **kwargs,
         )
 
@@ -3329,7 +3333,7 @@ class AsyncUsers:
     async def upload(
         self,
         user_id: Any,
-        avatar: str,
+        avatar: bytes,
         *,
         x: int | None = None,
         y: int | None = None,
@@ -3337,19 +3341,21 @@ class AsyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Upload Avatar"""
-        json_data: dict[str, Any] = {}
-        if avatar is not None:
-            json_data["avatar"] = avatar
+        data: dict[str, Any] = {}
         if x is not None:
-            json_data["x"] = x
+            data["x"] = x
         if y is not None:
-            json_data["y"] = y
+            data["y"] = y
         if crop is not None:
-            json_data["crop"] = crop
+            data["crop"] = crop
+        files: dict[str, Any] = {}
+        if avatar is not None:
+            files["avatar"] = avatar
         return await self._client._request(
             "POST",
             f"/users/{user_id}/avatar",
-            json=json_data,
+            data=data,
+            files=files,
             **kwargs,
         )
 
@@ -3392,7 +3398,7 @@ class AsyncUsers:
     async def upload_post(
         self,
         user_id: Any,
-        background: str,
+        background: bytes,
         *,
         x: int | None = None,
         y: int | None = None,
@@ -3400,19 +3406,21 @@ class AsyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Upload Background"""
-        json_data: dict[str, Any] = {}
-        if background is not None:
-            json_data["background"] = background
+        data: dict[str, Any] = {}
         if x is not None:
-            json_data["x"] = x
+            data["x"] = x
         if y is not None:
-            json_data["y"] = y
+            data["y"] = y
         if crop is not None:
-            json_data["crop"] = crop
+            data["crop"] = crop
+        files: dict[str, Any] = {}
+        if background is not None:
+            files["background"] = background
         return await self._client._request(
             "POST",
             f"/users/{user_id}/background",
-            json=json_data,
+            data=data,
+            files=files,
             **kwargs,
         )
 

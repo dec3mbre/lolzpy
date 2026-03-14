@@ -58,7 +58,22 @@ class Sync{{ group_name | pascal }}:
             params["{{ p.name }}"] = {{ p.python_name }}
 {% endfor %}
 {% endif %}
-{% if op.body_params %}
+{% if op.is_multipart %}
+{% if op.form_params %}
+        data: dict[str, Any] = {}
+{% for p in op.form_params %}
+        if {{ p.python_name }} is not None:
+            data["{{ p.name }}"] = {{ p.python_name }}
+{% endfor %}
+{% endif %}
+{% if op.file_params %}
+        files: dict[str, Any] = {}
+{% for p in op.file_params %}
+        if {{ p.python_name }} is not None:
+            files["{{ p.name }}"] = {{ p.python_name }}
+{% endfor %}
+{% endif %}
+{% elif op.body_params %}
         json_data: dict[str, Any] = {}
 {% for p in op.body_params %}
         if {{ p.python_name }} is not None:
@@ -75,7 +90,14 @@ class Sync{{ group_name | pascal }}:
 {% if op.query_params %}
             params=params,
 {% endif %}
-{% if op.body_params %}
+{% if op.is_multipart %}
+{% if op.form_params %}
+            data=data,
+{% endif %}
+{% if op.file_params %}
+            files=files,
+{% endif %}
+{% elif op.body_params %}
             json=json_data,
 {% endif %}
             **kwargs,
@@ -122,7 +144,22 @@ class Async{{ group_name | pascal }}:
             params["{{ p.name }}"] = {{ p.python_name }}
 {% endfor %}
 {% endif %}
-{% if op.body_params %}
+{% if op.is_multipart %}
+{% if op.form_params %}
+        data: dict[str, Any] = {}
+{% for p in op.form_params %}
+        if {{ p.python_name }} is not None:
+            data["{{ p.name }}"] = {{ p.python_name }}
+{% endfor %}
+{% endif %}
+{% if op.file_params %}
+        files: dict[str, Any] = {}
+{% for p in op.file_params %}
+        if {{ p.python_name }} is not None:
+            files["{{ p.name }}"] = {{ p.python_name }}
+{% endfor %}
+{% endif %}
+{% elif op.body_params %}
         json_data: dict[str, Any] = {}
 {% for p in op.body_params %}
         if {{ p.python_name }} is not None:
@@ -139,7 +176,14 @@ class Async{{ group_name | pascal }}:
 {% if op.query_params %}
             params=params,
 {% endif %}
-{% if op.body_params %}
+{% if op.is_multipart %}
+{% if op.form_params %}
+            data=data,
+{% endif %}
+{% if op.file_params %}
+            files=files,
+{% endif %}
+{% elif op.body_params %}
             json=json_data,
 {% endif %}
             **kwargs,

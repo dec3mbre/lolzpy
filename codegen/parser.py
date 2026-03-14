@@ -23,6 +23,7 @@ class ParsedParameter:
     default: str | None = None
     description: str | None = None
     enum_values: list[str] | None = None
+    is_file: bool = False
 
 
 @dataclass(slots=True)
@@ -39,7 +40,8 @@ class ParsedOperation:
     body_params: list[ParsedParameter]
     response_schema_name: str | None  # Name of the Pydantic model to return
     # For grouping into resource classes
-    group: str  # Derived from first tag or operationId prefix
+    group: str
+    is_multipart: bool = False  # Derived from first tag or operationId prefix
 
 
 @dataclass(slots=True)
@@ -252,26 +254,32 @@ def _parse_parameter(param: dict[str, Any], spec: dict[str, Any]) -> ParsedParam
     )
 
 
-def _parse_request_body(request_body: dict[str, Any], spec: dict[str, Any]) -> list[ParsedParameter]:
-    """Extract body parameters from a requestBody definition."""
+def _parse_request_body(
+    request_body: dict[str, Any], spec: dict[str, Any],
+) -> tuple[list[ParsedParameter], bool]:
+    """Extract body parameters from a requestBody definition.
+
+    Returns (params, is_multipart).
+    """
     if "$ref" in request_body:
         request_body = _resolve_ref(request_body["$ref"], spec)
 
     params: list[ParsedParameter] = []
     content = request_body.get("content", {})
 
-    # Prefer application/json
-    json_content = content.get("application/json") or content.get("multipart/form-data")
-    if not json_content:
-        return params
+    is_multipart = "multipart/form-data" in content and "application/json" not in content
+    body_content = content.get("application/json") or content.get("multipart/form-data")
+    if not body_content:
+        return params, False
 
-    schema = _resolve_schema(json_content.get("schema", {}), spec)
+    schema = _resolve_schema(body_content.get("schema", {}), spec)
     required_fields = set(schema.get("required", []))
     properties = schema.get("properties", {})
 
     for prop_name, prop_schema in properties.items():
         prop_schema = _resolve_schema(prop_schema, spec)
-        python_type = _schema_to_python_type(prop_schema)
+        is_file = prop_schema.get("format") == "binary"
+        python_type = "bytes" if is_file else _schema_to_python_type(prop_schema)
         is_required = prop_name in required_fields
 
         default = None
@@ -295,9 +303,10 @@ def _parse_request_body(request_body: dict[str, Any], spec: dict[str, Any]) -> l
             default=default,
             description=prop_schema.get("description"),
             enum_values=prop_schema.get("enum"),
+            is_file=is_file,
         ))
 
-    return params
+    return params, is_multipart
 
 
 # ---------------------------------------------------------------------------
@@ -374,9 +383,10 @@ def parse_spec(spec_path: str | Path) -> ParsedSpec:
 
             # Request body
             body_params: list[ParsedParameter] = []
+            is_multipart = False
             request_body = op.get("requestBody")
             if request_body:
-                body_params = _parse_request_body(request_body, spec)
+                body_params, is_multipart = _parse_request_body(request_body, spec)
 
             # Response schema
             response_schema_name = _extract_response_schema_name(
@@ -398,6 +408,7 @@ def parse_spec(spec_path: str | Path) -> ParsedSpec:
                 body_params=body_params,
                 response_schema_name=response_schema_name,
                 group=group,
+                is_multipart=is_multipart,
             ))
 
     parsed = ParsedSpec(title=title, base_url=base_url, operations=operations)
