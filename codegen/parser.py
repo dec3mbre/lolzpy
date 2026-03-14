@@ -82,6 +82,8 @@ def _schema_to_python_type(schema: dict[str, Any]) -> str:
     if isinstance(type_val, list):
         types = [t for t in type_val if t != "null"]
         nullable = "null" in type_val
+        if not types:
+            return "None" if nullable else "Any"
         base = _TYPE_MAP.get(types[0], "Any") if len(types) == 1 else "Any"
         return f"{base} | None" if nullable else base
 

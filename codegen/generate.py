@@ -55,8 +55,7 @@ def generate_models(schema_path: str, output_path: str) -> None:
     print("  Running datamodel-code-generator...")
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
-        print(f"  ERROR: datamodel-code-generator failed:\n{result.stderr}")
-        sys.exit(1)
+        raise RuntimeError(f"datamodel-code-generator failed:\n{result.stderr}")
     print(f"  Models written to {output_path}")
 
 
