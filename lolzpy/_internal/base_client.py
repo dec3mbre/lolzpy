@@ -144,8 +144,12 @@ class SyncAPIClient(BaseClient):
             **kwargs,
         )
         return self._parse_response(
-            response, model, wrapper_key, is_list,
-            request_url=url, request_method=method,
+            response,
+            model,
+            wrapper_key,
+            is_list,
+            request_url=url,
+            request_method=method,
         )
 
 
@@ -160,9 +164,7 @@ class AsyncAPIClient(BaseClient):
             timeout=(self._connect_timeout, self._read_timeout),
             headers=self._headers(),
         )
-        self._limiter: TokenBucketAsync | None = (
-            TokenBucketAsync(self._rate_limit) if self._rate_limit > 0 else None
-        )
+        self._limiter: TokenBucketAsync | None = TokenBucketAsync(self._rate_limit) if self._rate_limit > 0 else None
 
     # Context manager ---------------------------------------------------
 
@@ -207,8 +209,12 @@ class AsyncAPIClient(BaseClient):
             **kwargs,
         )
         return self._parse_response(
-            response, model, wrapper_key, is_list,
-            request_url=url, request_method=method,
+            response,
+            model,
+            wrapper_key,
+            is_list,
+            request_url=url,
+            request_method=method,
         )
 
 

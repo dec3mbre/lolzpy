@@ -98,8 +98,11 @@ def raise_for_status(
                 with contextlib.suppress(ValueError, TypeError):
                     retry_after = float(raw)
         raise RateLimitError(
-            message, status_code=status_code, response_data=response_data,
-            retry_after=retry_after, **ctx,
+            message,
+            status_code=status_code,
+            response_data=response_data,
+            retry_after=retry_after,
+            **ctx,
         )
 
     if status_code >= 500:

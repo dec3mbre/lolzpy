@@ -235,8 +235,12 @@ def _common_kwargs(
     impersonate: BrowserType,
 ) -> dict:
     return dict(
-        proxy=proxy, connect_timeout=connect_timeout, read_timeout=read_timeout,
-        retry=retry, rate_limit=rate_limit, impersonate=impersonate,
+        proxy=proxy,
+        connect_timeout=connect_timeout,
+        read_timeout=read_timeout,
+        retry=retry,
+        rate_limit=rate_limit,
+        impersonate=impersonate,
     )
 
 
@@ -269,8 +273,12 @@ class LolzSync:
         impersonate: BrowserType = "chrome",
     ) -> None:
         common = _common_kwargs(
-            proxy=proxy, connect_timeout=connect_timeout, read_timeout=read_timeout,
-            retry=retry, rate_limit=rate_limit, impersonate=impersonate,
+            proxy=proxy,
+            connect_timeout=connect_timeout,
+            read_timeout=read_timeout,
+            retry=retry,
+            rate_limit=rate_limit,
+            impersonate=impersonate,
         )
         self._forum_client = SyncAPIClient(forum_base_url, token, **common)
         self._market_client = SyncAPIClient(market_base_url, token, **common)
@@ -312,8 +320,12 @@ class LolzAsync:
         impersonate: BrowserType = "chrome",
     ) -> None:
         common = _common_kwargs(
-            proxy=proxy, connect_timeout=connect_timeout, read_timeout=read_timeout,
-            retry=retry, rate_limit=rate_limit, impersonate=impersonate,
+            proxy=proxy,
+            connect_timeout=connect_timeout,
+            read_timeout=read_timeout,
+            retry=retry,
+            rate_limit=rate_limit,
+            impersonate=impersonate,
         )
         self._forum_client = AsyncAPIClient(forum_base_url, token, **common)
         self._market_client = AsyncAPIClient(market_base_url, token, **common)
@@ -378,8 +390,12 @@ class Lolz:
         self._forum_base_url = forum_base_url
         self._market_base_url = market_base_url
         self._common = _common_kwargs(
-            proxy=proxy, connect_timeout=connect_timeout, read_timeout=read_timeout,
-            retry=retry, rate_limit=rate_limit, impersonate=impersonate,
+            proxy=proxy,
+            connect_timeout=connect_timeout,
+            read_timeout=read_timeout,
+            retry=retry,
+            rate_limit=rate_limit,
+            impersonate=impersonate,
         )
         self._async_mode = async_mode
 
