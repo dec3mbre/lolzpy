@@ -376,6 +376,58 @@ codegen/                    # Инструменты кодогенерации
 
 ---
 
+## Кодогенерация
+
+Клиентский код (`_client.py`) и Pydantic-модели (`_models.py`) генерируются автоматически из OpenAPI-схем. Ручное редактирование этих файлов не требуется — при обновлении API достаточно перегенерировать.
+
+### Установка
+
+```bash
+pip install -e ".[codegen]"
+```
+
+### Генерация
+
+```bash
+# Все API сразу (forum + market)
+python -m codegen.generate --all
+
+# Только один API
+python -m codegen.generate --schema codegen/schemas/forum.json --name forum
+python -m codegen.generate --schema codegen/schemas/market.json --name market
+```
+
+Генератор выполняет 3 шага:
+
+1. **Модели** — `datamodel-code-generator` превращает OpenAPI-схему в Pydantic v2 модели (`_models.py`)
+2. **Клиент** — парсер (`codegen/parser.py`) извлекает операции и группы, рендерер (`codegen/renderer.py`) генерирует sync/async классы через Jinja2 шаблоны (`_client.py`, `__init__.py`)
+3. **Форматирование** — `ruff` фиксит импорты и форматирует код
+
+### Структура codegen
+
+```
+codegen/
+├── generate.py             # CLI точка входа
+├── parser.py               # OpenAPI spec → ParsedSpec (операции, группы, параметры)
+├── renderer.py             # ParsedSpec → Python код (Jinja2)
+├── schemas/                # OpenAPI JSON-схемы
+│   ├── forum.json
+│   └── market.json
+└── templates/              # Jinja2 шаблоны
+    ├── client.py.jinja2    # Шаблон sync/async клиента
+    └── init.py.jinja2      # Шаблон __init__.py
+```
+
+### Обновление API
+
+Чтобы обновить SDK при изменении API:
+
+1. Замените JSON-схему в `codegen/schemas/`
+2. Запустите `python -m codegen.generate --all`
+3. Запустите тесты: `pytest tests/ -v`
+
+---
+
 ## Разработка
 
 ```bash
@@ -390,10 +442,6 @@ ruff check lolzpy/
 
 # Проверка типов
 pyright lolzpy/
-
-# Перегенерация клиентов из OpenAPI-схем
-pip install -e ".[codegen]"
-python -m codegen --all
 ```
 
 ---
