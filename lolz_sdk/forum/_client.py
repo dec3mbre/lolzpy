@@ -7,8 +7,8 @@ Regenerate with: python -m codegen.generate
 from __future__ import annotations
 
 from typing import Any, Literal
-from lolz_sdk._base import AsyncAPIClient, SyncAPIClient
 
+from lolz_sdk._base import AsyncAPIClient, SyncAPIClient
 
 # ===========================================================================
 # O auth
@@ -28,7 +28,7 @@ class SyncOAuth:
         """Get Access Token"""
         return self._client._request(
             "POST",
-            f"/oauth/token",
+            "/oauth/token",
             **kwargs,
         )
 
@@ -46,7 +46,7 @@ class AsyncOAuth:
         """Get Access Token"""
         return await self._client._request(
             "POST",
-            f"/oauth/token",
+            "/oauth/token",
             **kwargs,
         )
 
@@ -74,7 +74,7 @@ class SyncAssets:
             params["css"] = css
         return self._client._request(
             "GET",
-            f"/css",
+            "/css",
             params=params,
             **kwargs,
         )
@@ -98,7 +98,7 @@ class AsyncAssets:
             params["css"] = css
         return await self._client._request(
             "GET",
-            f"/css",
+            "/css",
             params=params,
             **kwargs,
         )
@@ -133,7 +133,7 @@ class SyncCategories:
             params["order"] = order
         return self._client._request(
             "GET",
-            f"/categories",
+            "/categories",
             params=params,
             **kwargs,
         )
@@ -175,7 +175,7 @@ class AsyncCategories:
             params["order"] = order
         return await self._client._request(
             "GET",
-            f"/categories",
+            "/categories",
             params=params,
             **kwargs,
         )
@@ -222,7 +222,7 @@ class SyncForums:
             params["order"] = order
         return self._client._request(
             "GET",
-            f"/forums",
+            "/forums",
             params=params,
             **kwargs,
         )
@@ -234,7 +234,7 @@ class SyncForums:
         """Get Forums Tree"""
         return self._client._request(
             "GET",
-            f"/forums/grouped",
+            "/forums/grouped",
             **kwargs,
         )
 
@@ -274,7 +274,6 @@ class SyncForums:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Follow Forum"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post is not None:
             json_data["post"] = post
@@ -317,7 +316,7 @@ class SyncForums:
             params["total"] = total
         return self._client._request(
             "GET",
-            f"/forums/followed",
+            "/forums/followed",
             params=params,
             **kwargs,
         )
@@ -329,7 +328,7 @@ class SyncForums:
         """Get Feed Options"""
         return self._client._request(
             "GET",
-            f"/forums/feed/options",
+            "/forums/feed/options",
             **kwargs,
         )
 
@@ -341,7 +340,6 @@ class SyncForums:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Feed Options"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if node_ids is not None:
             json_data["node_ids"] = node_ids
@@ -349,7 +347,7 @@ class SyncForums:
             json_data["keywords"] = keywords
         return self._client._request(
             "PUT",
-            f"/forums/feed/options",
+            "/forums/feed/options",
             json=json_data,
             **kwargs,
         )
@@ -379,7 +377,7 @@ class AsyncForums:
             params["order"] = order
         return await self._client._request(
             "GET",
-            f"/forums",
+            "/forums",
             params=params,
             **kwargs,
         )
@@ -391,7 +389,7 @@ class AsyncForums:
         """Get Forums Tree"""
         return await self._client._request(
             "GET",
-            f"/forums/grouped",
+            "/forums/grouped",
             **kwargs,
         )
 
@@ -431,7 +429,6 @@ class AsyncForums:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Follow Forum"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post is not None:
             json_data["post"] = post
@@ -474,7 +471,7 @@ class AsyncForums:
             params["total"] = total
         return await self._client._request(
             "GET",
-            f"/forums/followed",
+            "/forums/followed",
             params=params,
             **kwargs,
         )
@@ -486,7 +483,7 @@ class AsyncForums:
         """Get Feed Options"""
         return await self._client._request(
             "GET",
-            f"/forums/feed/options",
+            "/forums/feed/options",
             **kwargs,
         )
 
@@ -498,7 +495,6 @@ class AsyncForums:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Feed Options"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if node_ids is not None:
             json_data["node_ids"] = node_ids
@@ -506,7 +502,7 @@ class AsyncForums:
             json_data["keywords"] = keywords
         return await self._client._request(
             "PUT",
-            f"/forums/feed/options",
+            "/forums/feed/options",
             json=json_data,
             **kwargs,
         )
@@ -530,7 +526,7 @@ class SyncLinks:
         """Get Links Forum"""
         return self._client._request(
             "GET",
-            f"/link-forums",
+            "/link-forums",
             **kwargs,
         )
 
@@ -560,7 +556,7 @@ class AsyncLinks:
         """Get Links Forum"""
         return await self._client._request(
             "GET",
-            f"/link-forums",
+            "/link-forums",
             **kwargs,
         )
 
@@ -603,7 +599,7 @@ class SyncPages:
             params["order"] = order
         return self._client._request(
             "GET",
-            f"/pages",
+            "/pages",
             params=params,
             **kwargs,
         )
@@ -642,7 +638,7 @@ class AsyncPages:
             params["order"] = order
         return await self._client._request(
             "GET",
-            f"/pages",
+            "/pages",
             params=params,
             **kwargs,
         )
@@ -683,7 +679,7 @@ class SyncNavigation:
             params["parent"] = parent
         return self._client._request(
             "GET",
-            f"/navigation",
+            "/navigation",
             params=params,
             **kwargs,
         )
@@ -707,7 +703,7 @@ class AsyncNavigation:
             params["parent"] = parent
         return await self._client._request(
             "GET",
-            f"/navigation",
+            "/navigation",
             params=params,
             **kwargs,
         )
@@ -790,7 +786,7 @@ class SyncThreads:
             params["fields_include"] = fields_include
         return self._client._request(
             "GET",
-            f"/threads",
+            "/threads",
             params=params,
             **kwargs,
         )
@@ -817,7 +813,6 @@ class SyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -853,7 +848,7 @@ class SyncThreads:
             json_data["watch_thread_email"] = watch_thread_email
         return self._client._request(
             "POST",
-            f"/threads",
+            "/threads",
             json=json_data,
             **kwargs,
         )
@@ -890,7 +885,6 @@ class SyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Contest"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -946,7 +940,7 @@ class SyncThreads:
             json_data["watch_thread_email"] = watch_thread_email
         return self._client._request(
             "POST",
-            f"/contests",
+            "/contests",
             json=json_data,
             **kwargs,
         )
@@ -979,7 +973,6 @@ class SyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Claim"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if as_responder is not None:
             json_data["as_responder"] = as_responder
@@ -1027,7 +1020,7 @@ class SyncThreads:
             json_data["post_body"] = post_body
         return self._client._request(
             "POST",
-            f"/claims",
+            "/claims",
             json=json_data,
             **kwargs,
         )
@@ -1066,7 +1059,6 @@ class SyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if title is not None:
             json_data["title"] = title
@@ -1101,7 +1093,6 @@ class SyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if reason is not None:
             json_data["reason"] = reason
@@ -1125,7 +1116,6 @@ class SyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Move Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if node_id is not None:
             json_data["node_id"] = node_id
@@ -1214,7 +1204,6 @@ class SyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Follow Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if email is not None:
             json_data["email"] = email
@@ -1252,7 +1241,7 @@ class SyncThreads:
             params["fields_include"] = fields_include
         return self._client._request(
             "GET",
-            f"/threads/followed",
+            "/threads/followed",
             params=params,
             **kwargs,
         )
@@ -1290,7 +1279,6 @@ class SyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Vote Poll"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if response_id is not None:
             json_data["response_id"] = response_id
@@ -1321,7 +1309,7 @@ class SyncThreads:
             params["data_limit"] = data_limit
         return self._client._request(
             "GET",
-            f"/threads/new",
+            "/threads/new",
             params=params,
             **kwargs,
         )
@@ -1347,7 +1335,7 @@ class SyncThreads:
             params["data_limit"] = data_limit
         return self._client._request(
             "GET",
-            f"/threads/recent",
+            "/threads/recent",
             params=params,
             **kwargs,
         )
@@ -1437,7 +1425,7 @@ class AsyncThreads:
             params["fields_include"] = fields_include
         return await self._client._request(
             "GET",
-            f"/threads",
+            "/threads",
             params=params,
             **kwargs,
         )
@@ -1464,7 +1452,6 @@ class AsyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -1500,7 +1487,7 @@ class AsyncThreads:
             json_data["watch_thread_email"] = watch_thread_email
         return await self._client._request(
             "POST",
-            f"/threads",
+            "/threads",
             json=json_data,
             **kwargs,
         )
@@ -1537,7 +1524,6 @@ class AsyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Contest"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -1593,7 +1579,7 @@ class AsyncThreads:
             json_data["watch_thread_email"] = watch_thread_email
         return await self._client._request(
             "POST",
-            f"/contests",
+            "/contests",
             json=json_data,
             **kwargs,
         )
@@ -1626,7 +1612,6 @@ class AsyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Claim"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if as_responder is not None:
             json_data["as_responder"] = as_responder
@@ -1674,7 +1659,7 @@ class AsyncThreads:
             json_data["post_body"] = post_body
         return await self._client._request(
             "POST",
-            f"/claims",
+            "/claims",
             json=json_data,
             **kwargs,
         )
@@ -1713,7 +1698,6 @@ class AsyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if title is not None:
             json_data["title"] = title
@@ -1748,7 +1732,6 @@ class AsyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if reason is not None:
             json_data["reason"] = reason
@@ -1772,7 +1755,6 @@ class AsyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Move Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if node_id is not None:
             json_data["node_id"] = node_id
@@ -1861,7 +1843,6 @@ class AsyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Follow Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if email is not None:
             json_data["email"] = email
@@ -1899,7 +1880,7 @@ class AsyncThreads:
             params["fields_include"] = fields_include
         return await self._client._request(
             "GET",
-            f"/threads/followed",
+            "/threads/followed",
             params=params,
             **kwargs,
         )
@@ -1937,7 +1918,6 @@ class AsyncThreads:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Vote Poll"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if response_id is not None:
             json_data["response_id"] = response_id
@@ -1968,7 +1948,7 @@ class AsyncThreads:
             params["data_limit"] = data_limit
         return await self._client._request(
             "GET",
-            f"/threads/new",
+            "/threads/new",
             params=params,
             **kwargs,
         )
@@ -1994,7 +1974,7 @@ class AsyncThreads:
             params["data_limit"] = data_limit
         return await self._client._request(
             "GET",
-            f"/threads/recent",
+            "/threads/recent",
             params=params,
             **kwargs,
         )
@@ -2047,7 +2027,7 @@ class SyncPosts:
             params["order"] = order
         return self._client._request(
             "GET",
-            f"/posts",
+            "/posts",
             params=params,
             **kwargs,
         )
@@ -2061,7 +2041,6 @@ class SyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -2071,7 +2050,7 @@ class SyncPosts:
             json_data["quote_post_id"] = quote_post_id
         return self._client._request(
             "POST",
-            f"/posts",
+            "/posts",
             json=json_data,
             **kwargs,
         )
@@ -2096,7 +2075,6 @@ class SyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -2115,7 +2093,6 @@ class SyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if reason is not None:
             json_data["reason"] = reason
@@ -2190,7 +2167,6 @@ class SyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message is not None:
             json_data["message"] = message
@@ -2219,7 +2195,7 @@ class SyncPosts:
             params["before_comment"] = before_comment
         return self._client._request(
             "GET",
-            f"/posts/comments",
+            "/posts/comments",
             params=params,
             **kwargs,
         )
@@ -2231,7 +2207,6 @@ class SyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_id is not None:
             json_data["post_id"] = post_id
@@ -2239,7 +2214,7 @@ class SyncPosts:
             json_data["comment_body"] = comment_body
         return self._client._request(
             "POST",
-            f"/posts/comments",
+            "/posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -2251,7 +2226,6 @@ class SyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_comment_id is not None:
             json_data["post_comment_id"] = post_comment_id
@@ -2259,7 +2233,7 @@ class SyncPosts:
             json_data["comment_body"] = comment_body
         return self._client._request(
             "PUT",
-            f"/posts/comments",
+            "/posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -2272,7 +2246,6 @@ class SyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_comment_id is not None:
             json_data["post_comment_id"] = post_comment_id
@@ -2280,7 +2253,7 @@ class SyncPosts:
             json_data["reason"] = reason
         return self._client._request(
             "DELETE",
-            f"/posts/comments",
+            "/posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -2292,7 +2265,6 @@ class SyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_comment_id is not None:
             json_data["post_comment_id"] = post_comment_id
@@ -2300,7 +2272,7 @@ class SyncPosts:
             json_data["message"] = message
         return self._client._request(
             "POST",
-            f"/posts/comments/report",
+            "/posts/comments/report",
             json=json_data,
             **kwargs,
         )
@@ -2336,7 +2308,7 @@ class AsyncPosts:
             params["order"] = order
         return await self._client._request(
             "GET",
-            f"/posts",
+            "/posts",
             params=params,
             **kwargs,
         )
@@ -2350,7 +2322,6 @@ class AsyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -2360,7 +2331,7 @@ class AsyncPosts:
             json_data["quote_post_id"] = quote_post_id
         return await self._client._request(
             "POST",
-            f"/posts",
+            "/posts",
             json=json_data,
             **kwargs,
         )
@@ -2385,7 +2356,6 @@ class AsyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -2404,7 +2374,6 @@ class AsyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if reason is not None:
             json_data["reason"] = reason
@@ -2479,7 +2448,6 @@ class AsyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message is not None:
             json_data["message"] = message
@@ -2508,7 +2476,7 @@ class AsyncPosts:
             params["before_comment"] = before_comment
         return await self._client._request(
             "GET",
-            f"/posts/comments",
+            "/posts/comments",
             params=params,
             **kwargs,
         )
@@ -2520,7 +2488,6 @@ class AsyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_id is not None:
             json_data["post_id"] = post_id
@@ -2528,7 +2495,7 @@ class AsyncPosts:
             json_data["comment_body"] = comment_body
         return await self._client._request(
             "POST",
-            f"/posts/comments",
+            "/posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -2540,7 +2507,6 @@ class AsyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_comment_id is not None:
             json_data["post_comment_id"] = post_comment_id
@@ -2548,7 +2514,7 @@ class AsyncPosts:
             json_data["comment_body"] = comment_body
         return await self._client._request(
             "PUT",
-            f"/posts/comments",
+            "/posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -2561,7 +2527,6 @@ class AsyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_comment_id is not None:
             json_data["post_comment_id"] = post_comment_id
@@ -2569,7 +2534,7 @@ class AsyncPosts:
             json_data["reason"] = reason
         return await self._client._request(
             "DELETE",
-            f"/posts/comments",
+            "/posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -2581,7 +2546,6 @@ class AsyncPosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_comment_id is not None:
             json_data["post_comment_id"] = post_comment_id
@@ -2589,7 +2553,7 @@ class AsyncPosts:
             json_data["message"] = message
         return await self._client._request(
             "POST",
-            f"/posts/comments/report",
+            "/posts/comments/report",
             json=json_data,
             **kwargs,
         )
@@ -2624,7 +2588,7 @@ class SyncUsers:
             params["fields_include"] = fields_include
         return self._client._request(
             "GET",
-            f"/users",
+            "/users",
             params=params,
             **kwargs,
         )
@@ -2636,7 +2600,7 @@ class SyncUsers:
         """Get User Fields"""
         return self._client._request(
             "GET",
-            f"/users/fields",
+            "/users/fields",
             **kwargs,
         )
 
@@ -2658,7 +2622,7 @@ class SyncUsers:
             params["fields_include"] = fields_include
         return self._client._request(
             "GET",
-            f"/users/find",
+            "/users/find",
             params=params,
             **kwargs,
         )
@@ -2715,7 +2679,6 @@ class SyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit User"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if username is not None:
             json_data["username"] = username
@@ -2810,7 +2773,6 @@ class SyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Upload Avatar"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if avatar is not None:
             json_data["avatar"] = avatar
@@ -2849,7 +2811,6 @@ class SyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Crop Avatar"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if x is not None:
             json_data["x"] = x
@@ -2875,7 +2836,6 @@ class SyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Upload Background"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if background is not None:
             json_data["background"] = background
@@ -2914,7 +2874,6 @@ class SyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Crop Background"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if x is not None:
             json_data["x"] = x
@@ -3049,7 +3008,7 @@ class SyncUsers:
             params["total"] = total
         return self._client._request(
             "GET",
-            f"/users/ignored",
+            "/users/ignored",
             params=params,
             **kwargs,
         )
@@ -3142,7 +3101,7 @@ class SyncUsers:
         """Get Secret Answer Types"""
         return self._client._request(
             "GET",
-            f"/users/secret-answer/types",
+            "/users/secret-answer/types",
             **kwargs,
         )
 
@@ -3153,7 +3112,7 @@ class SyncUsers:
         """Reset Secret Answer"""
         return self._client._request(
             "POST",
-            f"/account/secret-answer/reset",
+            "/account/secret-answer/reset",
             **kwargs,
         )
 
@@ -3164,7 +3123,7 @@ class SyncUsers:
         """Cancel Secret Answer Reset"""
         return self._client._request(
             "DELETE",
-            f"/account/secret-answer/reset",
+            "/account/secret-answer/reset",
             **kwargs,
         )
 
@@ -3193,7 +3152,7 @@ class AsyncUsers:
             params["fields_include"] = fields_include
         return await self._client._request(
             "GET",
-            f"/users",
+            "/users",
             params=params,
             **kwargs,
         )
@@ -3205,7 +3164,7 @@ class AsyncUsers:
         """Get User Fields"""
         return await self._client._request(
             "GET",
-            f"/users/fields",
+            "/users/fields",
             **kwargs,
         )
 
@@ -3227,7 +3186,7 @@ class AsyncUsers:
             params["fields_include"] = fields_include
         return await self._client._request(
             "GET",
-            f"/users/find",
+            "/users/find",
             params=params,
             **kwargs,
         )
@@ -3284,7 +3243,6 @@ class AsyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit User"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if username is not None:
             json_data["username"] = username
@@ -3379,7 +3337,6 @@ class AsyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Upload Avatar"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if avatar is not None:
             json_data["avatar"] = avatar
@@ -3418,7 +3375,6 @@ class AsyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Crop Avatar"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if x is not None:
             json_data["x"] = x
@@ -3444,7 +3400,6 @@ class AsyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Upload Background"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if background is not None:
             json_data["background"] = background
@@ -3483,7 +3438,6 @@ class AsyncUsers:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Crop Background"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if x is not None:
             json_data["x"] = x
@@ -3618,7 +3572,7 @@ class AsyncUsers:
             params["total"] = total
         return await self._client._request(
             "GET",
-            f"/users/ignored",
+            "/users/ignored",
             params=params,
             **kwargs,
         )
@@ -3711,7 +3665,7 @@ class AsyncUsers:
         """Get Secret Answer Types"""
         return await self._client._request(
             "GET",
-            f"/users/secret-answer/types",
+            "/users/secret-answer/types",
             **kwargs,
         )
 
@@ -3722,7 +3676,7 @@ class AsyncUsers:
         """Reset Secret Answer"""
         return await self._client._request(
             "POST",
-            f"/account/secret-answer/reset",
+            "/account/secret-answer/reset",
             **kwargs,
         )
 
@@ -3733,7 +3687,7 @@ class AsyncUsers:
         """Cancel Secret Answer Reset"""
         return await self._client._request(
             "DELETE",
-            f"/account/secret-answer/reset",
+            "/account/secret-answer/reset",
             **kwargs,
         )
 
@@ -3797,7 +3751,6 @@ class SyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Profile Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -3847,7 +3800,6 @@ class SyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report a Profile Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message is not None:
             json_data["message"] = message
@@ -3865,7 +3817,6 @@ class SyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Profile Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
@@ -3873,7 +3824,7 @@ class SyncProfilePosts:
             json_data["post_body"] = post_body
         return self._client._request(
             "POST",
-            f"/profile-posts",
+            "/profile-posts",
             json=json_data,
             **kwargs,
         )
@@ -3956,7 +3907,7 @@ class SyncProfilePosts:
             params["limit"] = limit
         return self._client._request(
             "GET",
-            f"/profile-posts/comments",
+            "/profile-posts/comments",
             params=params,
             **kwargs,
         )
@@ -3968,7 +3919,6 @@ class SyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Profile Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if profile_post_id is not None:
             json_data["profile_post_id"] = profile_post_id
@@ -3976,7 +3926,7 @@ class SyncProfilePosts:
             json_data["comment_body"] = comment_body
         return self._client._request(
             "POST",
-            f"/profile-posts/comments",
+            "/profile-posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -3988,7 +3938,6 @@ class SyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Profile Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if comment_id is not None:
             json_data["comment_id"] = comment_id
@@ -3996,7 +3945,7 @@ class SyncProfilePosts:
             json_data["comment_body"] = comment_body
         return self._client._request(
             "PUT",
-            f"/profile-posts/comments",
+            "/profile-posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -4007,13 +3956,12 @@ class SyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Profile Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if comment_id is not None:
             json_data["comment_id"] = comment_id
         return self._client._request(
             "DELETE",
-            f"/profile-posts/comments",
+            "/profile-posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -4038,7 +3986,6 @@ class SyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report a Profile Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message is not None:
             json_data["message"] = message
@@ -4104,7 +4051,6 @@ class AsyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Profile Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if post_body is not None:
             json_data["post_body"] = post_body
@@ -4154,7 +4100,6 @@ class AsyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report a Profile Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message is not None:
             json_data["message"] = message
@@ -4172,7 +4117,6 @@ class AsyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Profile Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
@@ -4180,7 +4124,7 @@ class AsyncProfilePosts:
             json_data["post_body"] = post_body
         return await self._client._request(
             "POST",
-            f"/profile-posts",
+            "/profile-posts",
             json=json_data,
             **kwargs,
         )
@@ -4263,7 +4207,7 @@ class AsyncProfilePosts:
             params["limit"] = limit
         return await self._client._request(
             "GET",
-            f"/profile-posts/comments",
+            "/profile-posts/comments",
             params=params,
             **kwargs,
         )
@@ -4275,7 +4219,6 @@ class AsyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Profile Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if profile_post_id is not None:
             json_data["profile_post_id"] = profile_post_id
@@ -4283,7 +4226,7 @@ class AsyncProfilePosts:
             json_data["comment_body"] = comment_body
         return await self._client._request(
             "POST",
-            f"/profile-posts/comments",
+            "/profile-posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -4295,7 +4238,6 @@ class AsyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Profile Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if comment_id is not None:
             json_data["comment_id"] = comment_id
@@ -4303,7 +4245,7 @@ class AsyncProfilePosts:
             json_data["comment_body"] = comment_body
         return await self._client._request(
             "PUT",
-            f"/profile-posts/comments",
+            "/profile-posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -4314,13 +4256,12 @@ class AsyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Profile Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if comment_id is not None:
             json_data["comment_id"] = comment_id
         return await self._client._request(
             "DELETE",
-            f"/profile-posts/comments",
+            "/profile-posts/comments",
             json=json_data,
             **kwargs,
         )
@@ -4345,7 +4286,6 @@ class AsyncProfilePosts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report a Profile Post Comment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message is not None:
             json_data["message"] = message
@@ -4387,7 +4327,7 @@ class SyncConversations:
             params["limit"] = limit
         return self._client._request(
             "GET",
-            f"/conversations",
+            "/conversations",
             params=params,
             **kwargs,
         )
@@ -4407,7 +4347,6 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if recipient_id is not None:
             json_data["recipient_id"] = recipient_id
@@ -4429,7 +4368,7 @@ class SyncConversations:
             json_data["message_body"] = message_body
         return self._client._request(
             "POST",
-            f"/conversations",
+            "/conversations",
             json=json_data,
             **kwargs,
         )
@@ -4447,7 +4386,6 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if conversation_id is not None:
             json_data["conversation_id"] = conversation_id
@@ -4465,7 +4403,7 @@ class SyncConversations:
             json_data["allow_delete_own_messages"] = allow_delete_own_messages
         return self._client._request(
             "PUT",
-            f"/conversations",
+            "/conversations",
             json=json_data,
             **kwargs,
         )
@@ -4477,7 +4415,6 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Leave Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if conversation_id is not None:
             json_data["conversation_id"] = conversation_id
@@ -4485,7 +4422,7 @@ class SyncConversations:
             json_data["delete_type"] = delete_type
         return self._client._request(
             "DELETE",
-            f"/conversations",
+            "/conversations",
             json=json_data,
             **kwargs,
         )
@@ -4496,13 +4433,12 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Start Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
         return self._client._request(
             "POST",
-            f"/conversations/start",
+            "/conversations/start",
             json=json_data,
             **kwargs,
         )
@@ -4513,13 +4449,12 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Send Content To Saved Messages"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if link is not None:
             json_data["link"] = link
         return self._client._request(
             "POST",
-            f"/conversations/save",
+            "/conversations/save",
             json=json_data,
             **kwargs,
         )
@@ -4575,7 +4510,6 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Conversation Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if reply_message_id is not None:
             json_data["reply_message_id"] = reply_message_id
@@ -4597,7 +4531,6 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Conversations Messages"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -4607,7 +4540,7 @@ class SyncConversations:
             json_data["search_recipients"] = search_recipients
         return self._client._request(
             "POST",
-            f"/conversations/search",
+            "/conversations/search",
             json=json_data,
             **kwargs,
         )
@@ -4632,7 +4565,6 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Conversation Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message_body is not None:
             json_data["message_body"] = message_body
@@ -4663,7 +4595,6 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Invite Users to Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if recipients is not None:
             json_data["recipients"] = recipients
@@ -4681,7 +4612,6 @@ class SyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Kick User from Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
@@ -4711,7 +4641,7 @@ class SyncConversations:
         """Read All Conversations"""
         return self._client._request(
             "POST",
-            f"/conversations/read-all",
+            "/conversations/read-all",
             **kwargs,
         )
 
@@ -4815,7 +4745,7 @@ class AsyncConversations:
             params["limit"] = limit
         return await self._client._request(
             "GET",
-            f"/conversations",
+            "/conversations",
             params=params,
             **kwargs,
         )
@@ -4835,7 +4765,6 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if recipient_id is not None:
             json_data["recipient_id"] = recipient_id
@@ -4857,7 +4786,7 @@ class AsyncConversations:
             json_data["message_body"] = message_body
         return await self._client._request(
             "POST",
-            f"/conversations",
+            "/conversations",
             json=json_data,
             **kwargs,
         )
@@ -4875,7 +4804,6 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if conversation_id is not None:
             json_data["conversation_id"] = conversation_id
@@ -4893,7 +4821,7 @@ class AsyncConversations:
             json_data["allow_delete_own_messages"] = allow_delete_own_messages
         return await self._client._request(
             "PUT",
-            f"/conversations",
+            "/conversations",
             json=json_data,
             **kwargs,
         )
@@ -4905,7 +4833,6 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Leave Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if conversation_id is not None:
             json_data["conversation_id"] = conversation_id
@@ -4913,7 +4840,7 @@ class AsyncConversations:
             json_data["delete_type"] = delete_type
         return await self._client._request(
             "DELETE",
-            f"/conversations",
+            "/conversations",
             json=json_data,
             **kwargs,
         )
@@ -4924,13 +4851,12 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Start Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
         return await self._client._request(
             "POST",
-            f"/conversations/start",
+            "/conversations/start",
             json=json_data,
             **kwargs,
         )
@@ -4941,13 +4867,12 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Send Content To Saved Messages"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if link is not None:
             json_data["link"] = link
         return await self._client._request(
             "POST",
-            f"/conversations/save",
+            "/conversations/save",
             json=json_data,
             **kwargs,
         )
@@ -5003,7 +4928,6 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Conversation Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if reply_message_id is not None:
             json_data["reply_message_id"] = reply_message_id
@@ -5025,7 +4949,6 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Conversations Messages"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5035,7 +4958,7 @@ class AsyncConversations:
             json_data["search_recipients"] = search_recipients
         return await self._client._request(
             "POST",
-            f"/conversations/search",
+            "/conversations/search",
             json=json_data,
             **kwargs,
         )
@@ -5060,7 +4983,6 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Conversation Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message_body is not None:
             json_data["message_body"] = message_body
@@ -5091,7 +5013,6 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Invite Users to Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if recipients is not None:
             json_data["recipients"] = recipients
@@ -5109,7 +5030,6 @@ class AsyncConversations:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Kick User from Conversation"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
@@ -5139,7 +5059,7 @@ class AsyncConversations:
         """Read All Conversations"""
         return await self._client._request(
             "POST",
-            f"/conversations/read-all",
+            "/conversations/read-all",
             **kwargs,
         )
 
@@ -5247,7 +5167,7 @@ class SyncNotifications:
             params["limit"] = limit
         return self._client._request(
             "GET",
-            f"/notifications",
+            "/notifications",
             params=params,
             **kwargs,
         )
@@ -5271,13 +5191,12 @@ class SyncNotifications:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Mark Notification Read"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if notification_id is not None:
             json_data["notification_id"] = notification_id
         return self._client._request(
             "POST",
-            f"/notifications/read",
+            "/notifications/read",
             json=json_data,
             **kwargs,
         )
@@ -5307,7 +5226,7 @@ class AsyncNotifications:
             params["limit"] = limit
         return await self._client._request(
             "GET",
-            f"/notifications",
+            "/notifications",
             params=params,
             **kwargs,
         )
@@ -5331,13 +5250,12 @@ class AsyncNotifications:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Mark Notification Read"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if notification_id is not None:
             json_data["notification_id"] = notification_id
         return await self._client._request(
             "POST",
-            f"/notifications/read",
+            "/notifications/read",
             json=json_data,
             **kwargs,
         )
@@ -5361,7 +5279,7 @@ class SyncTags:
         """Get Popular Tags"""
         return self._client._request(
             "GET",
-            f"/tags",
+            "/tags",
             **kwargs,
         )
 
@@ -5380,7 +5298,7 @@ class SyncTags:
             params["limit"] = limit
         return self._client._request(
             "GET",
-            f"/tags/list",
+            "/tags/list",
             params=params,
             **kwargs,
         )
@@ -5417,7 +5335,7 @@ class SyncTags:
             params["tag"] = tag
         return self._client._request(
             "GET",
-            f"/tags/find",
+            "/tags/find",
             params=params,
             **kwargs,
         )
@@ -5436,7 +5354,7 @@ class AsyncTags:
         """Get Popular Tags"""
         return await self._client._request(
             "GET",
-            f"/tags",
+            "/tags",
             **kwargs,
         )
 
@@ -5455,7 +5373,7 @@ class AsyncTags:
             params["limit"] = limit
         return await self._client._request(
             "GET",
-            f"/tags/list",
+            "/tags/list",
             params=params,
             **kwargs,
         )
@@ -5492,7 +5410,7 @@ class AsyncTags:
             params["tag"] = tag
         return await self._client._request(
             "GET",
-            f"/tags/find",
+            "/tags/find",
             params=params,
             **kwargs,
         )
@@ -5521,7 +5439,6 @@ class SyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5537,7 +5454,7 @@ class SyncSearch:
             json_data["limit"] = limit
         return self._client._request(
             "POST",
-            f"/search",
+            "/search",
             json=json_data,
             **kwargs,
         )
@@ -5555,7 +5472,6 @@ class SyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5573,7 +5489,7 @@ class SyncSearch:
             json_data["data_limit"] = data_limit
         return self._client._request(
             "POST",
-            f"/search/threads",
+            "/search/threads",
             json=json_data,
             **kwargs,
         )
@@ -5591,7 +5507,6 @@ class SyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5609,7 +5524,7 @@ class SyncSearch:
             json_data["data_limit"] = data_limit
         return self._client._request(
             "POST",
-            f"/search/posts",
+            "/search/posts",
             json=json_data,
             **kwargs,
         )
@@ -5621,13 +5536,12 @@ class SyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Users"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
         return self._client._request(
             "POST",
-            f"/search/users",
+            "/search/users",
             json=json_data,
             **kwargs,
         )
@@ -5642,7 +5556,6 @@ class SyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Profile Posts"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5654,7 +5567,7 @@ class SyncSearch:
             json_data["limit"] = limit
         return self._client._request(
             "POST",
-            f"/search/profile-posts",
+            "/search/profile-posts",
             json=json_data,
             **kwargs,
         )
@@ -5669,7 +5582,6 @@ class SyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Tagged"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag is not None:
             json_data["tag"] = tag
@@ -5681,7 +5593,7 @@ class SyncSearch:
             json_data["limit"] = limit
         return self._client._request(
             "POST",
-            f"/search/tagged",
+            "/search/tagged",
             json=json_data,
             **kwargs,
         )
@@ -5695,7 +5607,6 @@ class SyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Get Search Results"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if page is not None:
             json_data["page"] = page
@@ -5727,7 +5638,6 @@ class AsyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5743,7 +5653,7 @@ class AsyncSearch:
             json_data["limit"] = limit
         return await self._client._request(
             "POST",
-            f"/search",
+            "/search",
             json=json_data,
             **kwargs,
         )
@@ -5761,7 +5671,6 @@ class AsyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Thread"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5779,7 +5688,7 @@ class AsyncSearch:
             json_data["data_limit"] = data_limit
         return await self._client._request(
             "POST",
-            f"/search/threads",
+            "/search/threads",
             json=json_data,
             **kwargs,
         )
@@ -5797,7 +5706,6 @@ class AsyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Post"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5815,7 +5723,7 @@ class AsyncSearch:
             json_data["data_limit"] = data_limit
         return await self._client._request(
             "POST",
-            f"/search/posts",
+            "/search/posts",
             json=json_data,
             **kwargs,
         )
@@ -5827,13 +5735,12 @@ class AsyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Users"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
         return await self._client._request(
             "POST",
-            f"/search/users",
+            "/search/users",
             json=json_data,
             **kwargs,
         )
@@ -5848,7 +5755,6 @@ class AsyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Profile Posts"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if q is not None:
             json_data["q"] = q
@@ -5860,7 +5766,7 @@ class AsyncSearch:
             json_data["limit"] = limit
         return await self._client._request(
             "POST",
-            f"/search/profile-posts",
+            "/search/profile-posts",
             json=json_data,
             **kwargs,
         )
@@ -5875,7 +5781,6 @@ class AsyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Search Tagged"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag is not None:
             json_data["tag"] = tag
@@ -5887,7 +5792,7 @@ class AsyncSearch:
             json_data["limit"] = limit
         return await self._client._request(
             "POST",
-            f"/search/tagged",
+            "/search/tagged",
             json=json_data,
             **kwargs,
         )
@@ -5901,7 +5806,6 @@ class AsyncSearch:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Get Search Results"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if page is not None:
             json_data["page"] = page
@@ -5933,7 +5837,7 @@ class SyncBatch:
         """Batch"""
         return self._client._request(
             "POST",
-            f"/batch",
+            "/batch",
             **kwargs,
         )
 
@@ -5951,7 +5855,7 @@ class AsyncBatch:
         """Batch"""
         return await self._client._request(
             "POST",
-            f"/batch",
+            "/batch",
             **kwargs,
         )
 
@@ -5979,7 +5883,7 @@ class SyncChatbox:
             params["room_id"] = room_id
         return self._client._request(
             "GET",
-            f"/chatbox",
+            "/chatbox",
             params=params,
             **kwargs,
         )
@@ -5999,7 +5903,7 @@ class SyncChatbox:
             params["before_message_id"] = before_message_id
         return self._client._request(
             "GET",
-            f"/chatbox/messages",
+            "/chatbox/messages",
             params=params,
             **kwargs,
         )
@@ -6013,7 +5917,6 @@ class SyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Chat Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if room_id is not None:
             json_data["room_id"] = room_id
@@ -6023,7 +5926,7 @@ class SyncChatbox:
             json_data["message"] = message
         return self._client._request(
             "POST",
-            f"/chatbox/messages",
+            "/chatbox/messages",
             json=json_data,
             **kwargs,
         )
@@ -6035,7 +5938,6 @@ class SyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Chat Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message_id is not None:
             json_data["message_id"] = message_id
@@ -6043,7 +5945,7 @@ class SyncChatbox:
             json_data["message"] = message
         return self._client._request(
             "PUT",
-            f"/chatbox/messages",
+            "/chatbox/messages",
             json=json_data,
             **kwargs,
         )
@@ -6054,13 +5956,12 @@ class SyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Chat Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message_id is not None:
             json_data["message_id"] = message_id
         return self._client._request(
             "DELETE",
-            f"/chatbox/messages",
+            "/chatbox/messages",
             json=json_data,
             **kwargs,
         )
@@ -6076,7 +5977,7 @@ class SyncChatbox:
             params["room_id"] = room_id
         return self._client._request(
             "GET",
-            f"/chatbox/messages/online",
+            "/chatbox/messages/online",
             params=params,
             **kwargs,
         )
@@ -6092,7 +5993,7 @@ class SyncChatbox:
             params["message_id"] = message_id
         return self._client._request(
             "GET",
-            f"/chatbox/messages/report",
+            "/chatbox/messages/report",
             params=params,
             **kwargs,
         )
@@ -6104,7 +6005,6 @@ class SyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report Chat Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message_id is not None:
             json_data["message_id"] = message_id
@@ -6112,7 +6012,7 @@ class SyncChatbox:
             json_data["reason"] = reason
         return self._client._request(
             "POST",
-            f"/chatbox/messages/report",
+            "/chatbox/messages/report",
             json=json_data,
             **kwargs,
         )
@@ -6129,7 +6029,7 @@ class SyncChatbox:
             params["duration"] = duration
         return self._client._request(
             "GET",
-            f"/chatbox/messages/leaderboard",
+            "/chatbox/messages/leaderboard",
             params=params,
             **kwargs,
         )
@@ -6141,7 +6041,7 @@ class SyncChatbox:
         """Get Ignored Chat Users"""
         return self._client._request(
             "GET",
-            f"/chatbox/ignore",
+            "/chatbox/ignore",
             **kwargs,
         )
 
@@ -6151,13 +6051,12 @@ class SyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Ignore Chat User"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
         return self._client._request(
             "POST",
-            f"/chatbox/ignore",
+            "/chatbox/ignore",
             json=json_data,
             **kwargs,
         )
@@ -6168,13 +6067,12 @@ class SyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Unignore Chat User"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
         return self._client._request(
             "DELETE",
-            f"/chatbox/ignore",
+            "/chatbox/ignore",
             json=json_data,
             **kwargs,
         )
@@ -6198,7 +6096,7 @@ class AsyncChatbox:
             params["room_id"] = room_id
         return await self._client._request(
             "GET",
-            f"/chatbox",
+            "/chatbox",
             params=params,
             **kwargs,
         )
@@ -6218,7 +6116,7 @@ class AsyncChatbox:
             params["before_message_id"] = before_message_id
         return await self._client._request(
             "GET",
-            f"/chatbox/messages",
+            "/chatbox/messages",
             params=params,
             **kwargs,
         )
@@ -6232,7 +6130,6 @@ class AsyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Chat Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if room_id is not None:
             json_data["room_id"] = room_id
@@ -6242,7 +6139,7 @@ class AsyncChatbox:
             json_data["message"] = message
         return await self._client._request(
             "POST",
-            f"/chatbox/messages",
+            "/chatbox/messages",
             json=json_data,
             **kwargs,
         )
@@ -6254,7 +6151,6 @@ class AsyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Chat Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message_id is not None:
             json_data["message_id"] = message_id
@@ -6262,7 +6158,7 @@ class AsyncChatbox:
             json_data["message"] = message
         return await self._client._request(
             "PUT",
-            f"/chatbox/messages",
+            "/chatbox/messages",
             json=json_data,
             **kwargs,
         )
@@ -6273,13 +6169,12 @@ class AsyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Chat Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message_id is not None:
             json_data["message_id"] = message_id
         return await self._client._request(
             "DELETE",
-            f"/chatbox/messages",
+            "/chatbox/messages",
             json=json_data,
             **kwargs,
         )
@@ -6295,7 +6190,7 @@ class AsyncChatbox:
             params["room_id"] = room_id
         return await self._client._request(
             "GET",
-            f"/chatbox/messages/online",
+            "/chatbox/messages/online",
             params=params,
             **kwargs,
         )
@@ -6311,7 +6206,7 @@ class AsyncChatbox:
             params["message_id"] = message_id
         return await self._client._request(
             "GET",
-            f"/chatbox/messages/report",
+            "/chatbox/messages/report",
             params=params,
             **kwargs,
         )
@@ -6323,7 +6218,6 @@ class AsyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Report Chat Message"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if message_id is not None:
             json_data["message_id"] = message_id
@@ -6331,7 +6225,7 @@ class AsyncChatbox:
             json_data["reason"] = reason
         return await self._client._request(
             "POST",
-            f"/chatbox/messages/report",
+            "/chatbox/messages/report",
             json=json_data,
             **kwargs,
         )
@@ -6348,7 +6242,7 @@ class AsyncChatbox:
             params["duration"] = duration
         return await self._client._request(
             "GET",
-            f"/chatbox/messages/leaderboard",
+            "/chatbox/messages/leaderboard",
             params=params,
             **kwargs,
         )
@@ -6360,7 +6254,7 @@ class AsyncChatbox:
         """Get Ignored Chat Users"""
         return await self._client._request(
             "GET",
-            f"/chatbox/ignore",
+            "/chatbox/ignore",
             **kwargs,
         )
 
@@ -6370,13 +6264,12 @@ class AsyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Ignore Chat User"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
         return await self._client._request(
             "POST",
-            f"/chatbox/ignore",
+            "/chatbox/ignore",
             json=json_data,
             **kwargs,
         )
@@ -6387,13 +6280,12 @@ class AsyncChatbox:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Unignore Chat User"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
         return await self._client._request(
             "DELETE",
-            f"/chatbox/ignore",
+            "/chatbox/ignore",
             json=json_data,
             **kwargs,
         )
@@ -6422,7 +6314,7 @@ class SyncForms:
             params["page"] = page
         return self._client._request(
             "GET",
-            f"/forms",
+            "/forms",
             params=params,
             **kwargs,
         )
@@ -6434,7 +6326,7 @@ class SyncForms:
         """Create Form"""
         return self._client._request(
             "POST",
-            f"/forms/save",
+            "/forms/save",
             **kwargs,
         )
 
@@ -6457,7 +6349,7 @@ class AsyncForms:
             params["page"] = page
         return await self._client._request(
             "GET",
-            f"/forms",
+            "/forms",
             params=params,
             **kwargs,
         )
@@ -6469,6 +6361,6 @@ class AsyncForms:
         """Create Form"""
         return await self._client._request(
             "POST",
-            f"/forms/save",
+            "/forms/save",
             **kwargs,
         )

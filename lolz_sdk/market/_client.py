@@ -7,8 +7,8 @@ Regenerate with: python -m codegen.generate
 from __future__ import annotations
 
 from typing import Any, Literal
-from lolz_sdk._base import AsyncAPIClient, SyncAPIClient
 
+from lolz_sdk._base import AsyncAPIClient, SyncAPIClient
 
 # ===========================================================================
 # Category
@@ -134,7 +134,7 @@ class SyncCategory:
             params["parse_same_item_ids"] = parse_same_item_ids
         return self._client._request(
             "GET",
-            f"/",
+            "/",
             params=params,
             **kwargs,
         )
@@ -546,7 +546,7 @@ class SyncCategory:
             params["skip_vac_inv"] = skip_vac_inv
         return self._client._request(
             "GET",
-            f"/steam",
+            "/steam",
             params=params,
             **kwargs,
         )
@@ -842,7 +842,7 @@ class SyncCategory:
             params["not_country[]"] = not_country
         return self._client._request(
             "GET",
-            f"/fortnite",
+            "/fortnite",
             params=params,
             **kwargs,
         )
@@ -1143,7 +1143,7 @@ class SyncCategory:
             params["daybreak"] = daybreak
         return self._client._request(
             "GET",
-            f"/mihoyo",
+            "/mihoyo",
             params=params,
             **kwargs,
         )
@@ -1432,7 +1432,7 @@ class SyncCategory:
             params["lol_rank[]"] = lol_rank
         return self._client._request(
             "GET",
-            f"/riot",
+            "/riot",
             params=params,
             **kwargs,
         )
@@ -1666,7 +1666,7 @@ class SyncCategory:
             params["max_bot_active_users"] = max_bot_active_users
         return self._client._request(
             "GET",
-            f"/telegram",
+            "/telegram",
             params=params,
             **kwargs,
         )
@@ -1937,7 +1937,7 @@ class SyncCategory:
             params["creation_year_max"] = creation_year_max
         return self._client._request(
             "GET",
-            f"/supercell",
+            "/supercell",
             params=params,
             **kwargs,
         )
@@ -2118,7 +2118,7 @@ class SyncCategory:
             params["transactions"] = transactions
         return self._client._request(
             "GET",
-            f"/ea",
+            "/ea",
             params=params,
             **kwargs,
         )
@@ -2371,7 +2371,7 @@ class SyncCategory:
             params["not_country[]"] = not_country
         return self._client._request(
             "GET",
-            f"/world-of-tanks",
+            "/world-of-tanks",
             params=params,
             **kwargs,
         )
@@ -2624,7 +2624,7 @@ class SyncCategory:
             params["not_country[]"] = not_country
         return self._client._request(
             "GET",
-            f"/wot-blitz",
+            "/wot-blitz",
             params=params,
             **kwargs,
         )
@@ -2752,7 +2752,7 @@ class SyncCategory:
             params["subscription_period"] = subscription_period
         return self._client._request(
             "GET",
-            f"/gifts",
+            "/gifts",
             params=params,
             **kwargs,
         )
@@ -2921,7 +2921,7 @@ class SyncCategory:
             params["hours_played_max"] = hours_played_max
         return self._client._request(
             "GET",
-            f"/epicgames",
+            "/epicgames",
             params=params,
             **kwargs,
         )
@@ -3070,7 +3070,7 @@ class SyncCategory:
             params["side"] = side
         return self._client._request(
             "GET",
-            f"/escape-from-tarkov",
+            "/escape-from-tarkov",
             params=params,
             **kwargs,
         )
@@ -3212,7 +3212,7 @@ class SyncCategory:
             params["game[]"] = game
         return self._client._request(
             "GET",
-            f"/socialclub",
+            "/socialclub",
             params=params,
             **kwargs,
         )
@@ -3420,7 +3420,7 @@ class SyncCategory:
             params["reg_period"] = reg_period
         return self._client._request(
             "GET",
-            f"/uplay",
+            "/uplay",
             params=params,
             **kwargs,
         )
@@ -3670,7 +3670,7 @@ class SyncCategory:
             params["max_orbs"] = max_orbs
         return self._client._request(
             "GET",
-            f"/discord",
+            "/discord",
             params=params,
             **kwargs,
         )
@@ -3836,7 +3836,7 @@ class SyncCategory:
             params["email"] = email
         return self._client._request(
             "GET",
-            f"/tiktok",
+            "/tiktok",
             params=params,
             **kwargs,
         )
@@ -3993,7 +3993,7 @@ class SyncCategory:
             params["reg_period"] = reg_period
         return self._client._request(
             "GET",
-            f"/instagram",
+            "/instagram",
             params=params,
             **kwargs,
         )
@@ -4156,7 +4156,7 @@ class SyncCategory:
             params["balance_max"] = balance_max
         return self._client._request(
             "GET",
-            f"/battlenet",
+            "/battlenet",
             params=params,
             **kwargs,
         )
@@ -4323,7 +4323,7 @@ class SyncCategory:
             params["openai_balance_max"] = openai_balance_max
         return self._client._request(
             "GET",
-            f"/chatgpt",
+            "/chatgpt",
             params=params,
             **kwargs,
         )
@@ -4469,7 +4469,7 @@ class SyncCategory:
             params["autorenewal"] = autorenewal
         return self._client._request(
             "GET",
-            f"/vpn",
+            "/vpn",
             params=params,
             **kwargs,
         )
@@ -4707,7 +4707,7 @@ class SyncCategory:
             params["not_age_group[]"] = not_age_group
         return self._client._request(
             "GET",
-            f"/roblox",
+            "/roblox",
             params=params,
             **kwargs,
         )
@@ -4855,7 +4855,7 @@ class SyncCategory:
             params["total_kredits_max"] = total_kredits_max
         return self._client._request(
             "GET",
-            f"/warface",
+            "/warface",
             params=params,
             **kwargs,
         )
@@ -5078,7 +5078,7 @@ class SyncCategory:
             params["minecoins_max"] = minecoins_max
         return self._client._request(
             "GET",
-            f"/minecraft",
+            "/minecraft",
             params=params,
             **kwargs,
         )
@@ -5205,7 +5205,7 @@ class SyncCategory:
             params["profiles_max"] = profiles_max
         return self._client._request(
             "GET",
-            f"/hytale",
+            "/hytale",
             params=params,
             **kwargs,
         )
@@ -5222,7 +5222,7 @@ class SyncCategory:
             params["top_queries"] = top_queries
         return self._client._request(
             "GET",
-            f"/category",
+            "/category",
             params=params,
             **kwargs,
         )
@@ -5371,7 +5371,7 @@ class AsyncCategory:
             params["parse_same_item_ids"] = parse_same_item_ids
         return await self._client._request(
             "GET",
-            f"/",
+            "/",
             params=params,
             **kwargs,
         )
@@ -5783,7 +5783,7 @@ class AsyncCategory:
             params["skip_vac_inv"] = skip_vac_inv
         return await self._client._request(
             "GET",
-            f"/steam",
+            "/steam",
             params=params,
             **kwargs,
         )
@@ -6079,7 +6079,7 @@ class AsyncCategory:
             params["not_country[]"] = not_country
         return await self._client._request(
             "GET",
-            f"/fortnite",
+            "/fortnite",
             params=params,
             **kwargs,
         )
@@ -6380,7 +6380,7 @@ class AsyncCategory:
             params["daybreak"] = daybreak
         return await self._client._request(
             "GET",
-            f"/mihoyo",
+            "/mihoyo",
             params=params,
             **kwargs,
         )
@@ -6669,7 +6669,7 @@ class AsyncCategory:
             params["lol_rank[]"] = lol_rank
         return await self._client._request(
             "GET",
-            f"/riot",
+            "/riot",
             params=params,
             **kwargs,
         )
@@ -6903,7 +6903,7 @@ class AsyncCategory:
             params["max_bot_active_users"] = max_bot_active_users
         return await self._client._request(
             "GET",
-            f"/telegram",
+            "/telegram",
             params=params,
             **kwargs,
         )
@@ -7174,7 +7174,7 @@ class AsyncCategory:
             params["creation_year_max"] = creation_year_max
         return await self._client._request(
             "GET",
-            f"/supercell",
+            "/supercell",
             params=params,
             **kwargs,
         )
@@ -7355,7 +7355,7 @@ class AsyncCategory:
             params["transactions"] = transactions
         return await self._client._request(
             "GET",
-            f"/ea",
+            "/ea",
             params=params,
             **kwargs,
         )
@@ -7608,7 +7608,7 @@ class AsyncCategory:
             params["not_country[]"] = not_country
         return await self._client._request(
             "GET",
-            f"/world-of-tanks",
+            "/world-of-tanks",
             params=params,
             **kwargs,
         )
@@ -7861,7 +7861,7 @@ class AsyncCategory:
             params["not_country[]"] = not_country
         return await self._client._request(
             "GET",
-            f"/wot-blitz",
+            "/wot-blitz",
             params=params,
             **kwargs,
         )
@@ -7989,7 +7989,7 @@ class AsyncCategory:
             params["subscription_period"] = subscription_period
         return await self._client._request(
             "GET",
-            f"/gifts",
+            "/gifts",
             params=params,
             **kwargs,
         )
@@ -8158,7 +8158,7 @@ class AsyncCategory:
             params["hours_played_max"] = hours_played_max
         return await self._client._request(
             "GET",
-            f"/epicgames",
+            "/epicgames",
             params=params,
             **kwargs,
         )
@@ -8307,7 +8307,7 @@ class AsyncCategory:
             params["side"] = side
         return await self._client._request(
             "GET",
-            f"/escape-from-tarkov",
+            "/escape-from-tarkov",
             params=params,
             **kwargs,
         )
@@ -8449,7 +8449,7 @@ class AsyncCategory:
             params["game[]"] = game
         return await self._client._request(
             "GET",
-            f"/socialclub",
+            "/socialclub",
             params=params,
             **kwargs,
         )
@@ -8657,7 +8657,7 @@ class AsyncCategory:
             params["reg_period"] = reg_period
         return await self._client._request(
             "GET",
-            f"/uplay",
+            "/uplay",
             params=params,
             **kwargs,
         )
@@ -8907,7 +8907,7 @@ class AsyncCategory:
             params["max_orbs"] = max_orbs
         return await self._client._request(
             "GET",
-            f"/discord",
+            "/discord",
             params=params,
             **kwargs,
         )
@@ -9073,7 +9073,7 @@ class AsyncCategory:
             params["email"] = email
         return await self._client._request(
             "GET",
-            f"/tiktok",
+            "/tiktok",
             params=params,
             **kwargs,
         )
@@ -9230,7 +9230,7 @@ class AsyncCategory:
             params["reg_period"] = reg_period
         return await self._client._request(
             "GET",
-            f"/instagram",
+            "/instagram",
             params=params,
             **kwargs,
         )
@@ -9393,7 +9393,7 @@ class AsyncCategory:
             params["balance_max"] = balance_max
         return await self._client._request(
             "GET",
-            f"/battlenet",
+            "/battlenet",
             params=params,
             **kwargs,
         )
@@ -9560,7 +9560,7 @@ class AsyncCategory:
             params["openai_balance_max"] = openai_balance_max
         return await self._client._request(
             "GET",
-            f"/chatgpt",
+            "/chatgpt",
             params=params,
             **kwargs,
         )
@@ -9706,7 +9706,7 @@ class AsyncCategory:
             params["autorenewal"] = autorenewal
         return await self._client._request(
             "GET",
-            f"/vpn",
+            "/vpn",
             params=params,
             **kwargs,
         )
@@ -9944,7 +9944,7 @@ class AsyncCategory:
             params["not_age_group[]"] = not_age_group
         return await self._client._request(
             "GET",
-            f"/roblox",
+            "/roblox",
             params=params,
             **kwargs,
         )
@@ -10092,7 +10092,7 @@ class AsyncCategory:
             params["total_kredits_max"] = total_kredits_max
         return await self._client._request(
             "GET",
-            f"/warface",
+            "/warface",
             params=params,
             **kwargs,
         )
@@ -10315,7 +10315,7 @@ class AsyncCategory:
             params["minecoins_max"] = minecoins_max
         return await self._client._request(
             "GET",
-            f"/minecraft",
+            "/minecraft",
             params=params,
             **kwargs,
         )
@@ -10442,7 +10442,7 @@ class AsyncCategory:
             params["profiles_max"] = profiles_max
         return await self._client._request(
             "GET",
-            f"/hytale",
+            "/hytale",
             params=params,
             **kwargs,
         )
@@ -10459,7 +10459,7 @@ class AsyncCategory:
             params["top_queries"] = top_queries
         return await self._client._request(
             "GET",
-            f"/category",
+            "/category",
             params=params,
             **kwargs,
         )
@@ -10628,7 +10628,7 @@ class SyncList:
             params["filter_by_delete_date"] = filter_by_delete_date
         return self._client._request(
             "GET",
-            f"/user/items",
+            "/user/items",
             params=params,
             **kwargs,
         )
@@ -10728,7 +10728,7 @@ class SyncList:
             params["nsb_by_me"] = nsb_by_me
         return self._client._request(
             "GET",
-            f"/user/orders",
+            "/user/orders",
             params=params,
             **kwargs,
         )
@@ -10745,7 +10745,7 @@ class SyncList:
             params["user_id"] = user_id
         return self._client._request(
             "GET",
-            f"/user/item-states",
+            "/user/item-states",
             params=params,
             **kwargs,
         )
@@ -10970,7 +10970,7 @@ class SyncList:
             params["nsb_by_me"] = nsb_by_me
         return self._client._request(
             "GET",
-            f"/fave",
+            "/fave",
             params=params,
             **kwargs,
         )
@@ -11061,7 +11061,7 @@ class SyncList:
             params["nsb_by_me"] = nsb_by_me
         return self._client._request(
             "GET",
-            f"/viewed",
+            "/viewed",
             params=params,
             **kwargs,
         )
@@ -11201,7 +11201,7 @@ class AsyncList:
             params["filter_by_delete_date"] = filter_by_delete_date
         return await self._client._request(
             "GET",
-            f"/user/items",
+            "/user/items",
             params=params,
             **kwargs,
         )
@@ -11301,7 +11301,7 @@ class AsyncList:
             params["nsb_by_me"] = nsb_by_me
         return await self._client._request(
             "GET",
-            f"/user/orders",
+            "/user/orders",
             params=params,
             **kwargs,
         )
@@ -11318,7 +11318,7 @@ class AsyncList:
             params["user_id"] = user_id
         return await self._client._request(
             "GET",
-            f"/user/item-states",
+            "/user/item-states",
             params=params,
             **kwargs,
         )
@@ -11543,7 +11543,7 @@ class AsyncList:
             params["nsb_by_me"] = nsb_by_me
         return await self._client._request(
             "GET",
-            f"/fave",
+            "/fave",
             params=params,
             **kwargs,
         )
@@ -11634,7 +11634,7 @@ class AsyncList:
             params["nsb_by_me"] = nsb_by_me
         return await self._client._request(
             "GET",
-            f"/viewed",
+            "/viewed",
             params=params,
             **kwargs,
         )
@@ -11676,7 +11676,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Claim"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if item_id is not None:
             json_data["item_id"] = item_id
@@ -11684,7 +11683,7 @@ class SyncManaging:
             json_data["post_body"] = post_body
         return self._client._request(
             "POST",
-            f"/claims",
+            "/claims",
             json=json_data,
             **kwargs,
         )
@@ -11692,12 +11691,11 @@ class SyncManaging:
     def bulk_get(
         self,
         *,
-        item_id: list[ItemIDModel] | None = None,
+        item_id: list[int] | None = None,
         parse_same_item_ids: bool | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Bulk Get Accounts"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if item_id is not None:
             json_data["item_id"] = item_id
@@ -11705,7 +11703,7 @@ class SyncManaging:
             json_data["parse_same_item_ids"] = parse_same_item_ids
         return self._client._request(
             "POST",
-            f"/bulk/items",
+            "/bulk/items",
             json=json_data,
             **kwargs,
         )
@@ -11755,7 +11753,7 @@ class SyncManaging:
             params["ignore_cache"] = ignore_cache
         return self._client._request(
             "GET",
-            f"/steam-value",
+            "/steam-value",
             params=params,
             **kwargs,
         )
@@ -11796,7 +11794,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if title is not None:
             json_data["title"] = title
@@ -11859,7 +11856,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Note"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if text is not None:
             json_data["text"] = text
@@ -11880,7 +11876,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Update Inventory Value"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if all is not None:
             json_data["all"] = all
@@ -11914,7 +11909,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Auto Bump"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if hour is not None:
             json_data["hour"] = hour
@@ -12011,7 +12005,7 @@ class SyncManaging:
             params["limit"] = limit
         return self._client._request(
             "GET",
-            f"/letters2",
+            "/letters2",
             params=params,
             **kwargs,
         )
@@ -12073,7 +12067,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Confirm SDA"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if id is not None:
             json_data["id"] = id
@@ -12129,7 +12122,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Decline Video Recording Request"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if i_voluntarily_and_with_full_awareness_of_my_actions_waive_any_claims_regarding_this_item is not None:
             json_data["i_voluntarily_and_with_full_awareness_of_my_actions_waive_any_claims_regarding_this_item"] = (
@@ -12162,7 +12154,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Change Password"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if cancel is not None:
             json_data["_cancel"] = cancel
@@ -12192,7 +12183,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add a Tag"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag_id is not None:
             json_data["tag_id"] = tag_id
@@ -12210,7 +12200,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Remove a Tag"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag_id is not None:
             json_data["tag_id"] = tag_id
@@ -12228,7 +12217,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add a Public Tag"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag_id is not None:
             json_data["tag_id"] = tag_id
@@ -12246,7 +12234,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Remove a Public Tag"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag_id is not None:
             json_data["tag_id"] = tag_id
@@ -12313,7 +12300,6 @@ class SyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Change Account Owner"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if username is not None:
             json_data["username"] = username
@@ -12358,7 +12344,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Claim"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if item_id is not None:
             json_data["item_id"] = item_id
@@ -12366,7 +12351,7 @@ class AsyncManaging:
             json_data["post_body"] = post_body
         return await self._client._request(
             "POST",
-            f"/claims",
+            "/claims",
             json=json_data,
             **kwargs,
         )
@@ -12374,12 +12359,11 @@ class AsyncManaging:
     async def bulk_get(
         self,
         *,
-        item_id: list[ItemIDModel] | None = None,
+        item_id: list[int] | None = None,
         parse_same_item_ids: bool | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Bulk Get Accounts"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if item_id is not None:
             json_data["item_id"] = item_id
@@ -12387,7 +12371,7 @@ class AsyncManaging:
             json_data["parse_same_item_ids"] = parse_same_item_ids
         return await self._client._request(
             "POST",
-            f"/bulk/items",
+            "/bulk/items",
             json=json_data,
             **kwargs,
         )
@@ -12437,7 +12421,7 @@ class AsyncManaging:
             params["ignore_cache"] = ignore_cache
         return await self._client._request(
             "GET",
-            f"/steam-value",
+            "/steam-value",
             params=params,
             **kwargs,
         )
@@ -12478,7 +12462,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if title is not None:
             json_data["title"] = title
@@ -12541,7 +12524,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Note"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if text is not None:
             json_data["text"] = text
@@ -12562,7 +12544,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Update Inventory Value"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if all is not None:
             json_data["all"] = all
@@ -12596,7 +12577,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Auto Bump"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if hour is not None:
             json_data["hour"] = hour
@@ -12693,7 +12673,7 @@ class AsyncManaging:
             params["limit"] = limit
         return await self._client._request(
             "GET",
-            f"/letters2",
+            "/letters2",
             params=params,
             **kwargs,
         )
@@ -12755,7 +12735,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Confirm SDA"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if id is not None:
             json_data["id"] = id
@@ -12811,7 +12790,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Decline Video Recording Request"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if i_voluntarily_and_with_full_awareness_of_my_actions_waive_any_claims_regarding_this_item is not None:
             json_data["i_voluntarily_and_with_full_awareness_of_my_actions_waive_any_claims_regarding_this_item"] = (
@@ -12844,7 +12822,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Change Password"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if cancel is not None:
             json_data["_cancel"] = cancel
@@ -12874,7 +12851,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add a Tag"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag_id is not None:
             json_data["tag_id"] = tag_id
@@ -12892,7 +12868,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Remove a Tag"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag_id is not None:
             json_data["tag_id"] = tag_id
@@ -12910,7 +12885,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add a Public Tag"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag_id is not None:
             json_data["tag_id"] = tag_id
@@ -12928,7 +12902,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Remove a Public Tag"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if tag_id is not None:
             json_data["tag_id"] = tag_id
@@ -12995,7 +12968,6 @@ class AsyncManaging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Change Account Owner"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if username is not None:
             json_data["username"] = username
@@ -13027,7 +12999,6 @@ class SyncManging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if reason is not None:
             json_data["reason"] = reason
@@ -13052,7 +13023,6 @@ class AsyncManging:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if reason is not None:
             json_data["reason"] = reason
@@ -13090,7 +13060,7 @@ class SyncProfile:
             params["claim_state"] = claim_state
         return self._client._request(
             "GET",
-            f"/claims",
+            "/claims",
             params=params,
             **kwargs,
         )
@@ -13107,7 +13077,7 @@ class SyncProfile:
             params["fields_include"] = fields_include
         return self._client._request(
             "GET",
-            f"/me",
+            "/me",
             params=params,
             **kwargs,
         )
@@ -13130,7 +13100,6 @@ class SyncProfile:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Market Settings"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user is not None:
             json_data["user"] = user
@@ -13158,7 +13127,7 @@ class SyncProfile:
             json_data["clear_telegram_client"] = clear_telegram_client
         return self._client._request(
             "PUT",
-            f"/me",
+            "/me",
             json=json_data,
             **kwargs,
         )
@@ -13185,7 +13154,7 @@ class AsyncProfile:
             params["claim_state"] = claim_state
         return await self._client._request(
             "GET",
-            f"/claims",
+            "/claims",
             params=params,
             **kwargs,
         )
@@ -13202,7 +13171,7 @@ class AsyncProfile:
             params["fields_include"] = fields_include
         return await self._client._request(
             "GET",
-            f"/me",
+            "/me",
             params=params,
             **kwargs,
         )
@@ -13225,7 +13194,6 @@ class AsyncProfile:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Market Settings"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user is not None:
             json_data["user"] = user
@@ -13253,7 +13221,7 @@ class AsyncProfile:
             json_data["clear_telegram_client"] = clear_telegram_client
         return await self._client._request(
             "PUT",
-            f"/me",
+            "/me",
             json=json_data,
             **kwargs,
         )
@@ -13386,7 +13354,7 @@ class SyncCart:
             params["parse_same_item_ids"] = parse_same_item_ids
         return self._client._request(
             "GET",
-            f"/cart",
+            "/cart",
             params=params,
             **kwargs,
         )
@@ -13397,13 +13365,12 @@ class SyncCart:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add Item to Cart"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if item_id is not None:
             json_data["item_id"] = item_id
         return self._client._request(
             "POST",
-            f"/cart",
+            "/cart",
             json=json_data,
             **kwargs,
         )
@@ -13415,13 +13382,12 @@ class SyncCart:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Item From Cart"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if item_id is not None:
             json_data["item_id"] = item_id
         return self._client._request(
             "DELETE",
-            f"/cart",
+            "/cart",
             json=json_data,
             **kwargs,
         )
@@ -13549,7 +13515,7 @@ class AsyncCart:
             params["parse_same_item_ids"] = parse_same_item_ids
         return await self._client._request(
             "GET",
-            f"/cart",
+            "/cart",
             params=params,
             **kwargs,
         )
@@ -13560,13 +13526,12 @@ class AsyncCart:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add Item to Cart"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if item_id is not None:
             json_data["item_id"] = item_id
         return await self._client._request(
             "POST",
-            f"/cart",
+            "/cart",
             json=json_data,
             **kwargs,
         )
@@ -13578,13 +13543,12 @@ class AsyncCart:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Item From Cart"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if item_id is not None:
             json_data["item_id"] = item_id
         return await self._client._request(
             "DELETE",
-            f"/cart",
+            "/cart",
             json=json_data,
             **kwargs,
         )
@@ -13610,7 +13574,6 @@ class SyncPurchasing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Fast Buy Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if price is not None:
             json_data["price"] = price
@@ -13644,7 +13607,6 @@ class SyncPurchasing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Confirm Buy"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if price is not None:
             json_data["price"] = price
@@ -13666,7 +13628,6 @@ class SyncPurchasing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Discount Request"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if discount_price is not None:
             json_data["discount_price"] = discount_price
@@ -13707,7 +13668,6 @@ class AsyncPurchasing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Fast Buy Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if price is not None:
             json_data["price"] = price
@@ -13741,7 +13701,6 @@ class AsyncPurchasing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Confirm Buy"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if price is not None:
             json_data["price"] = price
@@ -13763,7 +13722,6 @@ class AsyncPurchasing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Discount Request"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if discount_price is not None:
             json_data["discount_price"] = discount_price
@@ -13807,7 +13765,7 @@ class SyncCustomDiscounts:
         """Get Custom Discounts"""
         return self._client._request(
             "GET",
-            f"/custom-discounts",
+            "/custom-discounts",
             **kwargs,
         )
 
@@ -13823,7 +13781,6 @@ class SyncCustomDiscounts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Custom Discount"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
@@ -13839,7 +13796,7 @@ class SyncCustomDiscounts:
             json_data["currency"] = currency
         return self._client._request(
             "POST",
-            f"/custom-discounts",
+            "/custom-discounts",
             json=json_data,
             **kwargs,
         )
@@ -13854,7 +13811,6 @@ class SyncCustomDiscounts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Custom Discount"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if discount_id is not None:
             json_data["discount_id"] = discount_id
@@ -13866,7 +13822,7 @@ class SyncCustomDiscounts:
             json_data["max_price"] = max_price
         return self._client._request(
             "PUT",
-            f"/custom-discounts",
+            "/custom-discounts",
             json=json_data,
             **kwargs,
         )
@@ -13877,13 +13833,12 @@ class SyncCustomDiscounts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Custom Discount"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if discount_id is not None:
             json_data["discount_id"] = discount_id
         return self._client._request(
             "DELETE",
-            f"/custom-discounts",
+            "/custom-discounts",
             json=json_data,
             **kwargs,
         )
@@ -13902,7 +13857,7 @@ class AsyncCustomDiscounts:
         """Get Custom Discounts"""
         return await self._client._request(
             "GET",
-            f"/custom-discounts",
+            "/custom-discounts",
             **kwargs,
         )
 
@@ -13918,7 +13873,6 @@ class AsyncCustomDiscounts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Custom Discount"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
@@ -13934,7 +13888,7 @@ class AsyncCustomDiscounts:
             json_data["currency"] = currency
         return await self._client._request(
             "POST",
-            f"/custom-discounts",
+            "/custom-discounts",
             json=json_data,
             **kwargs,
         )
@@ -13949,7 +13903,6 @@ class AsyncCustomDiscounts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Edit Custom Discount"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if discount_id is not None:
             json_data["discount_id"] = discount_id
@@ -13961,7 +13914,7 @@ class AsyncCustomDiscounts:
             json_data["max_price"] = max_price
         return await self._client._request(
             "PUT",
-            f"/custom-discounts",
+            "/custom-discounts",
             json=json_data,
             **kwargs,
         )
@@ -13972,13 +13925,12 @@ class AsyncCustomDiscounts:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Custom Discount"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if discount_id is not None:
             json_data["discount_id"] = discount_id
         return await self._client._request(
             "DELETE",
-            f"/custom-discounts",
+            "/custom-discounts",
             json=json_data,
             **kwargs,
         )
@@ -14022,7 +13974,6 @@ class SyncPublishing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Fast Account Upload"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if title is not None:
             json_data["title"] = title
@@ -14064,7 +14015,7 @@ class SyncPublishing:
             json_data["extra"] = extra
         return self._client._request(
             "POST",
-            f"/item/fast-sell",
+            "/item/fast-sell",
             json=json_data,
             **kwargs,
         )
@@ -14094,7 +14045,6 @@ class SyncPublishing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if title is not None:
             json_data["title"] = title
@@ -14132,7 +14082,7 @@ class SyncPublishing:
             json_data["random_proxy"] = random_proxy
         return self._client._request(
             "POST",
-            f"/item/add",
+            "/item/add",
             json=json_data,
             **kwargs,
         )
@@ -14153,7 +14103,6 @@ class SyncPublishing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Check Account Details"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if resell_item_id is not None:
             json_data["resell_item_id"] = resell_item_id
@@ -14191,7 +14140,6 @@ class SyncPublishing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add an External Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if type_ is not None:
             json_data["type"] = type_
@@ -14242,7 +14190,6 @@ class AsyncPublishing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Fast Account Upload"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if title is not None:
             json_data["title"] = title
@@ -14284,7 +14231,7 @@ class AsyncPublishing:
             json_data["extra"] = extra
         return await self._client._request(
             "POST",
-            f"/item/fast-sell",
+            "/item/fast-sell",
             json=json_data,
             **kwargs,
         )
@@ -14314,7 +14261,6 @@ class AsyncPublishing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if title is not None:
             json_data["title"] = title
@@ -14352,7 +14298,7 @@ class AsyncPublishing:
             json_data["random_proxy"] = random_proxy
         return await self._client._request(
             "POST",
-            f"/item/add",
+            "/item/add",
             json=json_data,
             **kwargs,
         )
@@ -14373,7 +14319,6 @@ class AsyncPublishing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Check Account Details"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if resell_item_id is not None:
             json_data["resell_item_id"] = resell_item_id
@@ -14411,7 +14356,6 @@ class AsyncPublishing:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add an External Account"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if type_ is not None:
             json_data["type"] = type_
@@ -14455,7 +14399,7 @@ class SyncPayments:
             params["payment_id"] = payment_id
         return self._client._request(
             "GET",
-            f"/invoice",
+            "/invoice",
             params=params,
             **kwargs,
         )
@@ -14478,7 +14422,6 @@ class SyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Invoice"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if currency is not None:
             json_data["currency"] = currency
@@ -14506,7 +14449,7 @@ class SyncPayments:
             json_data["is_test"] = is_test
         return self._client._request(
             "POST",
-            f"/invoice",
+            "/invoice",
             json=json_data,
             **kwargs,
         )
@@ -14535,7 +14478,7 @@ class SyncPayments:
             params["merchant_id"] = merchant_id
         return self._client._request(
             "GET",
-            f"/invoice/list",
+            "/invoice/list",
             params=params,
             **kwargs,
         )
@@ -14547,7 +14490,7 @@ class SyncPayments:
         """Get Currency"""
         return self._client._request(
             "GET",
-            f"/currency",
+            "/currency",
             **kwargs,
         )
 
@@ -14558,7 +14501,7 @@ class SyncPayments:
         """Get List Of Balances"""
         return self._client._request(
             "GET",
-            f"/balance/exchange",
+            "/balance/exchange",
             **kwargs,
         )
 
@@ -14570,7 +14513,6 @@ class SyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Exchange Balance"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if from_balance is not None:
             json_data["from_balance"] = from_balance
@@ -14580,7 +14522,7 @@ class SyncPayments:
             json_data["amount"] = amount
         return self._client._request(
             "POST",
-            f"/balance/exchange",
+            "/balance/exchange",
             json=json_data,
             **kwargs,
         )
@@ -14601,7 +14543,6 @@ class SyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Transfer Money"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
@@ -14625,7 +14566,7 @@ class SyncPayments:
             json_data["hold_length_option"] = hold_length_option
         return self._client._request(
             "POST",
-            f"/balance/transfer",
+            "/balance/transfer",
             json=json_data,
             **kwargs,
         )
@@ -14642,7 +14583,7 @@ class SyncPayments:
             params["amount"] = amount
         return self._client._request(
             "GET",
-            f"/balance/transfer/fee",
+            "/balance/transfer/fee",
             params=params,
             **kwargs,
         )
@@ -14653,13 +14594,12 @@ class SyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Cancel Transfer"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if payment_id is not None:
             json_data["payment_id"] = payment_id
         return self._client._request(
             "POST",
-            f"/balance/transfer/cancel",
+            "/balance/transfer/cancel",
             json=json_data,
             **kwargs,
         )
@@ -14733,7 +14673,7 @@ class SyncPayments:
             params["show_payment_stats"] = show_payment_stats
         return self._client._request(
             "GET",
-            f"/user/payments",
+            "/user/payments",
             params=params,
             **kwargs,
         )
@@ -14745,7 +14685,7 @@ class SyncPayments:
         """Get Payout Services"""
         return self._client._request(
             "GET",
-            f"/balance/payout/services",
+            "/balance/payout/services",
             **kwargs,
         )
 
@@ -14761,7 +14701,6 @@ class SyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Payout"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if payment_system is not None:
             json_data["payment_system"] = payment_system
@@ -14777,7 +14716,7 @@ class SyncPayments:
             json_data["extra"] = extra
         return self._client._request(
             "POST",
-            f"/balance/payout",
+            "/balance/payout",
             json=json_data,
             **kwargs,
         )
@@ -14804,7 +14743,7 @@ class AsyncPayments:
             params["payment_id"] = payment_id
         return await self._client._request(
             "GET",
-            f"/invoice",
+            "/invoice",
             params=params,
             **kwargs,
         )
@@ -14827,7 +14766,6 @@ class AsyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Invoice"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if currency is not None:
             json_data["currency"] = currency
@@ -14855,7 +14793,7 @@ class AsyncPayments:
             json_data["is_test"] = is_test
         return await self._client._request(
             "POST",
-            f"/invoice",
+            "/invoice",
             json=json_data,
             **kwargs,
         )
@@ -14884,7 +14822,7 @@ class AsyncPayments:
             params["merchant_id"] = merchant_id
         return await self._client._request(
             "GET",
-            f"/invoice/list",
+            "/invoice/list",
             params=params,
             **kwargs,
         )
@@ -14896,7 +14834,7 @@ class AsyncPayments:
         """Get Currency"""
         return await self._client._request(
             "GET",
-            f"/currency",
+            "/currency",
             **kwargs,
         )
 
@@ -14907,7 +14845,7 @@ class AsyncPayments:
         """Get List Of Balances"""
         return await self._client._request(
             "GET",
-            f"/balance/exchange",
+            "/balance/exchange",
             **kwargs,
         )
 
@@ -14919,7 +14857,6 @@ class AsyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Exchange Balance"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if from_balance is not None:
             json_data["from_balance"] = from_balance
@@ -14929,7 +14866,7 @@ class AsyncPayments:
             json_data["amount"] = amount
         return await self._client._request(
             "POST",
-            f"/balance/exchange",
+            "/balance/exchange",
             json=json_data,
             **kwargs,
         )
@@ -14950,7 +14887,6 @@ class AsyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Transfer Money"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if user_id is not None:
             json_data["user_id"] = user_id
@@ -14974,7 +14910,7 @@ class AsyncPayments:
             json_data["hold_length_option"] = hold_length_option
         return await self._client._request(
             "POST",
-            f"/balance/transfer",
+            "/balance/transfer",
             json=json_data,
             **kwargs,
         )
@@ -14991,7 +14927,7 @@ class AsyncPayments:
             params["amount"] = amount
         return await self._client._request(
             "GET",
-            f"/balance/transfer/fee",
+            "/balance/transfer/fee",
             params=params,
             **kwargs,
         )
@@ -15002,13 +14938,12 @@ class AsyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Cancel Transfer"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if payment_id is not None:
             json_data["payment_id"] = payment_id
         return await self._client._request(
             "POST",
-            f"/balance/transfer/cancel",
+            "/balance/transfer/cancel",
             json=json_data,
             **kwargs,
         )
@@ -15082,7 +15017,7 @@ class AsyncPayments:
             params["show_payment_stats"] = show_payment_stats
         return await self._client._request(
             "GET",
-            f"/user/payments",
+            "/user/payments",
             params=params,
             **kwargs,
         )
@@ -15094,7 +15029,7 @@ class AsyncPayments:
         """Get Payout Services"""
         return await self._client._request(
             "GET",
-            f"/balance/payout/services",
+            "/balance/payout/services",
             **kwargs,
         )
 
@@ -15110,7 +15045,6 @@ class AsyncPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Payout"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if payment_system is not None:
             json_data["payment_system"] = payment_system
@@ -15126,7 +15060,7 @@ class AsyncPayments:
             json_data["extra"] = extra
         return await self._client._request(
             "POST",
-            f"/balance/payout",
+            "/balance/payout",
             json=json_data,
             **kwargs,
         )
@@ -15150,7 +15084,7 @@ class SyncAutoPayments:
         """Get Auto Payments"""
         return self._client._request(
             "GET",
-            f"/auto-payments",
+            "/auto-payments",
             **kwargs,
         )
 
@@ -15166,7 +15100,6 @@ class SyncAutoPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Auto Payment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if secret_answer is not None:
             json_data["secret_answer"] = secret_answer
@@ -15182,7 +15115,7 @@ class SyncAutoPayments:
             json_data["description"] = description
         return self._client._request(
             "POST",
-            f"/auto-payment",
+            "/auto-payment",
             json=json_data,
             **kwargs,
         )
@@ -15193,13 +15126,12 @@ class SyncAutoPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Auto Payment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if auto_payment_id is not None:
             json_data["auto_payment_id"] = auto_payment_id
         return self._client._request(
             "DELETE",
-            f"/auto-payment",
+            "/auto-payment",
             json=json_data,
             **kwargs,
         )
@@ -15218,7 +15150,7 @@ class AsyncAutoPayments:
         """Get Auto Payments"""
         return await self._client._request(
             "GET",
-            f"/auto-payments",
+            "/auto-payments",
             **kwargs,
         )
 
@@ -15234,7 +15166,6 @@ class AsyncAutoPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Auto Payment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if secret_answer is not None:
             json_data["secret_answer"] = secret_answer
@@ -15250,7 +15181,7 @@ class AsyncAutoPayments:
             json_data["description"] = description
         return await self._client._request(
             "POST",
-            f"/auto-payment",
+            "/auto-payment",
             json=json_data,
             **kwargs,
         )
@@ -15261,13 +15192,12 @@ class AsyncAutoPayments:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Auto Payment"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if auto_payment_id is not None:
             json_data["auto_payment_id"] = auto_payment_id
         return await self._client._request(
             "DELETE",
-            f"/auto-payment",
+            "/auto-payment",
             json=json_data,
             **kwargs,
         )
@@ -15291,7 +15221,7 @@ class SyncProxy:
         """Get Proxy"""
         return self._client._request(
             "GET",
-            f"/proxy",
+            "/proxy",
             **kwargs,
         )
 
@@ -15306,7 +15236,6 @@ class SyncProxy:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add Proxy"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if proxy_ip is not None:
             json_data["proxy_ip"] = proxy_ip
@@ -15320,7 +15249,7 @@ class SyncProxy:
             json_data["proxy_row"] = proxy_row
         return self._client._request(
             "POST",
-            f"/proxy",
+            "/proxy",
             json=json_data,
             **kwargs,
         )
@@ -15333,7 +15262,6 @@ class SyncProxy:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Proxy"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if proxy_id is not None:
             json_data["proxy_id"] = proxy_id
@@ -15341,7 +15269,7 @@ class SyncProxy:
             json_data["delete_all"] = delete_all
         return self._client._request(
             "DELETE",
-            f"/proxy",
+            "/proxy",
             json=json_data,
             **kwargs,
         )
@@ -15360,7 +15288,7 @@ class AsyncProxy:
         """Get Proxy"""
         return await self._client._request(
             "GET",
-            f"/proxy",
+            "/proxy",
             **kwargs,
         )
 
@@ -15375,7 +15303,6 @@ class AsyncProxy:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Add Proxy"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if proxy_ip is not None:
             json_data["proxy_ip"] = proxy_ip
@@ -15389,7 +15316,7 @@ class AsyncProxy:
             json_data["proxy_row"] = proxy_row
         return await self._client._request(
             "POST",
-            f"/proxy",
+            "/proxy",
             json=json_data,
             **kwargs,
         )
@@ -15402,7 +15329,6 @@ class AsyncProxy:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete Proxy"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if proxy_id is not None:
             json_data["proxy_id"] = proxy_id
@@ -15410,7 +15336,7 @@ class AsyncProxy:
             json_data["delete_all"] = delete_all
         return await self._client._request(
             "DELETE",
-            f"/proxy",
+            "/proxy",
             json=json_data,
             **kwargs,
         )
@@ -15436,7 +15362,6 @@ class SyncImap:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create IMAP Configuration"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if domain is not None:
             json_data["domain"] = domain
@@ -15448,7 +15373,7 @@ class SyncImap:
             json_data["secure"] = secure
         return self._client._request(
             "POST",
-            f"/imap",
+            "/imap",
             json=json_data,
             **kwargs,
         )
@@ -15459,13 +15384,12 @@ class SyncImap:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete IMAP Configuration"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if domain is not None:
             json_data["domain"] = domain
         return self._client._request(
             "DELETE",
-            f"/imap",
+            "/imap",
             json=json_data,
             **kwargs,
         )
@@ -15486,7 +15410,6 @@ class AsyncImap:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create IMAP Configuration"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if domain is not None:
             json_data["domain"] = domain
@@ -15498,7 +15421,7 @@ class AsyncImap:
             json_data["secure"] = secure
         return await self._client._request(
             "POST",
-            f"/imap",
+            "/imap",
             json=json_data,
             **kwargs,
         )
@@ -15509,13 +15432,12 @@ class AsyncImap:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Delete IMAP Configuration"""
-        params: dict[str, Any] = {}
         json_data: dict[str, Any] = {}
         if domain is not None:
             json_data["domain"] = domain
         return await self._client._request(
             "DELETE",
-            f"/imap",
+            "/imap",
             json=json_data,
             **kwargs,
         )
@@ -15539,7 +15461,7 @@ class SyncDefault:
         """Batch"""
         return self._client._request(
             "POST",
-            f"/batch",
+            "/batch",
             **kwargs,
         )
 
@@ -15557,6 +15479,6 @@ class AsyncDefault:
         """Batch"""
         return await self._client._request(
             "POST",
-            f"/batch",
+            "/batch",
             **kwargs,
         )
