@@ -6,16 +6,16 @@ Usage::
     from lolzpy import LolzSync, LolzAsync
 
     with LolzSync(token="YOUR_TOKEN") as lolz:
-        me = lolz.forum.users.get_me()
+        user = lolz.forum.users.get(user_id=4565608)
 
     # Unified client with runtime mode switching:
     from lolzpy import Lolz
 
     lolz = Lolz(token="YOUR_TOKEN")
-    me = lolz.forum.users.get_me()
+    user = lolz.forum.users.get(user_id=4565608)
 
     lolz.use_async()
-    me = await lolz.forum.users.get_me()
+    user = await lolz.forum.users.get(user_id=4565608)
 """
 
 from lolzpy._internal.base_client import AsyncAPIClient, SyncAPIClient
@@ -338,18 +338,18 @@ class Lolz:
 
         # Sync (default)
         lolz = Lolz(token="YOUR_TOKEN")
-        me = lolz.forum.users.get_me()
+        user = lolz.forum.users.get(user_id=4565608)
         lolz.close()
 
         # Async
         lolz = Lolz(token="YOUR_TOKEN", async_mode=True)
-        me = await lolz.forum.users.get_me()
+        user = await lolz.forum.users.get(user_id=4565608)
         await lolz.close_async()
 
         # Switch at runtime
         lolz = Lolz(token="YOUR_TOKEN")
         lolz.use_async()
-        me = await lolz.forum.users.get_me()
+        user = await lolz.forum.users.get(user_id=4565608)
     """
 
     def __init__(

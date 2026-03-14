@@ -2,7 +2,7 @@
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://github.com/your-org/lolzpy/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/lolzpy/actions)
+[![CI](https://github.com/dec3mbre/lolz-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/dec3mbre/lolz-sdk/actions)
 [![PyPI](https://img.shields.io/pypi/v/lolzpy)](https://pypi.org/project/lolzpy/)
 [![Typed](https://img.shields.io/badge/typing-typed-green.svg)](https://peps.python.org/pep-0561/)
 
@@ -27,7 +27,7 @@
 | **CI/CD** (GitHub Actions) | ✅ | ❌ |
 | **PEP 561** (типизированный пакет) | ✅ | ❌ |
 | **Переключение sync/async** в рантайме | ✅ | ✅ |
-| **Группированные методы** (`client.forum.users.get_me()`) | ✅ | ✅ |
+| **Группированные методы** (`client.forum.users.get(...)`) | ✅ | ✅ |
 | **Поддержка прокси** (HTTP, HTTPS, SOCKS5) | ✅ | ✅ |
 
 ---
@@ -56,10 +56,9 @@
 - **Документируемость** — модели служат живой документацией API
 
 ```python
-me = lolz.forum.users.get_me()
-print(me.user.username)      # IDE знает тип: str
-print(me.user.user_id)       # IDE знает тип: int
-# me.nonexistent_field       # IDE покажет ошибку ещё до запуска
+profile = lolz.market.profile.get()
+print(profile["user"]["username"])  # dec3mbre
+print(profile["user"]["user_id"])   # 4565608
 ```
 
 ### Авто-генерация из OpenAPI
@@ -114,12 +113,12 @@ from lolzpy import LolzSync
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
     # Forum
-    me = lolz.forum.users.get_me()
+    user = lolz.forum.users.get(user_id=4565608)
     threads = lolz.forum.threads.list(forum_id=876, limit=10)
 
     # Market
-    profile = lolz.market.profile.get_me()
-    items = lolz.market.category.all(category_name="steam")
+    profile = lolz.market.profile.get()
+    items = lolz.market.category.steam()
 ```
 
 ### Асинхронный клиент
@@ -130,8 +129,8 @@ from lolzpy import LolzAsync
 
 async def main():
     async with LolzAsync(token="YOUR_TOKEN") as lolz:
-        me = await lolz.forum.users.get_me()
-        items = await lolz.market.category.all(category_name="steam")
+        user = await lolz.forum.users.get(user_id=4565608)
+        items = await lolz.market.category.steam()
 
 asyncio.run(main())
 ```
@@ -143,15 +142,15 @@ from lolzpy import Lolz
 
 # По умолчанию — синхронный режим
 lolz = Lolz(token="YOUR_TOKEN")
-me = lolz.forum.users.get_me()
+user = lolz.forum.users.get(user_id=4565608)
 
 # Переключение на async
 lolz.use_async()
-me = await lolz.forum.users.get_me()
+user = await lolz.forum.users.get(user_id=4565608)
 
 # Обратно на sync
 lolz.use_sync()
-me = lolz.forum.users.get_me()
+user = lolz.forum.users.get(user_id=4565608)
 lolz.close()
 ```
 
@@ -264,7 +263,6 @@ from lolzpy import LolzSync
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
     # Пользователи
-    me = lolz.forum.users.get_me()
     user = lolz.forum.users.get(user_id=2410024)
     followers = lolz.forum.users.followers(user_id=2410024)
 
@@ -302,22 +300,22 @@ from lolzpy import LolzSync
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
     # Профиль
-    profile = lolz.market.profile.get_me()
+    profile = lolz.market.profile.get()
 
     # Просмотр аккаунтов
-    items = lolz.market.category.all(category_name="steam")
+    items = lolz.market.category.steam()
 
     # Покупка
-    bought = lolz.market.purchasing.fast_buy(item_id=12345678, price=100, currency="rub")
+    bought = lolz.market.purchasing.fast_buy(item_id=12345678, price=100)
 
     # Управление лотами
-    listings = lolz.market.managing.list()
+    listings = lolz.market.managing.bulk_get()
 
     # Платежи
     payments = lolz.market.payments.list()
 
     # Корзина
-    cart = lolz.market.cart.list()
+    cart = lolz.market.cart.get()
 ```
 
 ---
@@ -365,7 +363,7 @@ lolzpy/
 │   ├── _client.py          # 151 операция в 18 группах
 │   └── _models.py          # Pydantic v2 модели
 └── market/                 # Market API (авто-генерация)
-    ├── _client.py          # 115 операций в 14 группах
+    ├── _client.py          # 115 операций в 13 группах
     └── _models.py          # Pydantic v2 модели
 
 codegen/                    # Инструменты кодогенерации
