@@ -6,7 +6,7 @@ from __future__ import annotations
 from enum import IntEnum, StrEnum
 from typing import Annotated, Any
 
-from pydantic import BaseModel, ConfigDict, Field, RootModel
+from pydantic import BaseModel, ConfigDict, Field, RootModel, field_validator
 
 
 class DiscountModel(BaseModel):
@@ -68,27 +68,31 @@ class CustomFields(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True,
     )
-    field_4: Annotated[str, Field(alias="_4", title="")]
-    allow_self_unban: Annotated[list[Any], Field(alias="allowSelfUnban", title="Allow Self Unban")]
-    ban_reason: Annotated[str, Field(title="Ban")]
-    discord: Annotated[str, Field(title="Discord")]
-    github: Annotated[str, Field(title="Github")]
-    jabber: Annotated[str, Field(title="Jabber")]
-    lzt_award_user_trophy: Annotated[str, Field(alias="lztAwardUserTrophy", title="Lzt Award User Trophy")]
-    lzt_likes_increasing: Annotated[str, Field(alias="lztLikesIncreasing", title="Lzt Likes Increasing")]
-    lzt_likes_zeroing: Annotated[str, Field(alias="lztLikesZeroing", title="Lzt Likes Zeroing")]
-    lzt_sympathy_increasing: Annotated[str, Field(alias="lztSympathyIncreasing", title="Lzt Sympathy Increasing")]
-    lzt_sympathy_zeroing: Annotated[str, Field(alias="lztSympathyZeroing", title="Lzt Sympathy Zeroing")]
-    lzt_unban_amount: Annotated[str, Field(alias="lztUnbanAmount", title="Lzt Unban Amount")]
-    maecenas_value: Annotated[str, Field(alias="maecenasValue", title="Maecenas Value")]
-    scam_url: Annotated[str, Field(alias="scamURL", title="Scam Url")]
-    steam: Annotated[str, Field(title="Steam")]
-    telegram: Annotated[str, Field(title="Telegram")]
-    vk: Annotated[str, Field(title="Vk")]
-    favorite_porn: Annotated[str, Field(alias="favoritePorn", title="Favorite Porn")]
-    favorite_vape: Annotated[str, Field(alias="favoriteVape", title="Favorite Vape")]
-    favorite_anime: Annotated[str, Field(alias="favoriteAnime", title="Favorite Anime")]
-    matrix: Annotated[str, Field(title="Matrix")]
+    field_4: Annotated[str | None, Field(alias="_4", title="")] = None
+    allow_self_unban: Annotated[list[Any] | None, Field(alias="allowSelfUnban", title="Allow Self Unban")] = None
+    ban_reason: Annotated[str | None, Field(title="Ban")] = None
+    discord: Annotated[str | None, Field(title="Discord")] = None
+    github: Annotated[str | None, Field(title="Github")] = None
+    jabber: Annotated[str | None, Field(title="Jabber")] = None
+    lzt_award_user_trophy: Annotated[str | None, Field(alias="lztAwardUserTrophy", title="Lzt Award User Trophy")] = (
+        None
+    )
+    lzt_likes_increasing: Annotated[str | None, Field(alias="lztLikesIncreasing", title="Lzt Likes Increasing")] = None
+    lzt_likes_zeroing: Annotated[str | None, Field(alias="lztLikesZeroing", title="Lzt Likes Zeroing")] = None
+    lzt_sympathy_increasing: Annotated[
+        str | None, Field(alias="lztSympathyIncreasing", title="Lzt Sympathy Increasing")
+    ] = None
+    lzt_sympathy_zeroing: Annotated[str | None, Field(alias="lztSympathyZeroing", title="Lzt Sympathy Zeroing")] = None
+    lzt_unban_amount: Annotated[str | None, Field(alias="lztUnbanAmount", title="Lzt Unban Amount")] = None
+    maecenas_value: Annotated[str | None, Field(alias="maecenasValue", title="Maecenas Value")] = None
+    scam_url: Annotated[str | None, Field(alias="scamURL", title="Scam Url")] = None
+    steam: Annotated[str | None, Field(title="Steam")] = None
+    telegram: Annotated[str | None, Field(title="Telegram")] = None
+    vk: Annotated[str | None, Field(title="Vk")] = None
+    favorite_porn: Annotated[str | None, Field(alias="favoritePorn", title="Favorite Porn")] = None
+    favorite_vape: Annotated[str | None, Field(alias="favoriteVape", title="Favorite Vape")] = None
+    favorite_anime: Annotated[str | None, Field(alias="favoriteAnime", title="Favorite Anime")] = None
+    matrix: Annotated[str | None, Field(title="Matrix")] = None
 
 
 class Dob(BaseModel):
@@ -164,8 +168,13 @@ class Rendered(BaseModel):
     )
     username: Annotated[str, Field(title="Username")]
     avatars: Annotated[Avatars, Field(title="Avatars")]
-    backgrounds: Annotated[Backgrounds, Field(title="Backgrounds")]
+    backgrounds: Annotated[Backgrounds | None, Field(title="Backgrounds")] = None
     link: Annotated[str, Field(title="Link")]
+
+    @field_validator("backgrounds", mode="before")
+    @classmethod
+    def _coerce_backgrounds(cls, v: Any) -> Any:
+        return v if isinstance(v, dict) else None
 
 
 class RestoreData(BaseModel):
@@ -206,9 +215,9 @@ class UserModel(BaseModel):
     )
     active_items_count: Annotated[int, Field(title="Active")]
     activity_visible: Annotated[bool, Field(title="Activity")]
-    age: Annotated[int, Field(title="Age")]
+    age: Annotated[int | None, Field(title="Age")] = None
     balance: Annotated[str, Field(title="Balance")]
-    balances: Annotated[list[Balance], Field(title="Balances")]
+    balances: Annotated[list[Balance] | None, Field(title="Balances")] = None
     bump_item_period: Annotated[int, Field(title="Bump")]
     can_edit: Annotated[bool, Field(title="Can")]
     can_follow: Annotated[bool, Field(title="Can")]
@@ -228,11 +237,11 @@ class UserModel(BaseModel):
     custom_fields: Annotated[CustomFields, Field(title="Custom")]
     custom_title: Annotated[str, Field(title="Custom")]
     deposit: Annotated[int, Field(title="Deposit")]
-    dob: Annotated[Dob, Field(title="Dob")]
-    feedback_data: Annotated[FeedbackData, Field(title="Feedback")]
+    dob: Annotated[Dob | None, Field(title="Dob")] = None
+    feedback_data: Annotated[FeedbackData | None, Field(title="Feedback")] = None
     hold: Annotated[str, Field(title="Hold")]
     homepage: Annotated[str, Field(title="Homepage")]
-    imap_data: Annotated[ImapData, Field(title="Imap")]
+    imap_data: Annotated[ImapData | None, Field(title="Imap")] = None
     is_admin: Annotated[bool, Field(title="Is")]
     is_banned: Annotated[bool, Field(title="Is")]
     is_followed: Annotated[bool, Field(title="Is")]
@@ -253,12 +262,18 @@ class UserModel(BaseModel):
     register_date: Annotated[int, Field(title="Register")]
     rendered: Annotated[Rendered, Field(title="Rendered")]
     restore_count: Annotated[int, Field(title="Restore")]
-    restore_data: Annotated[RestoreData, Field(title="Restore")]
+    restore_data: Annotated[RestoreData | None, Field(title="Restore")] = None
     short_link: Annotated[str, Field(title="Short")]
     sold_items_count: Annotated[int, Field(title="Sold")]
     tags: Annotated[list[Tag], Field(title="Tags")]
-    telegram_client: Annotated[TelegramClient, Field(title="Telegram")]
+    telegram_client: Annotated[TelegramClient | None, Field(title="Telegram")] = None
     trophy_points: Annotated[int, Field(title="Trophy")]
+
+    @field_validator("feedback_data", "imap_data", "restore_data", "telegram_client", mode="before")
+    @classmethod
+    def _coerce_non_dict_to_none(cls, v: Any) -> Any:
+        return v if isinstance(v, dict) else None
+
     user_allow_ask_discount: Annotated[bool, Field(title="User")]
     user_id: Annotated[int, Field(title="User")]
     user_title: Annotated[str, Field(title="User")]
