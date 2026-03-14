@@ -15,8 +15,6 @@ from lolzpy.core.config import RetryConfig
 if TYPE_CHECKING:
     from curl_cffi.requests.session import HttpMethod
 
-_RETRYABLE_EXCEPTIONS = (ConnectionError, TimeoutError, OSError)
-
 
 # ---------------------------------------------------------------------------
 # Delay calculation
@@ -54,6 +52,12 @@ def _should_retry(status_code: int, attempt: int, config: RetryConfig) -> bool:
     return attempt < config.max_retries and status_code in config.retry_on
 
 
+def _notify_retry(config: RetryConfig, attempt: int, delay: float) -> None:
+    """Call the on_retry callback if configured."""
+    if config.on_retry is not None:
+        config.on_retry(attempt, delay)
+
+
 # ---------------------------------------------------------------------------
 # Retry-aware request helpers
 # ---------------------------------------------------------------------------
@@ -74,10 +78,11 @@ def request_with_retry_sync(
             response = session.request(cast("HttpMethod", method), url, **kwargs)
         except SessionClosed:
             raise
-        except (*_RETRYABLE_EXCEPTIONS, RequestException):
+        except (*config.retry_on_exceptions, RequestException):
             if attempt >= config.max_retries:
                 raise
             delay = _calculate_delay(attempt, None, config)
+            _notify_retry(config, attempt, delay)
             time.sleep(delay)
             continue
 
@@ -87,6 +92,7 @@ def request_with_retry_sync(
         last_response = response
         retry_after = _parse_retry_after(response.headers)
         delay = _calculate_delay(attempt, retry_after, config)
+        _notify_retry(config, attempt, delay)
         time.sleep(delay)
 
     if last_response is None:
@@ -109,10 +115,11 @@ async def request_with_retry_async(
             response = await session.request(cast("HttpMethod", method), url, **kwargs)
         except SessionClosed:
             raise
-        except (*_RETRYABLE_EXCEPTIONS, RequestException):
+        except (*config.retry_on_exceptions, RequestException):
             if attempt >= config.max_retries:
                 raise
             delay = _calculate_delay(attempt, None, config)
+            _notify_retry(config, attempt, delay)
             await asyncio.sleep(delay)
             continue
 
@@ -122,6 +129,7 @@ async def request_with_retry_async(
         last_response = response
         retry_after = _parse_retry_after(response.headers)
         delay = _calculate_delay(attempt, retry_after, config)
+        _notify_retry(config, attempt, delay)
         await asyncio.sleep(delay)
 
     if last_response is None:

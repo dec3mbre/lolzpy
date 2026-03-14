@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 
 DEFAULT_RETRY_ON: frozenset[int] = frozenset({429, 500, 502, 503, 504})
+DEFAULT_RETRY_ON_EXCEPTIONS: tuple[type[Exception], ...] = (ConnectionError, TimeoutError, OSError)
 
 
 @dataclass(frozen=True, slots=True)
@@ -16,7 +18,11 @@ class RetryConfig:
     max_delay: float = 8.0
     max_retry_after: float = 60.0
     retry_on: frozenset[int] = field(default=DEFAULT_RETRY_ON)
+    retry_on_exceptions: tuple[type[Exception], ...] = field(default=DEFAULT_RETRY_ON_EXCEPTIONS)
+    on_retry: Callable[[int, float], None] | None = field(default=None, compare=False)
 
     def __post_init__(self) -> None:
         if not isinstance(self.retry_on, frozenset):
             object.__setattr__(self, "retry_on", frozenset(self.retry_on))
+        if not isinstance(self.retry_on_exceptions, tuple):
+            object.__setattr__(self, "retry_on_exceptions", tuple(self.retry_on_exceptions))
