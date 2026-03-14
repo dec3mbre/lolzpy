@@ -66,3 +66,6 @@ exclude = ["codegen", "tests"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+markers = [
+    "live: tests that call the real LOLZ API (require LOLZ_TOKEN env var)",
+]
