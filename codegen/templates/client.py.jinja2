@@ -37,6 +37,7 @@ class Sync{{ group_name | pascal }}:
 {% for p in op.required_query_params %}
         {{ p.python_name }}: {{ p.python_type }},
 {% endfor %}
+{% if op.optional_query_params or op.optional_body_params %}
         *,
 {% for p in op.optional_query_params %}
         {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
@@ -44,6 +45,7 @@ class Sync{{ group_name | pascal }}:
 {% for p in op.optional_body_params %}
         {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
 {% endfor %}
+{% endif %}
         **kwargs: Any,
     ) -> dict[str, Any]:
 {% if op.description %}
@@ -95,6 +97,7 @@ class Async{{ group_name | pascal }}:
 {% for p in op.required_query_params %}
         {{ p.python_name }}: {{ p.python_type }},
 {% endfor %}
+{% if op.optional_query_params or op.optional_body_params %}
         *,
 {% for p in op.optional_query_params %}
         {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
@@ -102,6 +105,7 @@ class Async{{ group_name | pascal }}:
 {% for p in op.optional_body_params %}
         {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
 {% endfor %}
+{% endif %}
         **kwargs: Any,
     ) -> dict[str, Any]:
 {% if op.description %}

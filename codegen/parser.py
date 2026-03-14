@@ -87,9 +87,9 @@ def _schema_to_python_type(schema: dict[str, Any]) -> str:
             base = "Any"
         return f"{base} | None" if nullable else base
 
-    # Enum → Literal
+    # Enum → Literal (only for small enums to avoid massive type annotations)
     enum = schema.get("enum")
-    if enum and all(isinstance(v, str) for v in enum):
+    if enum and all(isinstance(v, str) for v in enum) and len(enum) <= 20:
         values = ", ".join(f'"{v}"' for v in enum)
         return f"Literal[{values}]"
 
