@@ -2,11 +2,25 @@
 
 from __future__ import annotations
 
-import time
+from unittest.mock import MagicMock, patch
 
 import pytest
 
 from lolzpy._internal.rate_limit import TokenBucketAsync, TokenBucketSync
+
+
+def _make_advancing_monotonic(start: float = 1000.0, step: float = 0.0):
+    """Create a monotonic mock that advances by `step` on each call after sleep."""
+    state = {"now": start, "step": step}
+
+    def monotonic():
+        return state["now"]
+
+    def advance(seconds):
+        state["now"] += seconds
+
+    return monotonic, advance
+
 
 # ---------------------------------------------------------------------------
 # TokenBucketSync
@@ -15,22 +29,28 @@ from lolzpy._internal.rate_limit import TokenBucketAsync, TokenBucketSync
 
 class TestTokenBucketSync:
     def test_acquire_immediate_within_rate(self):
-        bucket = TokenBucketSync(10.0)  # 10 requests/sec
-        start = time.monotonic()
-        for _ in range(5):
-            bucket.acquire()
-        elapsed = time.monotonic() - start
-        assert elapsed < 1.0  # Should be nearly instant
+        bucket = TokenBucketSync(10.0)  # 10 tokens available
+        # Should not sleep — we have 10 tokens
+        with patch("lolzpy._internal.rate_limit.time.sleep") as mock_sleep:
+            for _ in range(5):
+                bucket.acquire()
+            mock_sleep.assert_not_called()
 
     def test_acquire_throttles_at_capacity(self):
-        bucket = TokenBucketSync(2.0)  # 2 requests/sec
-        # Drain all tokens
-        bucket.acquire()
-        bucket.acquire()
-        start = time.monotonic()
-        bucket.acquire()  # Must wait for refill
-        elapsed = time.monotonic() - start
-        assert elapsed >= 0.3  # Should wait ~0.5s
+        monotonic, advance = _make_advancing_monotonic()
+
+        with (
+            patch("lolzpy._internal.rate_limit.time.monotonic", side_effect=monotonic),
+            patch("lolzpy._internal.rate_limit.time.sleep", side_effect=advance) as mock_sleep,
+        ):
+            bucket = TokenBucketSync(2.0)  # 2 tokens
+            bucket.acquire()
+            bucket.acquire()
+            # Next acquire must sleep to refill
+            bucket.acquire()
+            mock_sleep.assert_called_once()
+            delay = mock_sleep.call_args[0][0]
+            assert delay > 0
 
 
 # ---------------------------------------------------------------------------
@@ -42,18 +62,23 @@ class TestTokenBucketAsync:
     @pytest.mark.asyncio
     async def test_acquire_immediate_within_rate(self):
         bucket = TokenBucketAsync(10.0)
-        start = time.monotonic()
-        for _ in range(5):
-            await bucket.acquire()
-        elapsed = time.monotonic() - start
-        assert elapsed < 1.0
+        with patch("lolzpy._internal.rate_limit.asyncio.sleep") as mock_sleep:
+            for _ in range(5):
+                await bucket.acquire()
+            mock_sleep.assert_not_called()
 
     @pytest.mark.asyncio
     async def test_acquire_throttles_at_capacity(self):
-        bucket = TokenBucketAsync(2.0)
-        await bucket.acquire()
-        await bucket.acquire()
-        start = time.monotonic()
-        await bucket.acquire()
-        elapsed = time.monotonic() - start
-        assert elapsed >= 0.3
+        monotonic, advance = _make_advancing_monotonic()
+
+        with (
+            patch("lolzpy._internal.rate_limit.time.monotonic", side_effect=monotonic),
+            patch("lolzpy._internal.rate_limit.asyncio.sleep", side_effect=advance) as mock_sleep,
+        ):
+            bucket = TokenBucketAsync(2.0)
+            await bucket.acquire()
+            await bucket.acquire()
+            await bucket.acquire()
+            mock_sleep.assert_called_once()
+            delay = mock_sleep.call_args[0][0]
+            assert delay > 0
