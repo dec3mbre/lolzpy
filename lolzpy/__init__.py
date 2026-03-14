@@ -29,6 +29,7 @@ from lolzpy.core.exceptions import (
     ServerError,
     ValidationError,
 )
+from lolzpy.core.types import BrowserType
 from lolzpy.forum._client import (
     AsyncAssets,
     AsyncCategories,
@@ -226,12 +227,16 @@ class _AsyncMarket:
 def _common_kwargs(
     *,
     proxy: str | None,
-    timeout: float,
+    connect_timeout: float,
+    read_timeout: float,
     retry: RetryConfig | None,
     rate_limit: float,
-    impersonate: str,
+    impersonate: BrowserType,
 ) -> dict:
-    return dict(proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate)
+    return dict(
+        proxy=proxy, connect_timeout=connect_timeout, read_timeout=read_timeout,
+        retry=retry, rate_limit=rate_limit, impersonate=impersonate,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -256,14 +261,15 @@ class LolzSync:
         forum_base_url: str = _FORUM_BASE_URL,
         market_base_url: str = _MARKET_BASE_URL,
         proxy: str | None = None,
-        timeout: float = 30.0,
+        connect_timeout: float = 10.0,
+        read_timeout: float = 30.0,
         retry: RetryConfig | None = None,
         rate_limit: float = 0.0,
-        impersonate: str = "chrome",
+        impersonate: BrowserType = "chrome",
     ) -> None:
         common = _common_kwargs(
-            proxy=proxy, timeout=timeout, retry=retry,
-            rate_limit=rate_limit, impersonate=impersonate,
+            proxy=proxy, connect_timeout=connect_timeout, read_timeout=read_timeout,
+            retry=retry, rate_limit=rate_limit, impersonate=impersonate,
         )
         self._forum_client = SyncAPIClient(forum_base_url, token, **common)
         self._market_client = SyncAPIClient(market_base_url, token, **common)
@@ -298,14 +304,15 @@ class LolzAsync:
         forum_base_url: str = _FORUM_BASE_URL,
         market_base_url: str = _MARKET_BASE_URL,
         proxy: str | None = None,
-        timeout: float = 30.0,
+        connect_timeout: float = 10.0,
+        read_timeout: float = 30.0,
         retry: RetryConfig | None = None,
         rate_limit: float = 0.0,
-        impersonate: str = "chrome",
+        impersonate: BrowserType = "chrome",
     ) -> None:
         common = _common_kwargs(
-            proxy=proxy, timeout=timeout, retry=retry,
-            rate_limit=rate_limit, impersonate=impersonate,
+            proxy=proxy, connect_timeout=connect_timeout, read_timeout=read_timeout,
+            retry=retry, rate_limit=rate_limit, impersonate=impersonate,
         )
         self._forum_client = AsyncAPIClient(forum_base_url, token, **common)
         self._market_client = AsyncAPIClient(market_base_url, token, **common)
@@ -359,17 +366,19 @@ class Lolz:
         forum_base_url: str = _FORUM_BASE_URL,
         market_base_url: str = _MARKET_BASE_URL,
         proxy: str | None = None,
-        timeout: float = 30.0,
+        connect_timeout: float = 10.0,
+        read_timeout: float = 30.0,
         retry: RetryConfig | None = None,
         rate_limit: float = 0.0,
-        impersonate: str = "chrome",
+        impersonate: BrowserType = "chrome",
         async_mode: bool = False,
     ) -> None:
         self._token = token
         self._forum_base_url = forum_base_url
         self._market_base_url = market_base_url
         self._common = _common_kwargs(
-            proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate
+            proxy=proxy, connect_timeout=connect_timeout, read_timeout=read_timeout,
+            retry=retry, rate_limit=rate_limit, impersonate=impersonate,
         )
         self._async_mode = async_mode
 
