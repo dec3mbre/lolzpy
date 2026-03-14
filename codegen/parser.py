@@ -41,6 +41,8 @@ class ParsedOperation:
     response_schema_name: str | None  # Name of the Pydantic model to return
     # For grouping into resource classes
     group: str
+    response_wrapper_key: str | None = None  # Key to unwrap from response envelope
+    response_is_list: bool = False  # Whether the wrapped value is a list of models
     is_multipart: bool = False  # Derived from first tag or operationId prefix
 
 
@@ -324,23 +326,71 @@ def _parse_request_body(
 
 
 # ---------------------------------------------------------------------------
-# Response schema name extraction
+# Response info extraction
 # ---------------------------------------------------------------------------
 
-def _extract_response_schema_name(responses: dict[str, Any], spec: dict[str, Any]) -> str | None:
-    """Extract the name of the response schema for the 200/201 response."""
+# Properties to skip when looking for the primary data wrapper
+_META_KEYS = frozenset({
+    "system_info", "links", "pagination", "total", "totalItems",
+    "hasNextPage", "page", "perPage", "count",
+})
+
+
+def _ref_to_class_name(ref: str) -> str:
+    """Convert a $ref like '#/components/schemas/Resp_UserModel' to 'RespUserModel'."""
+    raw = ref.rsplit("/", 1)[-1]
+    return raw.replace("_", "")
+
+
+def _extract_response_info(
+    responses: dict[str, Any], spec: dict[str, Any],
+) -> tuple[str | None, str | None, bool]:
+    """Extract (model_class_name, wrapper_key, is_list) from response schemas.
+
+    Scans the 200/201 response inline schema for the primary data property
+    that references a known component schema.
+    """
     for code in ("200", "201", "2XX"):
         resp_def = responses.get(code, {})
+        # Resolve response-level $ref
+        if "$ref" in resp_def:
+            resp_def = _resolve_ref(resp_def["$ref"], spec)
         content = resp_def.get("content", {})
         json_content = content.get("application/json")
         if not json_content:
             continue
+
         schema = json_content.get("schema", {})
+
+        # Resolve schema-level $ref
         if "$ref" in schema:
-            return schema["$ref"].rsplit("/", 1)[-1]
-        # Inline schema — return None, response will use dict[str, Any]
-        return None
-    return None
+            schema = _resolve_schema(schema, spec)
+
+        properties = schema.get("properties", {})
+        if not properties:
+            continue
+
+        # Scan properties for the primary wrapper key
+        for prop_name, prop_schema in properties.items():
+            if prop_name in _META_KEYS:
+                continue
+
+            # Singular: {"user": {"$ref": "#/components/schemas/Resp_UserModel"}}
+            if "$ref" in prop_schema:
+                class_name = _ref_to_class_name(prop_schema["$ref"])
+                return class_name, prop_name, False
+
+            # List: {"threads": {"type": "array", "items": {"$ref": "..."}}}
+            if prop_schema.get("type") == "array":
+                items = prop_schema.get("items", {})
+                if "$ref" in items:
+                    class_name = _ref_to_class_name(items["$ref"])
+                    return class_name, prop_name, True
+
+        # No $ref found in any non-meta property
+        return None, None, False
+
+    return None, None, False
 
 
 # ---------------------------------------------------------------------------
@@ -402,8 +452,8 @@ def parse_spec(spec_path: str | Path) -> ParsedSpec:
             if request_body:
                 body_params, is_multipart = _parse_request_body(request_body, spec)
 
-            # Response schema
-            response_schema_name = _extract_response_schema_name(
+            # Response info
+            response_model, wrapper_key, resp_is_list = _extract_response_info(
                 op.get("responses", {}), spec
             )
 
@@ -420,7 +470,9 @@ def parse_spec(spec_path: str | Path) -> ParsedSpec:
                 path_params=path_params,
                 query_params=query_params,
                 body_params=body_params,
-                response_schema_name=response_schema_name,
+                response_schema_name=response_model,
+                response_wrapper_key=wrapper_key,
+                response_is_list=resp_is_list,
                 group=group,
                 is_multipart=is_multipart,
             ))

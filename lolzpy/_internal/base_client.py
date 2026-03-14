@@ -45,8 +45,18 @@ class BaseClient:
         return f"{self._base_url}/{path.lstrip('/')}"
 
     @staticmethod
-    def _parse_response(response: Response, model: type[T] | None = None) -> Any:
-        """Parse an HTTP response, optionally validating against a Pydantic model."""
+    def _parse_response(
+        response: Response,
+        model: type[T] | None = None,
+        wrapper_key: str | None = None,
+        is_list: bool = False,
+    ) -> Any:
+        """Parse an HTTP response, optionally validating against a Pydantic model.
+
+        When *wrapper_key* is given the value at ``data[wrapper_key]`` is extracted
+        before validation.  If *is_list* is ``True`` each item in the extracted
+        list is validated individually and a ``list[model]`` is returned.
+        """
         raise_for_status(
             response.status_code,
             response_data=_try_json(response),
@@ -58,6 +68,10 @@ class BaseClient:
         if data is None:
             return data
         try:
+            if wrapper_key is not None:
+                data = data[wrapper_key]
+            if is_list:
+                return [model.model_validate(item) for item in data]
             return model.model_validate(data)
         except Exception as exc:
             raise ValidationError(
@@ -102,6 +116,8 @@ class SyncAPIClient(BaseClient):
         json: Any = None,
         data: Any = None,
         model: type[T] | None = None,
+        wrapper_key: str | None = None,
+        is_list: bool = False,
         **kwargs: Any,
     ) -> Any:
         if self._limiter is not None:
@@ -120,7 +136,7 @@ class SyncAPIClient(BaseClient):
             data=data,
             **kwargs,
         )
-        return self._parse_response(response, model)
+        return self._parse_response(response, model, wrapper_key, is_list)
 
 
 class AsyncAPIClient(BaseClient):
@@ -160,6 +176,8 @@ class AsyncAPIClient(BaseClient):
         json: Any = None,
         data: Any = None,
         model: type[T] | None = None,
+        wrapper_key: str | None = None,
+        is_list: bool = False,
         **kwargs: Any,
     ) -> Any:
         if self._limiter is not None:
@@ -178,7 +196,7 @@ class AsyncAPIClient(BaseClient):
             data=data,
             **kwargs,
         )
-        return self._parse_response(response, model)
+        return self._parse_response(response, model, wrapper_key, is_list)
 
 
 # ---------------------------------------------------------------------------

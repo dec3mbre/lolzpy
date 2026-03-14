@@ -35,6 +35,9 @@ class TemplateOperation:
     is_multipart: bool = False
     file_params: list[ParsedParameter] = field(default_factory=list)
     form_params: list[ParsedParameter] = field(default_factory=list)
+    response_model_name: str | None = None
+    response_wrapper_key: str | None = None
+    response_is_list: bool = False
 
 
 def _prepare_operations(operations: list[ParsedOperation]) -> list[TemplateOperation]:
@@ -72,6 +75,9 @@ def _prepare_operations(operations: list[ParsedOperation]) -> list[TemplateOpera
             is_multipart=op.is_multipart,
             file_params=file_params,
             form_params=form_params,
+            response_model_name=op.response_schema_name,
+            response_wrapper_key=op.response_wrapper_key,
+            response_is_list=op.response_is_list,
         ))
     return result
 
@@ -137,10 +143,18 @@ def render_client(
         for p in op.query_params + op.body_params + op.path_params
     )
 
+    # Collect model imports needed
+    model_imports: set[str] = set()
+    for ops in groups.values():
+        for op in ops:
+            if op.response_model_name:
+                model_imports.add(op.response_model_name)
+
     return template.render(
         package_name=package_name,
         groups=groups,
         has_literal=has_literal,
+        model_imports=sorted(model_imports),
     )
 
 

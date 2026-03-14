@@ -1,5 +1,5 @@
 {# Template for generating sync and async client classes from parsed OpenAPI operations. #}
-{# Variables: package_name (str), groups (dict[str, list[ParsedOperation]]), has_literal (bool) #}
+{# Variables: package_name (str), groups (dict[str, list[ParsedOperation]]), has_literal (bool), model_imports (list[str]) #}
 """{{ package_name }} API client methods.
 
 Auto-generated from OpenAPI spec — do not edit manually.
@@ -11,6 +11,14 @@ from __future__ import annotations
 from typing import Any, Literal
 
 from lolzpy._internal.base_client import AsyncAPIClient, SyncAPIClient
+{% if model_imports %}
+
+from lolzpy.{{ package_name }}._models import (
+{% for model in model_imports %}
+    {{ model }},
+{% endfor %}
+)
+{% endif %}
 
 {% for group_name, operations in groups.items() %}
 
@@ -52,7 +60,13 @@ class {{ prefix }}{{ group_name | pascal }}:
 {% endfor %}
 {% endif %}
         **kwargs: Any,
+{% if op.response_model_name and op.response_is_list %}
+    ) -> list[{{ op.response_model_name }}]:
+{% elif op.response_model_name %}
+    ) -> {{ op.response_model_name }}:
+{% else %}
     ) -> dict[str, Any]:
+{% endif %}
 {% if op.description %}
         """{{ op.description | truncate(200) }}"""
 {% endif %}
@@ -104,6 +118,13 @@ class {{ prefix }}{{ group_name | pascal }}:
 {% endif %}
 {% elif op.body_params %}
             json=json_data,
+{% endif %}
+{% if op.response_model_name %}
+            model={{ op.response_model_name }},
+            wrapper_key="{{ op.response_wrapper_key }}",
+{% if op.response_is_list %}
+            is_list=True,
+{% endif %}
 {% endif %}
             **kwargs,
         )
