@@ -9,6 +9,19 @@ from __future__ import annotations
 from typing import Any, Literal
 
 from lolzpy._internal.base_client import AsyncAPIClient, SyncAPIClient
+from lolzpy.forum._models import (
+    RespChatboxMessageModel,
+    RespConversationMessageModel,
+    RespConversationModel,
+    RespLinkModel,
+    RespNotificationModel,
+    RespPostCommentModel,
+    RespPostModel,
+    RespProfilePostCommentModel,
+    RespProfilePostModel,
+    RespThreadModel,
+    RespUserModel,
+)
 
 # ===========================================================================
 # O auth
@@ -582,11 +595,14 @@ class SyncLinks:
     def list(
         self,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespLinkModel]:
         """Get Links Forum"""
         return self._client._request(
             "GET",
             "/link-forums",
+            model=RespLinkModel,
+            wrapper_key="link-forums",
+            is_list=True,
             **kwargs,
         )
 
@@ -594,11 +610,13 @@ class SyncLinks:
         self,
         link_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespLinkModel:
         """Get Link Forum"""
         return self._client._request(
             "GET",
             f"/link-forums/{link_id}",
+            model=RespLinkModel,
+            wrapper_key="link-forum",
             **kwargs,
         )
 
@@ -612,11 +630,14 @@ class AsyncLinks:
     async def list(
         self,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespLinkModel]:
         """Get Links Forum"""
         return await self._client._request(
             "GET",
             "/link-forums",
+            model=RespLinkModel,
+            wrapper_key="link-forums",
+            is_list=True,
             **kwargs,
         )
 
@@ -624,11 +645,13 @@ class AsyncLinks:
         self,
         link_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespLinkModel:
         """Get Link Forum"""
         return await self._client._request(
             "GET",
             f"/link-forums/{link_id}",
+            model=RespLinkModel,
+            wrapper_key="link-forum",
             **kwargs,
         )
 
@@ -805,7 +828,7 @@ class SyncThreads:
         thread_update_date: int | None = None,
         fields_include: list[Literal["*", "latest_posts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespThreadModel]:
         """Get Threads"""
         params: dict[str, Any] = {}
         if forum_id is not None:
@@ -848,6 +871,9 @@ class SyncThreads:
             "GET",
             "/threads",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="threads",
+            is_list=True,
             **kwargs,
         )
 
@@ -871,7 +897,7 @@ class SyncThreads:
         watch_thread: bool | None = None,
         watch_thread_email: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Create Thread"""
         json_data: dict[str, Any] = {}
         if post_body is not None:
@@ -910,6 +936,8 @@ class SyncThreads:
             "POST",
             "/threads",
             json=json_data,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -943,7 +971,7 @@ class SyncThreads:
         watch_thread: bool | None = None,
         watch_thread_email: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Create Contest"""
         json_data: dict[str, Any] = {}
         if post_body is not None:
@@ -1002,6 +1030,8 @@ class SyncThreads:
             "POST",
             "/contests",
             json=json_data,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1031,7 +1061,7 @@ class SyncThreads:
         watch_thread: bool | None = None,
         watch_thread_email: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Create Claim"""
         json_data: dict[str, Any] = {}
         if as_responder is not None:
@@ -1082,6 +1112,8 @@ class SyncThreads:
             "POST",
             "/claims",
             json=json_data,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1091,7 +1123,7 @@ class SyncThreads:
         *,
         fields_include: list[Literal["*", "latest_posts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Get Thread"""
         params: dict[str, Any] = {}
         if fields_include is not None:
@@ -1100,6 +1132,8 @@ class SyncThreads:
             "GET",
             f"/threads/{thread_id}",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1117,7 +1151,7 @@ class SyncThreads:
         reply_group: int | None = None,
         comment_ignore_group: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Edit thread"""
         json_data: dict[str, Any] = {}
         if title is not None:
@@ -1142,6 +1176,8 @@ class SyncThreads:
             "PUT",
             f"/threads/{thread_id}",
             json=json_data,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1358,7 +1394,7 @@ class SyncThreads:
         forum_id: int | None = None,
         data_limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespThreadModel]:
         """Get Unread Threads"""
         params: dict[str, Any] = {}
         if limit is not None:
@@ -1371,6 +1407,9 @@ class SyncThreads:
             "GET",
             "/threads/new",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="threads",
+            is_list=True,
             **kwargs,
         )
 
@@ -1382,7 +1421,7 @@ class SyncThreads:
         forum_id: int | None = None,
         data_limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespThreadModel]:
         """Get Recent Threads"""
         params: dict[str, Any] = {}
         if days is not None:
@@ -1397,6 +1436,9 @@ class SyncThreads:
             "GET",
             "/threads/recent",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="threads",
+            is_list=True,
             **kwargs,
         )
 
@@ -1444,7 +1486,7 @@ class AsyncThreads:
         thread_update_date: int | None = None,
         fields_include: list[Literal["*", "latest_posts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespThreadModel]:
         """Get Threads"""
         params: dict[str, Any] = {}
         if forum_id is not None:
@@ -1487,6 +1529,9 @@ class AsyncThreads:
             "GET",
             "/threads",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="threads",
+            is_list=True,
             **kwargs,
         )
 
@@ -1510,7 +1555,7 @@ class AsyncThreads:
         watch_thread: bool | None = None,
         watch_thread_email: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Create Thread"""
         json_data: dict[str, Any] = {}
         if post_body is not None:
@@ -1549,6 +1594,8 @@ class AsyncThreads:
             "POST",
             "/threads",
             json=json_data,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1582,7 +1629,7 @@ class AsyncThreads:
         watch_thread: bool | None = None,
         watch_thread_email: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Create Contest"""
         json_data: dict[str, Any] = {}
         if post_body is not None:
@@ -1641,6 +1688,8 @@ class AsyncThreads:
             "POST",
             "/contests",
             json=json_data,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1670,7 +1719,7 @@ class AsyncThreads:
         watch_thread: bool | None = None,
         watch_thread_email: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Create Claim"""
         json_data: dict[str, Any] = {}
         if as_responder is not None:
@@ -1721,6 +1770,8 @@ class AsyncThreads:
             "POST",
             "/claims",
             json=json_data,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1730,7 +1781,7 @@ class AsyncThreads:
         *,
         fields_include: list[Literal["*", "latest_posts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Get Thread"""
         params: dict[str, Any] = {}
         if fields_include is not None:
@@ -1739,6 +1790,8 @@ class AsyncThreads:
             "GET",
             f"/threads/{thread_id}",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1756,7 +1809,7 @@ class AsyncThreads:
         reply_group: int | None = None,
         comment_ignore_group: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespThreadModel:
         """Edit thread"""
         json_data: dict[str, Any] = {}
         if title is not None:
@@ -1781,6 +1834,8 @@ class AsyncThreads:
             "PUT",
             f"/threads/{thread_id}",
             json=json_data,
+            model=RespThreadModel,
+            wrapper_key="thread",
             **kwargs,
         )
 
@@ -1997,7 +2052,7 @@ class AsyncThreads:
         forum_id: int | None = None,
         data_limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespThreadModel]:
         """Get Unread Threads"""
         params: dict[str, Any] = {}
         if limit is not None:
@@ -2010,6 +2065,9 @@ class AsyncThreads:
             "GET",
             "/threads/new",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="threads",
+            is_list=True,
             **kwargs,
         )
 
@@ -2021,7 +2079,7 @@ class AsyncThreads:
         forum_id: int | None = None,
         data_limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespThreadModel]:
         """Get Recent Threads"""
         params: dict[str, Any] = {}
         if days is not None:
@@ -2036,6 +2094,9 @@ class AsyncThreads:
             "GET",
             "/threads/recent",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="threads",
+            is_list=True,
             **kwargs,
         )
 
@@ -2072,7 +2133,7 @@ class SyncPosts:
         limit: int | None = None,
         order: Literal["natural", "natural_reverse", "post_likes", "post_likes_reverse"] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespThreadModel]:
         """Get Posts"""
         params: dict[str, Any] = {}
         if thread_id is not None:
@@ -2089,6 +2150,9 @@ class SyncPosts:
             "GET",
             "/posts",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="posts",
+            is_list=True,
             **kwargs,
         )
 
@@ -2099,7 +2163,7 @@ class SyncPosts:
         thread_id: int | None = None,
         quote_post_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespPostModel:
         """Create Post"""
         json_data: dict[str, Any] = {}
         if post_body is not None:
@@ -2112,6 +2176,8 @@ class SyncPosts:
             "POST",
             "/posts",
             json=json_data,
+            model=RespPostModel,
+            wrapper_key="post",
             **kwargs,
         )
 
@@ -2119,11 +2185,13 @@ class SyncPosts:
         self,
         post_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespPostModel:
         """Get Post"""
         return self._client._request(
             "GET",
             f"/posts/{post_id}",
+            model=RespPostModel,
+            wrapper_key="post",
             **kwargs,
         )
 
@@ -2133,7 +2201,7 @@ class SyncPosts:
         *,
         post_body: str | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespPostModel:
         """Edit Post"""
         json_data: dict[str, Any] = {}
         if post_body is not None:
@@ -2142,6 +2210,8 @@ class SyncPosts:
             "PUT",
             f"/posts/{post_id}",
             json=json_data,
+            model=RespPostModel,
+            wrapper_key="post",
             **kwargs,
         )
 
@@ -2244,7 +2314,7 @@ class SyncPosts:
         before: int | None = None,
         before_comment: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespPostCommentModel]:
         """Get Post Comments"""
         params: dict[str, Any] = {}
         if post_id is not None:
@@ -2257,6 +2327,9 @@ class SyncPosts:
             "GET",
             "/posts/comments",
             params=params,
+            model=RespPostCommentModel,
+            wrapper_key="comments",
+            is_list=True,
             **kwargs,
         )
 
@@ -2353,7 +2426,7 @@ class AsyncPosts:
         limit: int | None = None,
         order: Literal["natural", "natural_reverse", "post_likes", "post_likes_reverse"] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespThreadModel]:
         """Get Posts"""
         params: dict[str, Any] = {}
         if thread_id is not None:
@@ -2370,6 +2443,9 @@ class AsyncPosts:
             "GET",
             "/posts",
             params=params,
+            model=RespThreadModel,
+            wrapper_key="posts",
+            is_list=True,
             **kwargs,
         )
 
@@ -2380,7 +2456,7 @@ class AsyncPosts:
         thread_id: int | None = None,
         quote_post_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespPostModel:
         """Create Post"""
         json_data: dict[str, Any] = {}
         if post_body is not None:
@@ -2393,6 +2469,8 @@ class AsyncPosts:
             "POST",
             "/posts",
             json=json_data,
+            model=RespPostModel,
+            wrapper_key="post",
             **kwargs,
         )
 
@@ -2400,11 +2478,13 @@ class AsyncPosts:
         self,
         post_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespPostModel:
         """Get Post"""
         return await self._client._request(
             "GET",
             f"/posts/{post_id}",
+            model=RespPostModel,
+            wrapper_key="post",
             **kwargs,
         )
 
@@ -2414,7 +2494,7 @@ class AsyncPosts:
         *,
         post_body: str | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespPostModel:
         """Edit Post"""
         json_data: dict[str, Any] = {}
         if post_body is not None:
@@ -2423,6 +2503,8 @@ class AsyncPosts:
             "PUT",
             f"/posts/{post_id}",
             json=json_data,
+            model=RespPostModel,
+            wrapper_key="post",
             **kwargs,
         )
 
@@ -2525,7 +2607,7 @@ class AsyncPosts:
         before: int | None = None,
         before_comment: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespPostCommentModel]:
         """Get Post Comments"""
         params: dict[str, Any] = {}
         if post_id is not None:
@@ -2538,6 +2620,9 @@ class AsyncPosts:
             "GET",
             "/posts/comments",
             params=params,
+            model=RespPostCommentModel,
+            wrapper_key="comments",
+            is_list=True,
             **kwargs,
         )
 
@@ -2637,7 +2722,7 @@ class SyncUsers:
         limit: int | None = None,
         fields_include: list[Literal["*", "alerts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespUserModel]:
         """Get Users"""
         params: dict[str, Any] = {}
         if page is not None:
@@ -2650,6 +2735,9 @@ class SyncUsers:
             "GET",
             "/users",
             params=params,
+            model=RespUserModel,
+            wrapper_key="users",
+            is_list=True,
             **kwargs,
         )
 
@@ -2671,7 +2759,7 @@ class SyncUsers:
         custom_fields: dict[str, Any] | None = None,
         fields_include: list[Literal["*", "alerts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespUserModel]:
         """Find Users"""
         params: dict[str, Any] = {}
         if username is not None:
@@ -2684,6 +2772,9 @@ class SyncUsers:
             "GET",
             "/users/find",
             params=params,
+            model=RespUserModel,
+            wrapper_key="users",
+            is_list=True,
             **kwargs,
         )
 
@@ -2693,7 +2784,7 @@ class SyncUsers:
         *,
         fields_include: list[Literal["*", "alerts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespUserModel:
         """Get User"""
         params: dict[str, Any] = {}
         if fields_include is not None:
@@ -2702,6 +2793,8 @@ class SyncUsers:
             "GET",
             f"/users/{user_id}",
             params=params,
+            model=RespUserModel,
+            wrapper_key="user",
             **kwargs,
         )
 
@@ -3132,7 +3225,7 @@ class SyncUsers:
         page: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespUserModel:
         """Get Contents"""
         params: dict[str, Any] = {}
         if page is not None:
@@ -3143,6 +3236,8 @@ class SyncUsers:
             "GET",
             f"/users/{user_id}/timeline",
             params=params,
+            model=RespUserModel,
+            wrapper_key="user",
             **kwargs,
         )
 
@@ -3205,7 +3300,7 @@ class AsyncUsers:
         limit: int | None = None,
         fields_include: list[Literal["*", "alerts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespUserModel]:
         """Get Users"""
         params: dict[str, Any] = {}
         if page is not None:
@@ -3218,6 +3313,9 @@ class AsyncUsers:
             "GET",
             "/users",
             params=params,
+            model=RespUserModel,
+            wrapper_key="users",
+            is_list=True,
             **kwargs,
         )
 
@@ -3239,7 +3337,7 @@ class AsyncUsers:
         custom_fields: dict[str, Any] | None = None,
         fields_include: list[Literal["*", "alerts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespUserModel]:
         """Find Users"""
         params: dict[str, Any] = {}
         if username is not None:
@@ -3252,6 +3350,9 @@ class AsyncUsers:
             "GET",
             "/users/find",
             params=params,
+            model=RespUserModel,
+            wrapper_key="users",
+            is_list=True,
             **kwargs,
         )
 
@@ -3261,7 +3362,7 @@ class AsyncUsers:
         *,
         fields_include: list[Literal["*", "alerts"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespUserModel:
         """Get User"""
         params: dict[str, Any] = {}
         if fields_include is not None:
@@ -3270,6 +3371,8 @@ class AsyncUsers:
             "GET",
             f"/users/{user_id}",
             params=params,
+            model=RespUserModel,
+            wrapper_key="user",
             **kwargs,
         )
 
@@ -3700,7 +3803,7 @@ class AsyncUsers:
         page: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespUserModel:
         """Get Contents"""
         params: dict[str, Any] = {}
         if page is not None:
@@ -3711,6 +3814,8 @@ class AsyncUsers:
             "GET",
             f"/users/{user_id}/timeline",
             params=params,
+            model=RespUserModel,
+            wrapper_key="user",
             **kwargs,
         )
 
@@ -3780,7 +3885,7 @@ class SyncProfilePosts:
         limit: int | None = None,
         fields_include: list[Literal["*", "latest_comments"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespProfilePostModel]:
         """Get Profile Posts"""
         params: dict[str, Any] = {}
         if posts_user_id is not None:
@@ -3795,6 +3900,9 @@ class SyncProfilePosts:
             "GET",
             f"/users/{user_id}/profile-posts",
             params=params,
+            model=RespProfilePostModel,
+            wrapper_key="profile_posts",
+            is_list=True,
             **kwargs,
         )
 
@@ -3802,11 +3910,13 @@ class SyncProfilePosts:
         self,
         profile_post_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespProfilePostModel:
         """Get Profile Post"""
         return self._client._request(
             "GET",
             f"/profile-posts/{profile_post_id}",
+            model=RespProfilePostModel,
+            wrapper_key="profile_post",
             **kwargs,
         )
 
@@ -3964,7 +4074,7 @@ class SyncProfilePosts:
         before: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespProfilePostCommentModel]:
         """Get Profile Post Comments"""
         params: dict[str, Any] = {}
         if profile_post_id is not None:
@@ -3977,6 +4087,9 @@ class SyncProfilePosts:
             "GET",
             "/profile-posts/comments",
             params=params,
+            model=RespProfilePostCommentModel,
+            wrapper_key="comments",
+            is_list=True,
             **kwargs,
         )
 
@@ -4039,11 +4152,13 @@ class SyncProfilePosts:
         profile_post_id: int,
         comment_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespProfilePostCommentModel:
         """Get Profile Post Comment"""
         return self._client._request(
             "GET",
             f"/profile-posts/{profile_post_id}/comments/{comment_id}",
+            model=RespProfilePostCommentModel,
+            wrapper_key="comment",
             **kwargs,
         )
 
@@ -4080,7 +4195,7 @@ class AsyncProfilePosts:
         limit: int | None = None,
         fields_include: list[Literal["*", "latest_comments"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespProfilePostModel]:
         """Get Profile Posts"""
         params: dict[str, Any] = {}
         if posts_user_id is not None:
@@ -4095,6 +4210,9 @@ class AsyncProfilePosts:
             "GET",
             f"/users/{user_id}/profile-posts",
             params=params,
+            model=RespProfilePostModel,
+            wrapper_key="profile_posts",
+            is_list=True,
             **kwargs,
         )
 
@@ -4102,11 +4220,13 @@ class AsyncProfilePosts:
         self,
         profile_post_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespProfilePostModel:
         """Get Profile Post"""
         return await self._client._request(
             "GET",
             f"/profile-posts/{profile_post_id}",
+            model=RespProfilePostModel,
+            wrapper_key="profile_post",
             **kwargs,
         )
 
@@ -4264,7 +4384,7 @@ class AsyncProfilePosts:
         before: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespProfilePostCommentModel]:
         """Get Profile Post Comments"""
         params: dict[str, Any] = {}
         if profile_post_id is not None:
@@ -4277,6 +4397,9 @@ class AsyncProfilePosts:
             "GET",
             "/profile-posts/comments",
             params=params,
+            model=RespProfilePostCommentModel,
+            wrapper_key="comments",
+            is_list=True,
             **kwargs,
         )
 
@@ -4339,11 +4462,13 @@ class AsyncProfilePosts:
         profile_post_id: int,
         comment_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespProfilePostCommentModel:
         """Get Profile Post Comment"""
         return await self._client._request(
             "GET",
             f"/profile-posts/{profile_post_id}/comments/{comment_id}",
+            model=RespProfilePostCommentModel,
+            wrapper_key="comment",
             **kwargs,
         )
 
@@ -4384,7 +4509,7 @@ class SyncConversations:
         page: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespConversationModel]:
         """Get Conversations"""
         params: dict[str, Any] = {}
         if folder is not None:
@@ -4397,6 +4522,9 @@ class SyncConversations:
             "GET",
             "/conversations",
             params=params,
+            model=RespConversationModel,
+            wrapper_key="conversations",
+            is_list=True,
             **kwargs,
         )
 
@@ -4413,7 +4541,7 @@ class SyncConversations:
         allow_delete_own_messages: bool | None = None,
         message_body: str | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Create Conversation"""
         json_data: dict[str, Any] = {}
         if recipient_id is not None:
@@ -4438,6 +4566,8 @@ class SyncConversations:
             "POST",
             "/conversations",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="conversation",
             **kwargs,
         )
 
@@ -4452,7 +4582,7 @@ class SyncConversations:
         allow_sticky_messages: bool | None = None,
         allow_delete_own_messages: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Edit Conversation"""
         json_data: dict[str, Any] = {}
         if conversation_id is not None:
@@ -4473,6 +4603,8 @@ class SyncConversations:
             "PUT",
             "/conversations",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="conversation",
             **kwargs,
         )
 
@@ -4499,7 +4631,7 @@ class SyncConversations:
         self,
         user_id: Any,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Start Conversation"""
         json_data: dict[str, Any] = {}
         if user_id is not None:
@@ -4508,6 +4640,8 @@ class SyncConversations:
             "POST",
             "/conversations/start",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="conversation",
             **kwargs,
         )
 
@@ -4531,11 +4665,13 @@ class SyncConversations:
         self,
         conversation_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Get Conversation"""
         return self._client._request(
             "GET",
             f"/conversations/{conversation_id}",
+            model=RespConversationModel,
+            wrapper_key="conversation",
             **kwargs,
         )
 
@@ -4549,7 +4685,7 @@ class SyncConversations:
         before: int | None = None,
         after: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespConversationMessageModel]:
         """Get Conversation Messages"""
         params: dict[str, Any] = {}
         if page is not None:
@@ -4566,6 +4702,9 @@ class SyncConversations:
             "GET",
             f"/conversations/{conversation_id}/messages",
             params=params,
+            model=RespConversationMessageModel,
+            wrapper_key="messages",
+            is_list=True,
             **kwargs,
         )
 
@@ -4576,7 +4715,7 @@ class SyncConversations:
         *,
         reply_message_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationMessageModel:
         """Create Conversation Message"""
         json_data: dict[str, Any] = {}
         if reply_message_id is not None:
@@ -4587,6 +4726,8 @@ class SyncConversations:
             "POST",
             f"/conversations/{conversation_id}/messages",
             json=json_data,
+            model=RespConversationMessageModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -4597,7 +4738,7 @@ class SyncConversations:
         conversation_id: int | None = None,
         search_recipients: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespConversationModel]:
         """Search Conversations Messages"""
         json_data: dict[str, Any] = {}
         if q is not None:
@@ -4610,6 +4751,9 @@ class SyncConversations:
             "POST",
             "/conversations/search",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="conversations",
+            is_list=True,
             **kwargs,
         )
 
@@ -4617,11 +4761,13 @@ class SyncConversations:
         self,
         message_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Get Conversation Message"""
         return self._client._request(
             "GET",
             f"/conversations/messages/{message_id}",
+            model=RespConversationModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -4631,7 +4777,7 @@ class SyncConversations:
         message_id: int,
         message_body: str,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Edit Conversation Message"""
         json_data: dict[str, Any] = {}
         if message_body is not None:
@@ -4640,6 +4786,8 @@ class SyncConversations:
             "PUT",
             f"/conversations/{conversation_id}/messages/{message_id}",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -4802,7 +4950,7 @@ class AsyncConversations:
         page: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespConversationModel]:
         """Get Conversations"""
         params: dict[str, Any] = {}
         if folder is not None:
@@ -4815,6 +4963,9 @@ class AsyncConversations:
             "GET",
             "/conversations",
             params=params,
+            model=RespConversationModel,
+            wrapper_key="conversations",
+            is_list=True,
             **kwargs,
         )
 
@@ -4831,7 +4982,7 @@ class AsyncConversations:
         allow_delete_own_messages: bool | None = None,
         message_body: str | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Create Conversation"""
         json_data: dict[str, Any] = {}
         if recipient_id is not None:
@@ -4856,6 +5007,8 @@ class AsyncConversations:
             "POST",
             "/conversations",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="conversation",
             **kwargs,
         )
 
@@ -4870,7 +5023,7 @@ class AsyncConversations:
         allow_sticky_messages: bool | None = None,
         allow_delete_own_messages: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Edit Conversation"""
         json_data: dict[str, Any] = {}
         if conversation_id is not None:
@@ -4891,6 +5044,8 @@ class AsyncConversations:
             "PUT",
             "/conversations",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="conversation",
             **kwargs,
         )
 
@@ -4917,7 +5072,7 @@ class AsyncConversations:
         self,
         user_id: Any,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Start Conversation"""
         json_data: dict[str, Any] = {}
         if user_id is not None:
@@ -4926,6 +5081,8 @@ class AsyncConversations:
             "POST",
             "/conversations/start",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="conversation",
             **kwargs,
         )
 
@@ -4949,11 +5106,13 @@ class AsyncConversations:
         self,
         conversation_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Get Conversation"""
         return await self._client._request(
             "GET",
             f"/conversations/{conversation_id}",
+            model=RespConversationModel,
+            wrapper_key="conversation",
             **kwargs,
         )
 
@@ -4967,7 +5126,7 @@ class AsyncConversations:
         before: int | None = None,
         after: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespConversationMessageModel]:
         """Get Conversation Messages"""
         params: dict[str, Any] = {}
         if page is not None:
@@ -4984,6 +5143,9 @@ class AsyncConversations:
             "GET",
             f"/conversations/{conversation_id}/messages",
             params=params,
+            model=RespConversationMessageModel,
+            wrapper_key="messages",
+            is_list=True,
             **kwargs,
         )
 
@@ -4994,7 +5156,7 @@ class AsyncConversations:
         *,
         reply_message_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationMessageModel:
         """Create Conversation Message"""
         json_data: dict[str, Any] = {}
         if reply_message_id is not None:
@@ -5005,6 +5167,8 @@ class AsyncConversations:
             "POST",
             f"/conversations/{conversation_id}/messages",
             json=json_data,
+            model=RespConversationMessageModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -5015,7 +5179,7 @@ class AsyncConversations:
         conversation_id: int | None = None,
         search_recipients: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespConversationModel]:
         """Search Conversations Messages"""
         json_data: dict[str, Any] = {}
         if q is not None:
@@ -5028,6 +5192,9 @@ class AsyncConversations:
             "POST",
             "/conversations/search",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="conversations",
+            is_list=True,
             **kwargs,
         )
 
@@ -5035,11 +5202,13 @@ class AsyncConversations:
         self,
         message_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Get Conversation Message"""
         return await self._client._request(
             "GET",
             f"/conversations/messages/{message_id}",
+            model=RespConversationModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -5049,7 +5218,7 @@ class AsyncConversations:
         message_id: int,
         message_body: str,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespConversationModel:
         """Edit Conversation Message"""
         json_data: dict[str, Any] = {}
         if message_body is not None:
@@ -5058,6 +5227,8 @@ class AsyncConversations:
             "PUT",
             f"/conversations/{conversation_id}/messages/{message_id}",
             json=json_data,
+            model=RespConversationModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -5224,7 +5395,7 @@ class SyncNotifications:
         page: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespNotificationModel]:
         """Get Notifications"""
         params: dict[str, Any] = {}
         if type_ is not None:
@@ -5237,6 +5408,9 @@ class SyncNotifications:
             "GET",
             "/notifications",
             params=params,
+            model=RespNotificationModel,
+            wrapper_key="notifications",
+            is_list=True,
             **kwargs,
         )
 
@@ -5244,11 +5418,13 @@ class SyncNotifications:
         self,
         notification_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespNotificationModel:
         """Get Notification"""
         return self._client._request(
             "GET",
             f"/notifications/{notification_id}/content",
+            model=RespNotificationModel,
+            wrapper_key="notification",
             **kwargs,
         )
 
@@ -5283,7 +5459,7 @@ class AsyncNotifications:
         page: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespNotificationModel]:
         """Get Notifications"""
         params: dict[str, Any] = {}
         if type_ is not None:
@@ -5296,6 +5472,9 @@ class AsyncNotifications:
             "GET",
             "/notifications",
             params=params,
+            model=RespNotificationModel,
+            wrapper_key="notifications",
+            is_list=True,
             **kwargs,
         )
 
@@ -5303,11 +5482,13 @@ class AsyncNotifications:
         self,
         notification_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespNotificationModel:
         """Get Notification"""
         return await self._client._request(
             "GET",
             f"/notifications/{notification_id}/content",
+            model=RespNotificationModel,
+            wrapper_key="notification",
             **kwargs,
         )
 
@@ -5505,7 +5686,7 @@ class SyncSearch:
         page: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespUserModel]:
         """Search"""
         json_data: dict[str, Any] = {}
         if q is not None:
@@ -5524,6 +5705,9 @@ class SyncSearch:
             "POST",
             "/search",
             json=json_data,
+            model=RespUserModel,
+            wrapper_key="users",
+            is_list=True,
             **kwargs,
         )
 
@@ -5602,7 +5786,7 @@ class SyncSearch:
         *,
         q: str | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespUserModel]:
         """Search Users"""
         json_data: dict[str, Any] = {}
         if q is not None:
@@ -5611,6 +5795,9 @@ class SyncSearch:
             "POST",
             "/search/users",
             json=json_data,
+            model=RespUserModel,
+            wrapper_key="users",
+            is_list=True,
             **kwargs,
         )
 
@@ -5704,7 +5891,7 @@ class AsyncSearch:
         page: int | None = None,
         limit: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespUserModel]:
         """Search"""
         json_data: dict[str, Any] = {}
         if q is not None:
@@ -5723,6 +5910,9 @@ class AsyncSearch:
             "POST",
             "/search",
             json=json_data,
+            model=RespUserModel,
+            wrapper_key="users",
+            is_list=True,
             **kwargs,
         )
 
@@ -5801,7 +5991,7 @@ class AsyncSearch:
         *,
         q: str | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespUserModel]:
         """Search Users"""
         json_data: dict[str, Any] = {}
         if q is not None:
@@ -5810,6 +6000,9 @@ class AsyncSearch:
             "POST",
             "/search/users",
             json=json_data,
+            model=RespUserModel,
+            wrapper_key="users",
+            is_list=True,
             **kwargs,
         )
 
@@ -5962,7 +6155,7 @@ class SyncChatbox:
         *,
         before_message_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespChatboxMessageModel]:
         """Get Chat Messages"""
         params: dict[str, Any] = {}
         if room_id is not None:
@@ -5973,6 +6166,9 @@ class SyncChatbox:
             "GET",
             "/chatbox/messages",
             params=params,
+            model=RespChatboxMessageModel,
+            wrapper_key="messages",
+            is_list=True,
             **kwargs,
         )
 
@@ -5983,7 +6179,7 @@ class SyncChatbox:
         *,
         reply_message_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespChatboxMessageModel:
         """Create Chat Message"""
         json_data: dict[str, Any] = {}
         if room_id is not None:
@@ -5996,6 +6192,8 @@ class SyncChatbox:
             "POST",
             "/chatbox/messages",
             json=json_data,
+            model=RespChatboxMessageModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -6004,7 +6202,7 @@ class SyncChatbox:
         message_id: int,
         message: str,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespChatboxMessageModel:
         """Edit Chat Message"""
         json_data: dict[str, Any] = {}
         if message_id is not None:
@@ -6015,6 +6213,8 @@ class SyncChatbox:
             "PUT",
             "/chatbox/messages",
             json=json_data,
+            model=RespChatboxMessageModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -6175,7 +6375,7 @@ class AsyncChatbox:
         *,
         before_message_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[RespChatboxMessageModel]:
         """Get Chat Messages"""
         params: dict[str, Any] = {}
         if room_id is not None:
@@ -6186,6 +6386,9 @@ class AsyncChatbox:
             "GET",
             "/chatbox/messages",
             params=params,
+            model=RespChatboxMessageModel,
+            wrapper_key="messages",
+            is_list=True,
             **kwargs,
         )
 
@@ -6196,7 +6399,7 @@ class AsyncChatbox:
         *,
         reply_message_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespChatboxMessageModel:
         """Create Chat Message"""
         json_data: dict[str, Any] = {}
         if room_id is not None:
@@ -6209,6 +6412,8 @@ class AsyncChatbox:
             "POST",
             "/chatbox/messages",
             json=json_data,
+            model=RespChatboxMessageModel,
+            wrapper_key="message",
             **kwargs,
         )
 
@@ -6217,7 +6422,7 @@ class AsyncChatbox:
         message_id: int,
         message: str,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> RespChatboxMessageModel:
         """Edit Chat Message"""
         json_data: dict[str, Any] = {}
         if message_id is not None:
@@ -6228,6 +6433,8 @@ class AsyncChatbox:
             "PUT",
             "/chatbox/messages",
             json=json_data,
+            model=RespChatboxMessageModel,
+            wrapper_key="message",
             **kwargs,
         )
 

@@ -9,6 +9,12 @@ from __future__ import annotations
 from typing import Any, Literal
 
 from lolzpy._internal.base_client import AsyncAPIClient, SyncAPIClient
+from lolzpy.market._models import (
+    DiscountModel,
+    InvoiceModel,
+    ItemModel,
+    UserModel,
+)
 
 # ===========================================================================
 # Category
@@ -11657,7 +11663,7 @@ class SyncManaging:
         *,
         parse_same_item_ids: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Get Account"""
         params: dict[str, Any] = {}
         if parse_same_item_ids is not None:
@@ -11666,6 +11672,8 @@ class SyncManaging:
             "GET",
             f"/{item_id}",
             params=params,
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -11891,7 +11899,7 @@ class SyncManaging:
         app_id: int | None = None,
         authorize: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Update Inventory Value"""
         json_data: dict[str, Any] = {}
         if all is not None:
@@ -11904,6 +11912,8 @@ class SyncManaging:
             "POST",
             f"/{item_id}/update-inventory",
             json=json_data,
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -12043,11 +12053,13 @@ class SyncManaging:
         self,
         item_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Add Mafile"""
         return self._client._request(
             "POST",
             f"/{item_id}/mafile",
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -12055,11 +12067,13 @@ class SyncManaging:
         self,
         item_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Remove Mafile"""
         return self._client._request(
             "DELETE",
             f"/{item_id}/mafile",
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -12100,11 +12114,13 @@ class SyncManaging:
         self,
         item_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Get Telegram Confirmation Code"""
         return self._client._request(
             "GET",
             f"/{item_id}/telegram-login-code",
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -12342,7 +12358,7 @@ class AsyncManaging:
         *,
         parse_same_item_ids: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Get Account"""
         params: dict[str, Any] = {}
         if parse_same_item_ids is not None:
@@ -12351,6 +12367,8 @@ class AsyncManaging:
             "GET",
             f"/{item_id}",
             params=params,
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -12576,7 +12594,7 @@ class AsyncManaging:
         app_id: int | None = None,
         authorize: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Update Inventory Value"""
         json_data: dict[str, Any] = {}
         if all is not None:
@@ -12589,6 +12607,8 @@ class AsyncManaging:
             "POST",
             f"/{item_id}/update-inventory",
             json=json_data,
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -12728,11 +12748,13 @@ class AsyncManaging:
         self,
         item_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Add Mafile"""
         return await self._client._request(
             "POST",
             f"/{item_id}/mafile",
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -12740,11 +12762,13 @@ class AsyncManaging:
         self,
         item_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Remove Mafile"""
         return await self._client._request(
             "DELETE",
             f"/{item_id}/mafile",
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -12785,11 +12809,13 @@ class AsyncManaging:
         self,
         item_id: int,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Get Telegram Confirmation Code"""
         return await self._client._request(
             "GET",
             f"/{item_id}/telegram-login-code",
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -13051,7 +13077,7 @@ class SyncProfile:
         *,
         fields_include: list[Literal["*", "searchHistory", "savedSearch"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> UserModel:
         """Get Profile"""
         params: dict[str, Any] = {}
         if fields_include is not None:
@@ -13060,6 +13086,8 @@ class SyncProfile:
             "GET",
             "/me",
             params=params,
+            model=UserModel,
+            wrapper_key="user",
             **kwargs,
         )
 
@@ -13145,7 +13173,7 @@ class AsyncProfile:
         *,
         fields_include: list[Literal["*", "searchHistory", "savedSearch"]] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> UserModel:
         """Get Profile"""
         params: dict[str, Any] = {}
         if fields_include is not None:
@@ -13154,6 +13182,8 @@ class AsyncProfile:
             "GET",
             "/me",
             params=params,
+            model=UserModel,
+            wrapper_key="user",
             **kwargs,
         )
 
@@ -13742,11 +13772,14 @@ class SyncCustomDiscounts:
     def get(
         self,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[DiscountModel]:
         """Get Custom Discounts"""
         return self._client._request(
             "GET",
             "/custom-discounts",
+            model=DiscountModel,
+            wrapper_key="discounts",
+            is_list=True,
             **kwargs,
         )
 
@@ -13760,7 +13793,7 @@ class SyncCustomDiscounts:
         max_price: float | None = None,
         currency: Literal["rub", "uah", "kzt", "byn", "usd", "eur", "gbp", "cny", "try", "jpy", "brl"] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> DiscountModel:
         """Create Custom Discount"""
         json_data: dict[str, Any] = {}
         if user_id is not None:
@@ -13779,6 +13812,8 @@ class SyncCustomDiscounts:
             "POST",
             "/custom-discounts",
             json=json_data,
+            model=DiscountModel,
+            wrapper_key="discount",
             **kwargs,
         )
 
@@ -13790,7 +13825,7 @@ class SyncCustomDiscounts:
         min_price: float | None = None,
         max_price: float | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[DiscountModel]:
         """Edit Custom Discount"""
         json_data: dict[str, Any] = {}
         if discount_id is not None:
@@ -13805,6 +13840,9 @@ class SyncCustomDiscounts:
             "PUT",
             "/custom-discounts",
             json=json_data,
+            model=DiscountModel,
+            wrapper_key="discounts",
+            is_list=True,
             **kwargs,
         )
 
@@ -13834,11 +13872,14 @@ class AsyncCustomDiscounts:
     async def get(
         self,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[DiscountModel]:
         """Get Custom Discounts"""
         return await self._client._request(
             "GET",
             "/custom-discounts",
+            model=DiscountModel,
+            wrapper_key="discounts",
+            is_list=True,
             **kwargs,
         )
 
@@ -13852,7 +13893,7 @@ class AsyncCustomDiscounts:
         max_price: float | None = None,
         currency: Literal["rub", "uah", "kzt", "byn", "usd", "eur", "gbp", "cny", "try", "jpy", "brl"] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> DiscountModel:
         """Create Custom Discount"""
         json_data: dict[str, Any] = {}
         if user_id is not None:
@@ -13871,6 +13912,8 @@ class AsyncCustomDiscounts:
             "POST",
             "/custom-discounts",
             json=json_data,
+            model=DiscountModel,
+            wrapper_key="discount",
             **kwargs,
         )
 
@@ -13882,7 +13925,7 @@ class AsyncCustomDiscounts:
         min_price: float | None = None,
         max_price: float | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[DiscountModel]:
         """Edit Custom Discount"""
         json_data: dict[str, Any] = {}
         if discount_id is not None:
@@ -13897,6 +13940,9 @@ class AsyncCustomDiscounts:
             "PUT",
             "/custom-discounts",
             json=json_data,
+            model=DiscountModel,
+            wrapper_key="discounts",
+            is_list=True,
             **kwargs,
         )
 
@@ -13953,7 +13999,7 @@ class SyncPublishing:
         email_type: Literal["native", "autoreg"] | None = None,
         extra: dict[str, Any] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Fast Account Upload"""
         json_data: dict[str, Any] = {}
         if title is not None:
@@ -13998,6 +14044,8 @@ class SyncPublishing:
             "POST",
             "/item/fast-sell",
             json=json_data,
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -14024,7 +14072,7 @@ class SyncPublishing:
         proxy_id: int | None = None,
         random_proxy: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Add Account"""
         json_data: dict[str, Any] = {}
         if title is not None:
@@ -14065,6 +14113,8 @@ class SyncPublishing:
             "POST",
             "/item/add",
             json=json_data,
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -14169,7 +14219,7 @@ class AsyncPublishing:
         email_type: Literal["native", "autoreg"] | None = None,
         extra: dict[str, Any] | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Fast Account Upload"""
         json_data: dict[str, Any] = {}
         if title is not None:
@@ -14214,6 +14264,8 @@ class AsyncPublishing:
             "POST",
             "/item/fast-sell",
             json=json_data,
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -14240,7 +14292,7 @@ class AsyncPublishing:
         proxy_id: int | None = None,
         random_proxy: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> ItemModel:
         """Add Account"""
         json_data: dict[str, Any] = {}
         if title is not None:
@@ -14281,6 +14333,8 @@ class AsyncPublishing:
             "POST",
             "/item/add",
             json=json_data,
+            model=ItemModel,
+            wrapper_key="item",
             **kwargs,
         )
 
@@ -14371,7 +14425,7 @@ class SyncPayments:
         invoice_id: int | None = None,
         payment_id: str | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> InvoiceModel:
         """Get Invoice"""
         params: dict[str, Any] = {}
         if invoice_id is not None:
@@ -14382,6 +14436,8 @@ class SyncPayments:
             "GET",
             "/invoice",
             params=params,
+            model=InvoiceModel,
+            wrapper_key="invoice",
             **kwargs,
         )
 
@@ -14401,7 +14457,7 @@ class SyncPayments:
         additional_data: str | None = None,
         is_test: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> InvoiceModel:
         """Create Invoice"""
         json_data: dict[str, Any] = {}
         if currency is not None:
@@ -14432,6 +14488,8 @@ class SyncPayments:
             "POST",
             "/invoice",
             json=json_data,
+            model=InvoiceModel,
+            wrapper_key="invoice",
             **kwargs,
         )
 
@@ -14444,7 +14502,7 @@ class SyncPayments:
         amount: float | None = None,
         merchant_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[InvoiceModel]:
         """Get Invoice List"""
         params: dict[str, Any] = {}
         if page is not None:
@@ -14461,6 +14519,9 @@ class SyncPayments:
             "GET",
             "/invoice/list",
             params=params,
+            model=InvoiceModel,
+            wrapper_key="invoices",
+            is_list=True,
             **kwargs,
         )
 
@@ -14715,7 +14776,7 @@ class AsyncPayments:
         invoice_id: int | None = None,
         payment_id: str | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> InvoiceModel:
         """Get Invoice"""
         params: dict[str, Any] = {}
         if invoice_id is not None:
@@ -14726,6 +14787,8 @@ class AsyncPayments:
             "GET",
             "/invoice",
             params=params,
+            model=InvoiceModel,
+            wrapper_key="invoice",
             **kwargs,
         )
 
@@ -14745,7 +14808,7 @@ class AsyncPayments:
         additional_data: str | None = None,
         is_test: bool | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> InvoiceModel:
         """Create Invoice"""
         json_data: dict[str, Any] = {}
         if currency is not None:
@@ -14776,6 +14839,8 @@ class AsyncPayments:
             "POST",
             "/invoice",
             json=json_data,
+            model=InvoiceModel,
+            wrapper_key="invoice",
             **kwargs,
         )
 
@@ -14788,7 +14853,7 @@ class AsyncPayments:
         amount: float | None = None,
         merchant_id: int | None = None,
         **kwargs: Any,
-    ) -> dict[str, Any]:
+    ) -> list[InvoiceModel]:
         """Get Invoice List"""
         params: dict[str, Any] = {}
         if page is not None:
@@ -14805,6 +14870,9 @@ class AsyncPayments:
             "GET",
             "/invoice/list",
             params=params,
+            model=InvoiceModel,
+            wrapper_key="invoices",
+            is_list=True,
             **kwargs,
         )
 
