@@ -261,7 +261,10 @@ class LolzSync:
         rate_limit: float = 0.0,
         impersonate: str = "chrome",
     ) -> None:
-        common = _common_kwargs(proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate)
+        common = _common_kwargs(
+            proxy=proxy, timeout=timeout, retry=retry,
+            rate_limit=rate_limit, impersonate=impersonate,
+        )
         self._forum_client = SyncAPIClient(forum_base_url, token, **common)
         self._market_client = SyncAPIClient(market_base_url, token, **common)
         self.forum = _SyncForum(self._forum_client)
@@ -300,7 +303,10 @@ class LolzAsync:
         rate_limit: float = 0.0,
         impersonate: str = "chrome",
     ) -> None:
-        common = _common_kwargs(proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate)
+        common = _common_kwargs(
+            proxy=proxy, timeout=timeout, retry=retry,
+            rate_limit=rate_limit, impersonate=impersonate,
+        )
         self._forum_client = AsyncAPIClient(forum_base_url, token, **common)
         self._market_client = AsyncAPIClient(market_base_url, token, **common)
         self.forum = _AsyncForum(self._forum_client)
