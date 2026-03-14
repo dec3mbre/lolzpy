@@ -20,3 +20,4 @@ venv/
 .DS_Store
 
 .serena
+.filescope.db*
