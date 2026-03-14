@@ -1,7 +1,27 @@
-"""lolz-sdk — Typed Python SDK for LOLZ Forum & Market APIs (sync + async)."""
+"""lolz-sdk — Typed Python SDK for LOLZ Forum & Market APIs (sync + async).
 
-from lolz_sdk._base import AsyncAPIClient, SyncAPIClient
-from lolz_sdk._exceptions import (
+Usage::
+
+    # Typed, separate clients (recommended):
+    from lolz_sdk import LolzSync, LolzAsync
+
+    with LolzSync(token="YOUR_TOKEN") as lolz:
+        me = lolz.forum.users.get_me()
+
+    # Unified client with runtime mode switching:
+    from lolz_sdk import Lolz
+
+    lolz = Lolz(token="YOUR_TOKEN")
+    me = lolz.forum.users.get_me()
+
+    lolz.use_async()
+    me = await lolz.forum.users.get_me()
+"""
+
+from lolz_sdk._internal.base_client import AsyncAPIClient, SyncAPIClient
+from lolz_sdk._version import __version__
+from lolz_sdk.core.config import RetryConfig
+from lolz_sdk.core.exceptions import (
     AuthError,
     LolzError,
     NotFoundError,
@@ -9,7 +29,6 @@ from lolz_sdk._exceptions import (
     ServerError,
     ValidationError,
 )
-from lolz_sdk._transport import RetryConfig
 from lolz_sdk.forum._client import (
     AsyncAssets,
     AsyncCategories,
@@ -90,6 +109,8 @@ from lolz_sdk.market._client import (
 )
 
 __all__ = [
+    "__version__",
+    "Lolz",
     "LolzSync",
     "LolzAsync",
     "RetryConfig",
@@ -104,6 +125,11 @@ __all__ = [
 # Default base URLs
 _FORUM_BASE_URL = "https://prod-api.lolz.live"
 _MARKET_BASE_URL = "https://prod-api.lzt.market"
+
+
+# ---------------------------------------------------------------------------
+# Resource group wrappers
+# ---------------------------------------------------------------------------
 
 
 class _SyncForum:
@@ -192,6 +218,27 @@ class _AsyncMarket:
         self.batch = AsyncMarketBatch(client)
 
 
+# ---------------------------------------------------------------------------
+# Common constructor kwargs
+# ---------------------------------------------------------------------------
+
+
+def _common_kwargs(
+    *,
+    proxy: str | None,
+    timeout: float,
+    retry: RetryConfig | None,
+    rate_limit: float,
+    impersonate: str,
+) -> dict:
+    return dict(proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate)
+
+
+# ---------------------------------------------------------------------------
+# Typed clients
+# ---------------------------------------------------------------------------
+
+
 class LolzSync:
     """Synchronous LOLZ SDK client combining Forum and Market APIs.
 
@@ -214,7 +261,7 @@ class LolzSync:
         rate_limit: float = 0.0,
         impersonate: str = "chrome",
     ) -> None:
-        common = dict(proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate)
+        common = _common_kwargs(proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate)
         self._forum_client = SyncAPIClient(forum_base_url, token, **common)
         self._market_client = SyncAPIClient(market_base_url, token, **common)
         self.forum = _SyncForum(self._forum_client)
@@ -253,7 +300,7 @@ class LolzAsync:
         rate_limit: float = 0.0,
         impersonate: str = "chrome",
     ) -> None:
-        common = dict(proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate)
+        common = _common_kwargs(proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate)
         self._forum_client = AsyncAPIClient(forum_base_url, token, **common)
         self._market_client = AsyncAPIClient(market_base_url, token, **common)
         self.forum = _AsyncForum(self._forum_client)
@@ -268,3 +315,125 @@ class LolzAsync:
     async def close(self) -> None:
         await self._forum_client.close()
         await self._market_client.close()
+
+
+# ---------------------------------------------------------------------------
+# Unified client with runtime mode switching
+# ---------------------------------------------------------------------------
+
+
+class Lolz:
+    """Unified LOLZ SDK client with runtime sync/async mode switching.
+
+    Starts in sync mode by default. Use :meth:`use_async` / :meth:`use_sync`
+    to switch at runtime.
+
+    Usage::
+
+        # Sync (default)
+        lolz = Lolz(token="YOUR_TOKEN")
+        me = lolz.forum.users.get_me()
+        lolz.close()
+
+        # Async
+        lolz = Lolz(token="YOUR_TOKEN", async_mode=True)
+        me = await lolz.forum.users.get_me()
+        await lolz.close_async()
+
+        # Switch at runtime
+        lolz = Lolz(token="YOUR_TOKEN")
+        lolz.use_async()
+        me = await lolz.forum.users.get_me()
+    """
+
+    def __init__(
+        self,
+        token: str,
+        *,
+        forum_base_url: str = _FORUM_BASE_URL,
+        market_base_url: str = _MARKET_BASE_URL,
+        proxy: str | None = None,
+        timeout: float = 30.0,
+        retry: RetryConfig | None = None,
+        rate_limit: float = 0.0,
+        impersonate: str = "chrome",
+        async_mode: bool = False,
+    ) -> None:
+        self._token = token
+        self._forum_base_url = forum_base_url
+        self._market_base_url = market_base_url
+        self._common = _common_kwargs(
+            proxy=proxy, timeout=timeout, retry=retry, rate_limit=rate_limit, impersonate=impersonate
+        )
+        self._async_mode = async_mode
+
+        if async_mode:
+            self._init_async()
+        else:
+            self._init_sync()
+
+    # -- Mode switching -------------------------------------------------
+
+    def use_async(self) -> "Lolz":
+        """Switch to async mode. Closes any existing sync clients. Returns self for chaining."""
+        if not self._async_mode:
+            self.close()
+            self._init_async()
+            self._async_mode = True
+        return self
+
+    def use_sync(self) -> "Lolz":
+        """Switch to sync mode. Returns self for chaining."""
+        if self._async_mode:
+            self._init_sync()
+            self._async_mode = False
+        return self
+
+    @property
+    def is_async(self) -> bool:
+        """Whether the client is currently in async mode."""
+        return self._async_mode
+
+    # -- Lifecycle ------------------------------------------------------
+
+    def close(self) -> None:
+        """Close sync clients. No-op if in async mode."""
+        if not self._async_mode:
+            self._forum_client.close()  # type: ignore[union-attr]
+            self._market_client.close()  # type: ignore[union-attr]
+
+    async def close_async(self) -> None:
+        """Close async clients. No-op if in sync mode."""
+        if self._async_mode:
+            await self._forum_client.close()  # type: ignore[misc]
+            await self._market_client.close()  # type: ignore[misc]
+
+    def __enter__(self) -> "Lolz":
+        return self
+
+    def __exit__(self, *_: object) -> None:
+        self.close()
+
+    async def __aenter__(self) -> "Lolz":
+        return self
+
+    async def __aexit__(self, *_: object) -> None:
+        await self.close_async()
+
+    # -- Internals ------------------------------------------------------
+
+    def _init_sync(self) -> None:
+        self._forum_client: SyncAPIClient | AsyncAPIClient = SyncAPIClient(
+            self._forum_base_url, self._token, **self._common
+        )
+        self._market_client: SyncAPIClient | AsyncAPIClient = SyncAPIClient(
+            self._market_base_url, self._token, **self._common
+        )
+        self.forum: _SyncForum | _AsyncForum = _SyncForum(self._forum_client)  # type: ignore[arg-type]
+        self.market: _SyncMarket | _AsyncMarket = _SyncMarket(self._market_client)  # type: ignore[arg-type]
+
+    def _init_async(self) -> None:
+        self._forum_client = AsyncAPIClient(self._forum_base_url, self._token, **self._common)
+        self._market_client = AsyncAPIClient(self._market_base_url, self._token, **self._common)
+        self.forum = _AsyncForum(self._forum_client)  # type: ignore[arg-type]
+        self.market = _AsyncMarket(self._market_client)  # type: ignore[arg-type]
