@@ -23,7 +23,7 @@
 | **Полное покрытие Market API** (115 операций) | ✅ | Частичное |
 | **Полное покрытие Forum API** (151 операция) | ✅ | Частичное |
 | **Авто-генерация из OpenAPI** спецификаций | ✅ | ❌ Ручной код |
-| **Unit-тесты** | 166 тестов | 0 |
+| **Unit-тесты** | 200 тестов | 0 |
 | **CI/CD** (GitHub Actions) | ✅ | ❌ |
 | **PEP 561** (типизированный пакет) | ✅ | ❌ |
 | **Переключение sync/async** в рантайме | ✅ | ✅ |
@@ -166,10 +166,11 @@ lolz.close()
 |---|---|---|---|
 | `token` | `str` | **обязательный** | Bearer-токен API |
 | `proxy` | `str \| None` | `None` | URL прокси (см. ниже) |
-| `timeout` | `float` | `30.0` | Таймаут HTTP-запроса (секунды) |
+| `connect_timeout` | `float` | `10.0` | Таймаут подключения (секунды) |
+| `read_timeout` | `float` | `30.0` | Таймаут чтения ответа (секунды) |
 | `retry` | `RetryConfig \| None` | `RetryConfig()` | Настройки повторных запросов |
 | `rate_limit` | `float` | `0.0` | Макс. запросов/сек (0 = без лимита) |
-| `impersonate` | `str` | `"chrome"` | TLS-отпечаток браузера |
+| `impersonate` | `BrowserType` | `"chrome"` | TLS-отпечаток (`"chrome"`, `"firefox"`, `"safari"`, `"edge"`) |
 | `forum_base_url` | `str` | `"https://prod-api.lolz.live"` | Базовый URL Forum API |
 | `market_base_url` | `str` | `"https://prod-api.lzt.market"` | Базовый URL Market API |
 
@@ -207,11 +208,19 @@ lolz = LolzSync(
         max_delay=16.0,         # Макс. задержка (по умолчанию: 8.0)
         max_retry_after=120.0,  # Макс. Retry-After из заголовка (по умолчанию: 60.0)
         retry_on=[429, 500, 502, 503, 504],  # HTTP-коды для retry (по умолчанию: эти же)
+        retry_on_exceptions=[ConnectionError, TimeoutError],  # Исключения для retry
+        on_retry=lambda attempt, delay: print(f"Retry #{attempt}, задержка {delay:.1f}с"),
     ),
 )
 ```
 
 Автоматический retry на: `429`, `500`, `502`, `503`, `504` (по умолчанию, переопределяется через `retry_on`) с экспоненциальным backoff ± 25% jitter.
+
+| Параметр | Тип | По умолчанию | Описание |
+|---|---|---|---|
+| `retry_on` | `list[int]` | `[429, 500, 502, 503, 504]` | HTTP-коды для повторных запросов |
+| `retry_on_exceptions` | `list[type[Exception]]` | `[ConnectionError, TimeoutError, OSError]` | Исключения, при которых запрос повторяется |
+| `on_retry` | `Callable[[int, float], None] \| None` | `None` | Callback перед каждым retry (attempt, delay) |
 
 ---
 
@@ -238,6 +247,7 @@ with LolzSync(token="YOUR_TOKEN") as lolz:
         user = lolz.forum.users.get(user_id=123)
     except AuthError as e:
         print(f"Ошибка авторизации ({e.status_code}): {e.message}")
+        print(f"  URL: {e.request_method} {e.request_url}")
     except RateLimitError as e:
         print(f"Лимит запросов, повтор через {e.retry_after}с")
     except NotFoundError:
@@ -252,7 +262,7 @@ with LolzSync(token="YOUR_TOKEN") as lolz:
 
 | Исключение | HTTP-коды | Описание |
 |---|---|---|
-| `LolzError` | все | Базовое исключение |
+| `LolzError` | все | Базовое исключение (содержит `request_url`, `request_method`) |
 | `AuthError` | 401, 403 | Ошибка аутентификации / авторизации |
 | `NotFoundError` | 404 | Ресурс не найден |
 | `RateLimitError` | 429 | Превышен лимит запросов (содержит `retry_after`) |
