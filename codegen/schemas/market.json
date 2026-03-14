@@ -49939,7 +49939,7 @@
         ],
         "summary": "Delete Account",
         "description": "Deletes your account from public search. Deletion type is soft. You can restore account after deletion if you want.",
-        "operationId": "Manging.Delete",
+        "operationId": "Managing.Delete",
         "parameters": [
           {
             "$ref": "#/components/parameters/item_id_path"

@@ -276,6 +276,18 @@ def _parse_request_body(
     required_fields = set(schema.get("required", []))
     properties = schema.get("properties", {})
 
+    # Handle oneOf/anyOf: merge all variant properties (mark all as optional).
+    if not properties:
+        variants = schema.get("oneOf") or schema.get("anyOf") or []
+        merged: dict[str, Any] = {}
+        for variant in variants:
+            variant = _resolve_schema(variant, spec)
+            for prop_name, prop_schema in variant.get("properties", {}).items():
+                if prop_name not in merged:
+                    merged[prop_name] = prop_schema
+        properties = merged
+        required_fields = set()  # Each variant uses a subset, so none are truly required
+
     for prop_name, prop_schema in properties.items():
         prop_schema = _resolve_schema(prop_schema, spec)
         is_file = prop_schema.get("format") == "binary"
@@ -425,7 +437,13 @@ def _deduplicate_method_names(spec: ParsedSpec) -> None:
         for op in ops:
             if op.method_name in seen:
                 seen[op.method_name] += 1
-                # Append HTTP method for disambiguation
-                op.method_name = f"{op.method_name}_{op.http_method.lower()}"
+                # Use middle segments from operationId for disambiguation.
+                # e.g. "Users.Avatar.Delete" -> middle ["avatar"] -> "delete_avatar"
+                parts = op.operation_id.split(".")
+                if len(parts) > 2:
+                    middle = "_".join(_to_snake_case(p) for p in parts[1:-1])
+                    op.method_name = f"{op.method_name}_{middle}"
+                else:
+                    op.method_name = f"{op.method_name}_{op.http_method.lower()}"
             else:
                 seen[op.method_name] = 1

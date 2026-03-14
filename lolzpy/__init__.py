@@ -389,8 +389,9 @@ class Lolz:
         return self
 
     def use_sync(self) -> "Lolz":
-        """Switch to sync mode. Returns self for chaining."""
+        """Switch to sync mode. Closes any existing async clients. Returns self for chaining."""
         if self._async_mode:
+            self._close_async_clients()
             self._init_sync()
             self._async_mode = False
         return self
@@ -413,6 +414,24 @@ class Lolz:
         if self._async_mode:
             await self._forum_client.close()  # type: ignore[misc]
             await self._market_client.close()  # type: ignore[misc]
+
+    def _close_async_clients(self) -> None:
+        """Close async clients synchronously (for use_sync switch)."""
+        import asyncio
+
+        async def _close() -> None:
+            await self._forum_client.close()  # type: ignore[misc]
+            await self._market_client.close()  # type: ignore[misc]
+
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = None
+
+        if loop and loop.is_running():
+            loop.create_task(_close())
+        else:
+            asyncio.run(_close())
 
     def __enter__(self) -> "Lolz":
         return self

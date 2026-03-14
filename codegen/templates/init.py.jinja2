@@ -2,8 +2,7 @@
 """{{ package_name }} API — auto-generated from OpenAPI spec."""
 
 from {{ module_path }}._client import (  # noqa: F401
-{% for group_name in groups %}
-    Sync{{ group_name | pascal }},
-    Async{{ group_name | pascal }},
+{% for name in class_names %}
+    {{ name }},
 {% endfor %}
 )

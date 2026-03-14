@@ -11669,6 +11669,23 @@ class SyncManaging:
             **kwargs,
         )
 
+    def delete(
+        self,
+        item_id: int,
+        reason: str,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """Delete Account"""
+        json_data: dict[str, Any] = {}
+        if reason is not None:
+            json_data["reason"] = reason
+        return self._client._request(
+            "DELETE",
+            f"/{item_id}",
+            json=json_data,
+            **kwargs,
+        )
+
     def create_claim(
         self,
         item_id: int,
@@ -12337,6 +12354,23 @@ class AsyncManaging:
             **kwargs,
         )
 
+    async def delete(
+        self,
+        item_id: int,
+        reason: str,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """Delete Account"""
+        json_data: dict[str, Any] = {}
+        if reason is not None:
+            json_data["reason"] = reason
+        return await self._client._request(
+            "DELETE",
+            f"/{item_id}",
+            json=json_data,
+            **kwargs,
+        )
+
     async def create_claim(
         self,
         item_id: int,
@@ -12976,59 +13010,6 @@ class AsyncManaging:
         return await self._client._request(
             "POST",
             f"/{item_id}/change-owner",
-            json=json_data,
-            **kwargs,
-        )
-
-
-# ===========================================================================
-# Manging
-# ===========================================================================
-
-
-class SyncManging:
-    """Synchronous Manging API methods."""
-
-    def __init__(self, client: SyncAPIClient) -> None:
-        self._client = client
-
-    def delete(
-        self,
-        item_id: int,
-        reason: str,
-        **kwargs: Any,
-    ) -> dict[str, Any]:
-        """Delete Account"""
-        json_data: dict[str, Any] = {}
-        if reason is not None:
-            json_data["reason"] = reason
-        return self._client._request(
-            "DELETE",
-            f"/{item_id}",
-            json=json_data,
-            **kwargs,
-        )
-
-
-class AsyncManging:
-    """Asynchronous Manging API methods."""
-
-    def __init__(self, client: AsyncAPIClient) -> None:
-        self._client = client
-
-    async def delete(
-        self,
-        item_id: int,
-        reason: str,
-        **kwargs: Any,
-    ) -> dict[str, Any]:
-        """Delete Account"""
-        json_data: dict[str, Any] = {}
-        if reason is not None:
-            json_data["reason"] = reason
-        return await self._client._request(
-            "DELETE",
-            f"/{item_id}",
             json=json_data,
             **kwargs,
         )
@@ -14494,7 +14475,7 @@ class SyncPayments:
             **kwargs,
         )
 
-    def list_get(
+    def list_balance(
         self,
         **kwargs: Any,
     ) -> dict[str, Any]:
@@ -14838,7 +14819,7 @@ class AsyncPayments:
             **kwargs,
         )
 
-    async def list_get(
+    async def list_balance(
         self,
         **kwargs: Any,
     ) -> dict[str, Any]:

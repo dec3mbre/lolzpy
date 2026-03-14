@@ -80,7 +80,11 @@ def generate_client(schema_path: str, name: str, output_dir: str, module_path: s
 
 
 def format_output(output_dir: str) -> None:
-    """Run ruff format on generated files."""
+    """Run ruff format and isort fix on generated files."""
+    # Fix import sorting
+    fix_cmd = [sys.executable, "-m", "ruff", "check", "--fix", "--select", "I", output_dir]
+    subprocess.run(fix_cmd, capture_output=True, text=True)
+    # Format code
     cmd = [sys.executable, "-m", "ruff", "format", output_dir]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode == 0:

@@ -23,12 +23,42 @@ class SyncOAuth:
 
     def token(
         self,
+        *,
+        grant_type: Literal["client_credentials"] | None = None,
+        client_id: str | None = None,
+        client_secret: str | None = None,
+        scope: list[Literal["basic", "read", "post", "conversate", "market", "payment", "invoice"]] | None = None,
+        code: str | None = None,
+        redirect_uri: str | None = None,
+        refresh_token: str | None = None,
+        username: str | None = None,
+        password: str | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Get Access Token"""
+        data: dict[str, Any] = {}
+        if grant_type is not None:
+            data["grant_type"] = grant_type
+        if client_id is not None:
+            data["client_id"] = client_id
+        if client_secret is not None:
+            data["client_secret"] = client_secret
+        if scope is not None:
+            data["scope"] = scope
+        if code is not None:
+            data["code"] = code
+        if redirect_uri is not None:
+            data["redirect_uri"] = redirect_uri
+        if refresh_token is not None:
+            data["refresh_token"] = refresh_token
+        if username is not None:
+            data["username"] = username
+        if password is not None:
+            data["password"] = password
         return self._client._request(
             "POST",
             "/oauth/token",
+            data=data,
             **kwargs,
         )
 
@@ -41,12 +71,42 @@ class AsyncOAuth:
 
     async def token(
         self,
+        *,
+        grant_type: Literal["client_credentials"] | None = None,
+        client_id: str | None = None,
+        client_secret: str | None = None,
+        scope: list[Literal["basic", "read", "post", "conversate", "market", "payment", "invoice"]] | None = None,
+        code: str | None = None,
+        redirect_uri: str | None = None,
+        refresh_token: str | None = None,
+        username: str | None = None,
+        password: str | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Get Access Token"""
+        data: dict[str, Any] = {}
+        if grant_type is not None:
+            data["grant_type"] = grant_type
+        if client_id is not None:
+            data["client_id"] = client_id
+        if client_secret is not None:
+            data["client_secret"] = client_secret
+        if scope is not None:
+            data["scope"] = scope
+        if code is not None:
+            data["code"] = code
+        if redirect_uri is not None:
+            data["redirect_uri"] = redirect_uri
+        if refresh_token is not None:
+            data["refresh_token"] = refresh_token
+        if username is not None:
+            data["username"] = username
+        if password is not None:
+            data["password"] = password
         return await self._client._request(
             "POST",
             "/oauth/token",
+            data=data,
             **kwargs,
         )
 
@@ -1258,7 +1318,7 @@ class SyncThreads:
             **kwargs,
         )
 
-    def get_get(
+    def get_poll(
         self,
         thread_id: int,
         **kwargs: Any,
@@ -1897,7 +1957,7 @@ class AsyncThreads:
             **kwargs,
         )
 
-    async def get_get(
+    async def get_poll(
         self,
         thread_id: int,
         **kwargs: Any,
@@ -2177,7 +2237,7 @@ class SyncPosts:
             **kwargs,
         )
 
-    def get_get(
+    def get_comments(
         self,
         post_id: int,
         *,
@@ -2200,7 +2260,7 @@ class SyncPosts:
             **kwargs,
         )
 
-    def create_post(
+    def create_comments(
         self,
         post_id: int,
         comment_body: str,
@@ -2219,7 +2279,7 @@ class SyncPosts:
             **kwargs,
         )
 
-    def edit_put(
+    def edit_comments(
         self,
         post_comment_id: int,
         comment_body: str,
@@ -2238,7 +2298,7 @@ class SyncPosts:
             **kwargs,
         )
 
-    def delete_delete(
+    def delete_comments(
         self,
         post_comment_id: int,
         *,
@@ -2258,7 +2318,7 @@ class SyncPosts:
             **kwargs,
         )
 
-    def report_post(
+    def report_comments(
         self,
         post_comment_id: int,
         message: str,
@@ -2458,7 +2518,7 @@ class AsyncPosts:
             **kwargs,
         )
 
-    async def get_get(
+    async def get_comments(
         self,
         post_id: int,
         *,
@@ -2481,7 +2541,7 @@ class AsyncPosts:
             **kwargs,
         )
 
-    async def create_post(
+    async def create_comments(
         self,
         post_id: int,
         comment_body: str,
@@ -2500,7 +2560,7 @@ class AsyncPosts:
             **kwargs,
         )
 
-    async def edit_put(
+    async def edit_comments(
         self,
         post_comment_id: int,
         comment_body: str,
@@ -2519,7 +2579,7 @@ class AsyncPosts:
             **kwargs,
         )
 
-    async def delete_delete(
+    async def delete_comments(
         self,
         post_comment_id: int,
         *,
@@ -2539,7 +2599,7 @@ class AsyncPosts:
             **kwargs,
         )
 
-    async def report_post(
+    async def report_comments(
         self,
         post_comment_id: int,
         message: str,
@@ -2827,7 +2887,7 @@ class SyncUsers:
             **kwargs,
         )
 
-    def upload_post(
+    def upload_background(
         self,
         user_id: Any,
         background: bytes,
@@ -2856,7 +2916,7 @@ class SyncUsers:
             **kwargs,
         )
 
-    def delete_delete(
+    def delete_background(
         self,
         user_id: Any,
         **kwargs: Any,
@@ -2868,7 +2928,7 @@ class SyncUsers:
             **kwargs,
         )
 
-    def crop_post(
+    def crop_background(
         self,
         user_id: Any,
         *,
@@ -3395,7 +3455,7 @@ class AsyncUsers:
             **kwargs,
         )
 
-    async def upload_post(
+    async def upload_background(
         self,
         user_id: Any,
         background: bytes,
@@ -3424,7 +3484,7 @@ class AsyncUsers:
             **kwargs,
         )
 
-    async def delete_delete(
+    async def delete_background(
         self,
         user_id: Any,
         **kwargs: Any,
@@ -3436,7 +3496,7 @@ class AsyncUsers:
             **kwargs,
         )
 
-    async def crop_post(
+    async def crop_background(
         self,
         user_id: Any,
         *,
@@ -3897,7 +3957,7 @@ class SyncProfilePosts:
             **kwargs,
         )
 
-    def list_get(
+    def list_comments(
         self,
         profile_post_id: int,
         *,
@@ -3920,7 +3980,7 @@ class SyncProfilePosts:
             **kwargs,
         )
 
-    def create_post(
+    def create_comments(
         self,
         profile_post_id: int,
         comment_body: str,
@@ -3939,7 +3999,7 @@ class SyncProfilePosts:
             **kwargs,
         )
 
-    def edit_put(
+    def edit_comments(
         self,
         comment_id: int,
         comment_body: str,
@@ -3958,7 +4018,7 @@ class SyncProfilePosts:
             **kwargs,
         )
 
-    def delete_delete(
+    def delete_comments(
         self,
         comment_id: int,
         **kwargs: Any,
@@ -3974,7 +4034,7 @@ class SyncProfilePosts:
             **kwargs,
         )
 
-    def get_get(
+    def get_comments(
         self,
         profile_post_id: int,
         comment_id: int,
@@ -3987,7 +4047,7 @@ class SyncProfilePosts:
             **kwargs,
         )
 
-    def report_post(
+    def report_comments(
         self,
         comment_id: int,
         message: str,
@@ -4197,7 +4257,7 @@ class AsyncProfilePosts:
             **kwargs,
         )
 
-    async def list_get(
+    async def list_comments(
         self,
         profile_post_id: int,
         *,
@@ -4220,7 +4280,7 @@ class AsyncProfilePosts:
             **kwargs,
         )
 
-    async def create_post(
+    async def create_comments(
         self,
         profile_post_id: int,
         comment_body: str,
@@ -4239,7 +4299,7 @@ class AsyncProfilePosts:
             **kwargs,
         )
 
-    async def edit_put(
+    async def edit_comments(
         self,
         comment_id: int,
         comment_body: str,
@@ -4258,7 +4318,7 @@ class AsyncProfilePosts:
             **kwargs,
         )
 
-    async def delete_delete(
+    async def delete_comments(
         self,
         comment_id: int,
         **kwargs: Any,
@@ -4274,7 +4334,7 @@ class AsyncProfilePosts:
             **kwargs,
         )
 
-    async def get_get(
+    async def get_comments(
         self,
         profile_post_id: int,
         comment_id: int,
@@ -4287,7 +4347,7 @@ class AsyncProfilePosts:
             **kwargs,
         )
 
-    async def report_post(
+    async def report_comments(
         self,
         comment_id: int,
         message: str,
@@ -4479,7 +4539,7 @@ class SyncConversations:
             **kwargs,
         )
 
-    def list_get(
+    def list_messages(
         self,
         conversation_id: int,
         *,
@@ -4509,7 +4569,7 @@ class SyncConversations:
             **kwargs,
         )
 
-    def create_post(
+    def create_messages(
         self,
         conversation_id: int,
         message_body: str,
@@ -4553,7 +4613,7 @@ class SyncConversations:
             **kwargs,
         )
 
-    def get_get(
+    def get_messages(
         self,
         message_id: int,
         **kwargs: Any,
@@ -4583,7 +4643,7 @@ class SyncConversations:
             **kwargs,
         )
 
-    def delete_delete(
+    def delete_messages(
         self,
         conversation_id: int,
         message_id: int,
@@ -4897,7 +4957,7 @@ class AsyncConversations:
             **kwargs,
         )
 
-    async def list_get(
+    async def list_messages(
         self,
         conversation_id: int,
         *,
@@ -4927,7 +4987,7 @@ class AsyncConversations:
             **kwargs,
         )
 
-    async def create_post(
+    async def create_messages(
         self,
         conversation_id: int,
         message_body: str,
@@ -4971,7 +5031,7 @@ class AsyncConversations:
             **kwargs,
         )
 
-    async def get_get(
+    async def get_messages(
         self,
         message_id: int,
         **kwargs: Any,
@@ -5001,7 +5061,7 @@ class AsyncConversations:
             **kwargs,
         )
 
-    async def delete_delete(
+    async def delete_messages(
         self,
         conversation_id: int,
         message_id: int,
@@ -6329,12 +6389,21 @@ class SyncForms:
 
     def create(
         self,
+        *,
+        form_id: int | None = 1,
+        fields: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Form"""
+        json_data: dict[str, Any] = {}
+        if form_id is not None:
+            json_data["form_id"] = form_id
+        if fields is not None:
+            json_data["fields"] = fields
         return self._client._request(
             "POST",
             "/forms/save",
+            json=json_data,
             **kwargs,
         )
 
@@ -6364,11 +6433,20 @@ class AsyncForms:
 
     async def create(
         self,
+        *,
+        form_id: int | None = 1,
+        fields: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Create Form"""
+        json_data: dict[str, Any] = {}
+        if form_id is not None:
+            json_data["form_id"] = form_id
+        if fields is not None:
+            json_data["fields"] = fields
         return await self._client._request(
             "POST",
             "/forms/save",
+            json=json_data,
             **kwargs,
         )

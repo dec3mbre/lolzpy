@@ -152,8 +152,17 @@ def render_init(
     """Render the __init__.py file for a generated subpackage."""
     env = _create_env()
     template = env.get_template("init.py.jinja2")
+
+    # Build sorted list of all Async*/Sync* class names
+    class_names: list[str] = []
+    for group_name in spec.groups:
+        pascal = _pascal_filter(group_name)
+        class_names.append(f"Async{pascal}")
+        class_names.append(f"Sync{pascal}")
+    class_names.sort()
+
     return template.render(
         package_name=package_name,
         module_path=module_path,
-        groups=list(spec.groups.keys()),
+        class_names=class_names,
     )

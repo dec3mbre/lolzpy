@@ -8,9 +8,10 @@ Regenerate with: python -m codegen.generate
 
 from __future__ import annotations
 
-from typing import Any{% if has_literal %}, Literal{% endif %}
+from typing import Any, Literal
 
 from lolzpy._internal.base_client import AsyncAPIClient, SyncAPIClient
+
 
 {% for group_name, operations in groups.items() %}
 
