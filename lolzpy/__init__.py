@@ -429,7 +429,8 @@ class Lolz:
             loop = None
 
         if loop and loop.is_running():
-            loop.create_task(_close())
+            future = asyncio.run_coroutine_threadsafe(_close(), loop)
+            future.result(timeout=10)
         else:
             asyncio.run(_close())
 

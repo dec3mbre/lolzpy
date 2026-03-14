@@ -89,7 +89,8 @@ def request_with_retry_sync(
         delay = _calculate_delay(attempt, retry_after, config)
         time.sleep(delay)
 
-    assert last_response is not None  # noqa: S101
+    if last_response is None:
+        raise RuntimeError("No response received after retries")
     return last_response
 
 
@@ -123,5 +124,6 @@ async def request_with_retry_async(
         delay = _calculate_delay(attempt, retry_after, config)
         await asyncio.sleep(delay)
 
-    assert last_response is not None  # noqa: S101
+    if last_response is None:
+        raise RuntimeError("No response received after retries")
     return last_response

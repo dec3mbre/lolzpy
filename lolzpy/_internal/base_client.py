@@ -52,8 +52,10 @@ class BaseClient:
             response_data=_try_json(response),
             headers=dict(response.headers),
         )
-        data = response.json()
+        data = _try_json(response)
         if model is None:
+            return data
+        if data is None:
             return data
         try:
             return model.model_validate(data)
@@ -187,7 +189,7 @@ class AsyncAPIClient(BaseClient):
 def _try_json(response: Response) -> Any:
     try:
         return response.json()
-    except Exception:
+    except (ValueError, TypeError):
         return None
 
 

@@ -96,6 +96,7 @@ class TestAsyncAPIClient:
     def test_construction(self):
         client = AsyncAPIClient("https://api.example.com", "token")
         assert client._base_url == "https://api.example.com"
+        # Note: AsyncSession doesn't need explicit close in construction-only tests
 
     @pytest.mark.asyncio
     async def test_context_manager(self):
