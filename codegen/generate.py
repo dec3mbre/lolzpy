@@ -51,6 +51,7 @@ def generate_models(schema_path: str, output_path: str) -> None:
         "--collapse-root-models",
         "--use-standard-collections",
         "--use-union-operator",
+        "--disable-timestamp",
     ]
     print("  Running datamodel-code-generator...")
     result = subprocess.run(cmd, capture_output=True, text=True)

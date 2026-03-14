@@ -162,7 +162,7 @@ def _operation_id_to_group(operation_id: str) -> str:
     parts = operation_id.split(".")
     if len(parts) >= 2:
         return _sanitize_python_name(parts[0])
-    return "default"
+    return _sanitize_python_name(operation_id)
 
 
 # ---------------------------------------------------------------------------
