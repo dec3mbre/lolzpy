@@ -52,7 +52,7 @@ def generate_models(schema_path: str, output_path: str) -> None:
         "--use-standard-collections",
         "--use-union-operator",
     ]
-    print(f"  Running datamodel-code-generator...")
+    print("  Running datamodel-code-generator...")
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"  ERROR: datamodel-code-generator failed:\n{result.stderr}")
@@ -62,7 +62,7 @@ def generate_models(schema_path: str, output_path: str) -> None:
 
 def generate_client(schema_path: str, name: str, output_dir: str, module_path: str) -> None:
     """Parse the spec and render client + init files."""
-    print(f"  Parsing OpenAPI spec...")
+    print("  Parsing OpenAPI spec...")
     spec = parse_spec(schema_path)
     print(f"  Found {len(spec.operations)} operations in {len(spec.groups)} groups")
 

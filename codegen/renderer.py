@@ -5,7 +5,6 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -40,9 +39,10 @@ def _prepare_operations(operations: list[ParsedOperation]) -> list[TemplateOpera
     result: list[TemplateOperation] = []
     for op in operations:
         # Convert path params like {item_id} to {item_id} for f-string
+        path_params = op.path_params
         path_template = re.sub(
             r"\{(\w+)\}",
-            lambda m: f"{{{_param_python_name(m.group(1), op.path_params)}}}",
+            lambda m, pp=path_params: f"{{{_param_python_name(m.group(1), pp)}}}",
             op.path,
         )
 

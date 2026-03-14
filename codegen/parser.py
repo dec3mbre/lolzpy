@@ -8,7 +8,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-
 # ---------------------------------------------------------------------------
 # Intermediate representation
 # ---------------------------------------------------------------------------
@@ -81,10 +80,7 @@ def _schema_to_python_type(schema: dict[str, Any]) -> str:
     if isinstance(type_val, list):
         types = [t for t in type_val if t != "null"]
         nullable = "null" in type_val
-        if len(types) == 1:
-            base = _TYPE_MAP.get(types[0], "Any")
-        else:
-            base = "Any"
+        base = _TYPE_MAP.get(types[0], "Any") if len(types) == 1 else "Any"
         return f"{base} | None" if nullable else base
 
     # Enum → Literal (only for small enums to avoid massive type annotations)
@@ -219,7 +215,7 @@ def _parse_parameter(param: dict[str, Any], spec: dict[str, Any]) -> ParsedParam
     # Resolve $ref
     if "$ref" in param:
         param = _resolve_ref(param["$ref"], spec)
-    
+
     name = param.get("name")
     if not name:
         return None
@@ -260,7 +256,7 @@ def _parse_request_body(request_body: dict[str, Any], spec: dict[str, Any]) -> l
     """Extract body parameters from a requestBody definition."""
     if "$ref" in request_body:
         request_body = _resolve_ref(request_body["$ref"], spec)
-    
+
     params: list[ParsedParameter] = []
     content = request_body.get("content", {})
 
@@ -413,7 +409,7 @@ def parse_spec(spec_path: str | Path) -> ParsedSpec:
 
 def _deduplicate_method_names(spec: ParsedSpec) -> None:
     """Ensure method names are unique within each group by appending a suffix."""
-    for group_name, ops in spec.groups.items():
+    for _group_name, ops in spec.groups.items():
         seen: dict[str, int] = {}
         for op in ops:
             if op.method_name in seen:
