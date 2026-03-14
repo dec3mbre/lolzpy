@@ -11,7 +11,6 @@ from lolzpy._internal.retry import request_with_retry_async, request_with_retry_
 from lolzpy.core.config import RetryConfig
 from tests.conftest import make_async_session, make_response, make_session
 
-
 # ---------------------------------------------------------------------------
 # Sync retry
 # ---------------------------------------------------------------------------
