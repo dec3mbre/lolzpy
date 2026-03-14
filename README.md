@@ -36,7 +36,7 @@
 
 ### curl_cffi вместо httpx / requests
 
-[curl_cffi](https://github.com/yifeikong/curl_cffi) — обёртка над libcurl с поддержкой **браузерного TLS fingerprint**. LOLZ API защищён Cloudflare — стандартные HTTP-клиенты (`httpx`, `requests`, `aiohttp`) отправляют TLS-отпечаток Python, который легко блокируется. `curl_cffi` имитирует отпечаток настоящего браузера (Chrome, Firefox, Safari), что на порядок повышает стабильность работы.
+[curl_cffi](https://github.com/yifeikong/curl_cffi) — обёртка над libcurl с поддержкой **браузерного TLS fingerprint**.
 
 | | curl_cffi | httpx | requests |
 |---|:---:|:---:|:---:|
