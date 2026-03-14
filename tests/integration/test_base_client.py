@@ -1,11 +1,11 @@
-"""Tests for lolz_sdk._base — BaseClient helpers and client construction."""
+"""Tests for lolz_sdk._internal.base_client — BaseClient helpers and client construction."""
 
 from __future__ import annotations
 
 import pytest
 
-from lolz_sdk._base import AsyncAPIClient, BaseClient, SyncAPIClient, _clean_params
-from lolz_sdk._transport import RetryConfig
+from lolz_sdk._internal.base_client import AsyncAPIClient, BaseClient, SyncAPIClient, _clean_params
+from lolz_sdk.core.config import RetryConfig
 
 # ---------------------------------------------------------------------------
 # _clean_params

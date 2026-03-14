@@ -1,4 +1,4 @@
-"""Tests for the public API facade — LolzSync / LolzAsync."""
+"""Tests for the public API facade — LolzSync / LolzAsync / Lolz."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import inspect
 
 import pytest
 
-from lolz_sdk import LolzAsync, LolzSync, RetryConfig
+from lolz_sdk import Lolz, LolzAsync, LolzSync, RetryConfig
 
 # ---------------------------------------------------------------------------
 # LolzSync
@@ -88,6 +88,69 @@ class TestLolzAsync:
         assert not inspect.iscoroutinefunction(client.forum.threads.list)
         assert not inspect.iscoroutinefunction(client.market.purchasing.fast_buy)
         client.close()
+
+
+# ---------------------------------------------------------------------------
+# Lolz unified client
+# ---------------------------------------------------------------------------
+
+
+class TestLolzUnified:
+    def test_default_is_sync(self):
+        lolz = Lolz(token="t")
+        assert not lolz.is_async
+        assert hasattr(lolz.forum, "threads")
+        assert hasattr(lolz.market, "category")
+        lolz.close()
+
+    def test_async_mode_construction(self):
+        lolz = Lolz(token="t", async_mode=True)
+        assert lolz.is_async
+        assert hasattr(lolz.forum, "threads")
+
+    def test_use_async(self):
+        lolz = Lolz(token="t")
+        result = lolz.use_async()
+        assert lolz.is_async
+        assert result is lolz  # returns self for chaining
+
+    def test_use_sync(self):
+        lolz = Lolz(token="t", async_mode=True)
+        result = lolz.use_sync()
+        assert not lolz.is_async
+        assert result is lolz
+        lolz.close()
+
+    def test_async_methods_after_use_async(self):
+        lolz = Lolz(token="t")
+        lolz.use_async()
+        assert inspect.iscoroutinefunction(lolz.forum.threads.list)
+
+    def test_sync_methods_after_use_sync(self):
+        lolz = Lolz(token="t", async_mode=True)
+        lolz.use_sync()
+        assert not inspect.iscoroutinefunction(lolz.forum.threads.list)
+        lolz.close()
+
+    def test_context_manager_sync(self):
+        with Lolz(token="t") as lolz:
+            assert hasattr(lolz.forum, "users")
+
+    @pytest.mark.asyncio
+    async def test_context_manager_async(self):
+        async with Lolz(token="t", async_mode=True) as lolz:
+            assert hasattr(lolz.forum, "users")
+
+    def test_double_use_async_noop(self):
+        lolz = Lolz(token="t", async_mode=True)
+        lolz.use_async()  # should not error
+        assert lolz.is_async
+
+    def test_double_use_sync_noop(self):
+        lolz = Lolz(token="t")
+        lolz.use_sync()  # should not error
+        assert not lolz.is_async
+        lolz.close()
 
 
 # ---------------------------------------------------------------------------
