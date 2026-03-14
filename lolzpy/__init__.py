@@ -96,13 +96,13 @@ from lolzpy.market._client import (
     SyncPurchasing,
 )
 from lolzpy.market._client import (
-    AsyncDefault as AsyncMarketBatch,
+    AsyncBatch as AsyncMarketBatch,
 )
 from lolzpy.market._client import (
     AsyncList as AsyncMarketList,
 )
 from lolzpy.market._client import (
-    SyncDefault as SyncMarketBatch,
+    SyncBatch as SyncMarketBatch,
 )
 from lolzpy.market._client import (
     SyncList as SyncMarketList,

@@ -15425,12 +15425,12 @@ class AsyncImap:
 
 
 # ===========================================================================
-# Default
+# Batch
 # ===========================================================================
 
 
-class SyncDefault:
-    """Synchronous Default API methods."""
+class SyncBatch:
+    """Synchronous Batch API methods."""
 
     def __init__(self, client: SyncAPIClient) -> None:
         self._client = client
@@ -15447,8 +15447,8 @@ class SyncDefault:
         )
 
 
-class AsyncDefault:
-    """Asynchronous Default API methods."""
+class AsyncBatch:
+    """Asynchronous Batch API methods."""
 
     def __init__(self, client: AsyncAPIClient) -> None:
         self._client = client

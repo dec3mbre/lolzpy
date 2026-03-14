@@ -2,10 +2,10 @@
 
 from lolzpy.market._client import (  # noqa: F401
     AsyncAutoPayments,
+    AsyncBatch,
     AsyncCart,
     AsyncCategory,
     AsyncCustomDiscounts,
-    AsyncDefault,
     AsyncImap,
     AsyncList,
     AsyncManaging,
@@ -15,10 +15,10 @@ from lolzpy.market._client import (  # noqa: F401
     AsyncPublishing,
     AsyncPurchasing,
     SyncAutoPayments,
+    SyncBatch,
     SyncCart,
     SyncCategory,
     SyncCustomDiscounts,
-    SyncDefault,
     SyncImap,
     SyncList,
     SyncManaging,
