@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Any{% if has_literal %}, Literal{% endif %}
 
-from lolz_sdk._base import AsyncAPIClient, SyncAPIClient
+from lolz_sdk._internal.base_client import AsyncAPIClient, SyncAPIClient
 
 {% for group_name, operations in groups.items() %}
 

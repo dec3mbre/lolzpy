@@ -7,8 +7,8 @@ Regenerate with: python -m codegen.generate
 from __future__ import annotations
 
 from typing import Any, Literal
+from lolz_sdk._internal.base_client import AsyncAPIClient, SyncAPIClient
 
-from lolz_sdk._base import AsyncAPIClient, SyncAPIClient
 
 # ===========================================================================
 # O auth

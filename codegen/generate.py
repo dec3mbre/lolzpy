@@ -17,7 +17,7 @@ from codegen.parser import parse_spec
 from codegen.renderer import render_client, render_init
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
-SCHEMAS_DIR = ROOT_DIR / "schemas"
+SCHEMAS_DIR = Path(__file__).resolve().parent / "schemas"
 SDK_DIR = ROOT_DIR / "lolz_sdk"
 
 # Schema registry — add new schemas here
@@ -47,7 +47,7 @@ def generate_models(schema_path: str, output_path: str) -> None:
         "--snake-case-field",
         "--allow-population-by-field-name",
         "--field-constraints",
-        "--target-python-version", "3.12",
+        "--target-python-version", "3.11",
         "--collapse-root-models",
         "--use-standard-collections",
         "--use-union-operator",

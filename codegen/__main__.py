@@ -1,5 +1,6 @@
-"""Allow running codegen as `python -m codegen.generate`."""
+"""Allow running codegen as `python -m codegen`."""
 
 from codegen.generate import main
 
-main()
+if __name__ == "__main__":
+    main()
