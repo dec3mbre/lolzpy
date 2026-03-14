@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import pytest
 
-from lolzpy._internal.retry import _calculate_delay, _parse_retry_after, _should_retry
-from lolzpy.core.config import DEFAULT_RETRY_ON, RetryConfig
+from lolzpy._internal.retry import _calculate_delay, _notify_retry, _parse_retry_after, _should_retry
+from lolzpy.core.config import DEFAULT_RETRY_ON, DEFAULT_RETRY_ON_EXCEPTIONS, RetryConfig
 
 # ---------------------------------------------------------------------------
 # RetryConfig
@@ -42,6 +42,45 @@ class TestRetryConfig:
     def test_retry_on_accepts_set(self):
         cfg = RetryConfig(retry_on=frozenset({429, 503}))
         assert cfg.retry_on == frozenset({429, 503})
+
+    def test_retry_on_exceptions_default(self):
+        cfg = RetryConfig()
+        assert cfg.retry_on_exceptions == DEFAULT_RETRY_ON_EXCEPTIONS
+        assert ConnectionError in cfg.retry_on_exceptions
+        assert TimeoutError in cfg.retry_on_exceptions
+        assert OSError in cfg.retry_on_exceptions
+
+    def test_retry_on_exceptions_custom_list(self):
+        cfg = RetryConfig(retry_on_exceptions=[ConnectionError, ValueError])
+        assert cfg.retry_on_exceptions == (ConnectionError, ValueError)
+        assert isinstance(cfg.retry_on_exceptions, tuple)
+
+    def test_retry_on_exceptions_accepts_tuple(self):
+        exc = (IOError, RuntimeError)
+        cfg = RetryConfig(retry_on_exceptions=exc)
+        assert cfg.retry_on_exceptions == exc
+
+    def test_on_retry_default_none(self):
+        cfg = RetryConfig()
+        assert cfg.on_retry is None
+
+    def test_on_retry_accepts_callable(self):
+        calls = []
+        cb = lambda attempt, delay: calls.append((attempt, delay))
+        cfg = RetryConfig(on_retry=cb)
+        assert cfg.on_retry is cb
+
+    def test_on_retry_excluded_from_eq(self):
+        cb = lambda a, d: None
+        cfg1 = RetryConfig(on_retry=cb)
+        cfg2 = RetryConfig(on_retry=None)
+        assert cfg1 == cfg2
+
+    def test_frozen_with_on_retry(self):
+        cb = lambda a, d: None
+        cfg = RetryConfig(on_retry=cb)
+        with pytest.raises(Exception, match="cannot assign|frozen"):
+            cfg.on_retry = None  # type: ignore[misc]
 
 
 # ---------------------------------------------------------------------------
@@ -142,3 +181,21 @@ class TestShouldRetry:
     def test_custom_retry_on_excludes_code(self):
         cfg = RetryConfig(max_retries=3, retry_on=[429])
         assert _should_retry(500, 0, cfg) is False
+
+
+# ---------------------------------------------------------------------------
+# _notify_retry
+# ---------------------------------------------------------------------------
+
+
+class TestNotifyRetry:
+    def test_calls_on_retry_callback(self):
+        calls: list[tuple[int, float]] = []
+        cfg = RetryConfig(on_retry=lambda a, d: calls.append((a, d)))
+        _notify_retry(cfg, 0, 1.5)
+        _notify_retry(cfg, 1, 3.0)
+        assert calls == [(0, 1.5), (1, 3.0)]
+
+    def test_no_callback_is_noop(self):
+        cfg = RetryConfig()
+        _notify_retry(cfg, 0, 1.0)  # should not raise

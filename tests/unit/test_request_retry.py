@@ -175,3 +175,115 @@ class TestRequestWithRetryAsync:
         with pytest.raises(SessionClosed):
             await request_with_retry_async(session, "GET", "https://api.test/v1", config)
         assert session.request.call_count == 1
+
+
+# ---------------------------------------------------------------------------
+# retry_on_exceptions
+# ---------------------------------------------------------------------------
+
+
+class TestRetryOnExceptionsSync:
+    @patch("lolzpy._internal.retry.time.sleep")
+    def test_custom_exception_retried(self, mock_sleep):
+        session = make_session([ValueError("bad"), make_response(200)])
+        config = RetryConfig(max_retries=2, retry_on_exceptions=[ValueError])
+
+        result = request_with_retry_sync(session, "GET", "https://api.test/v1", config)
+        assert result.status_code == 200
+        assert session.request.call_count == 2
+
+    @patch("lolzpy._internal.retry.time.sleep")
+    def test_non_configured_exception_not_retried(self, mock_sleep):
+        session = make_session([ValueError("bad")])
+        config = RetryConfig(max_retries=3, retry_on_exceptions=(ConnectionError, TimeoutError))
+
+        with pytest.raises(ValueError):
+            request_with_retry_sync(session, "GET", "https://api.test/v1", config)
+        assert session.request.call_count == 1
+
+    @patch("lolzpy._internal.retry.time.sleep")
+    def test_empty_exceptions_still_catches_request_exception(self, mock_sleep):
+        session = make_session([RequestException("network"), make_response(200)])
+        config = RetryConfig(max_retries=2, retry_on_exceptions=())
+
+        result = request_with_retry_sync(session, "GET", "https://api.test/v1", config)
+        assert result.status_code == 200
+
+
+class TestRetryOnExceptionsAsync:
+    @pytest.mark.asyncio
+    @patch("lolzpy._internal.retry.asyncio.sleep")
+    async def test_custom_exception_retried(self, mock_sleep):
+        session = make_async_session([ValueError("bad"), make_response(200)])
+        config = RetryConfig(max_retries=2, retry_on_exceptions=[ValueError])
+
+        result = await request_with_retry_async(session, "GET", "https://api.test/v1", config)
+        assert result.status_code == 200
+        assert session.request.call_count == 2
+
+
+# ---------------------------------------------------------------------------
+# on_retry callback
+# ---------------------------------------------------------------------------
+
+
+class TestOnRetrySync:
+    @patch("lolzpy._internal.retry.time.sleep")
+    def test_on_retry_called_on_status_retry(self, mock_sleep):
+        calls: list[tuple[int, float]] = []
+        cb = lambda attempt, delay: calls.append((attempt, delay))
+        resp_500 = make_response(500)
+        resp_200 = make_response(200)
+        session = make_session([resp_500, resp_200])
+        config = RetryConfig(max_retries=3, on_retry=cb)
+
+        request_with_retry_sync(session, "GET", "https://api.test/v1", config)
+        assert len(calls) == 1
+        assert calls[0][0] == 0  # attempt
+
+    @patch("lolzpy._internal.retry.time.sleep")
+    def test_on_retry_called_on_exception_retry(self, mock_sleep):
+        calls: list[tuple[int, float]] = []
+        cb = lambda attempt, delay: calls.append((attempt, delay))
+        session = make_session([ConnectionError("refused"), make_response(200)])
+        config = RetryConfig(max_retries=2, on_retry=cb)
+
+        request_with_retry_sync(session, "GET", "https://api.test/v1", config)
+        assert len(calls) == 1
+        assert calls[0][0] == 0
+
+    @patch("lolzpy._internal.retry.time.sleep")
+    def test_on_retry_not_called_on_success(self, mock_sleep):
+        calls: list[tuple[int, float]] = []
+        cb = lambda attempt, delay: calls.append((attempt, delay))
+        session = make_session([make_response(200)])
+        config = RetryConfig(max_retries=3, on_retry=cb)
+
+        request_with_retry_sync(session, "GET", "https://api.test/v1", config)
+        assert len(calls) == 0
+
+
+class TestOnRetryAsync:
+    @pytest.mark.asyncio
+    @patch("lolzpy._internal.retry.asyncio.sleep")
+    async def test_on_retry_called_on_status_retry(self, mock_sleep):
+        calls: list[tuple[int, float]] = []
+        cb = lambda attempt, delay: calls.append((attempt, delay))
+        resp_500 = make_response(500)
+        resp_200 = make_response(200)
+        session = make_async_session([resp_500, resp_200])
+        config = RetryConfig(max_retries=3, on_retry=cb)
+
+        await request_with_retry_async(session, "GET", "https://api.test/v1", config)
+        assert len(calls) == 1
+
+    @pytest.mark.asyncio
+    @patch("lolzpy._internal.retry.asyncio.sleep")
+    async def test_on_retry_called_on_exception_retry(self, mock_sleep):
+        calls: list[tuple[int, float]] = []
+        cb = lambda attempt, delay: calls.append((attempt, delay))
+        session = make_async_session([ConnectionError("refused"), make_response(200)])
+        config = RetryConfig(max_retries=2, on_retry=cb)
+
+        await request_with_retry_async(session, "GET", "https://api.test/v1", config)
+        assert len(calls) == 1

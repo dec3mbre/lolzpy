@@ -6,6 +6,7 @@ import pytest
 
 from lolzpy._internal.base_client import AsyncAPIClient, BaseClient, SyncAPIClient, _clean_params
 from lolzpy.core.config import RetryConfig
+from lolzpy.core.types import BrowserType
 
 # ---------------------------------------------------------------------------
 # _clean_params
@@ -54,6 +55,24 @@ class TestBaseClient:
         cfg = RetryConfig(max_retries=5)
         client = BaseClient("https://api.example.com", "t", retry=cfg)
         assert client._retry.max_retries == 5
+
+    def test_split_timeout_defaults(self):
+        client = BaseClient("https://api.example.com", "t")
+        assert client._connect_timeout == 10.0
+        assert client._read_timeout == 30.0
+
+    def test_split_timeout_custom(self):
+        client = BaseClient("https://api.example.com", "t", connect_timeout=5.0, read_timeout=60.0)
+        assert client._connect_timeout == 5.0
+        assert client._read_timeout == 60.0
+
+    def test_impersonate_default(self):
+        client = BaseClient("https://api.example.com", "t")
+        assert client._impersonate == "chrome"
+
+    def test_impersonate_custom(self):
+        client = BaseClient("https://api.example.com", "t", impersonate="firefox")
+        assert client._impersonate == "firefox"
 
 
 # ---------------------------------------------------------------------------

@@ -111,6 +111,7 @@ from lolzpy.market._client import (
 
 __all__ = [
     "__version__",
+    "BrowserType",
     "Lolz",
     "LolzSync",
     "LolzAsync",
