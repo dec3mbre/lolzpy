@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lolz-sdk"
+version = "0.1.0"
+description = "Typed Python SDK for LOLZ Forum & Market APIs (sync + async)"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+authors = [{ name = "Andre" }]
+keywords = ["lolz", "lolzteam", "zelenka", "api", "sdk"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+dependencies = [
+    "curl_cffi>=0.14",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+codegen = [
+    "datamodel-code-generator>=0.55",
+    "prance>=23.6",
+    "openapi-spec-validator>=0.7",
+    "jinja2>=3.1",
+    "ruff>=0.9",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "pyright>=1.1",
+    "ruff>=0.9",
+]
+
+[project.urls]
+Repository = "https://github.com/your-org/lolz-sdk"
+
+[tool.hatch.build.targets.wheel]
+packages = ["lolz_sdk"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "TCH"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "standard"
+include = ["lolz_sdk"]
+exclude = ["codegen", "tests"]
