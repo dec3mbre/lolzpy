@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 
 from lolzpy._internal.retry import _calculate_delay, _parse_retry_after, _should_retry
-from lolzpy.core.config import RetryConfig
+from lolzpy.core.config import DEFAULT_RETRY_ON, RetryConfig
 
 # ---------------------------------------------------------------------------
 # RetryConfig
@@ -19,8 +19,9 @@ class TestRetryConfig:
         assert cfg.initial_delay == 0.5
         assert cfg.max_delay == 8.0
         assert cfg.max_retry_after == 60.0
-        assert 429 in cfg.retryable_statuses
-        assert 502 in cfg.retryable_statuses
+        assert cfg.retry_on == DEFAULT_RETRY_ON
+        assert 429 in cfg.retry_on
+        assert 502 in cfg.retry_on
 
     def test_custom(self):
         cfg = RetryConfig(max_retries=5, initial_delay=1.0, max_delay=16.0)
@@ -32,6 +33,15 @@ class TestRetryConfig:
         cfg = RetryConfig()
         with pytest.raises(Exception, match="cannot assign|frozen"):
             cfg.max_retries = 10  # type: ignore[misc]
+
+    def test_retry_on_custom_list(self):
+        cfg = RetryConfig(retry_on=[408, 429, 520])
+        assert cfg.retry_on == frozenset({408, 429, 520})
+        assert 500 not in cfg.retry_on
+
+    def test_retry_on_accepts_set(self):
+        cfg = RetryConfig(retry_on=frozenset({429, 503}))
+        assert cfg.retry_on == frozenset({429, 503})
 
 
 # ---------------------------------------------------------------------------
@@ -123,3 +133,12 @@ class TestShouldRetry:
     def test_last_valid_attempt(self):
         cfg = RetryConfig(max_retries=3)
         assert _should_retry(502, 2, cfg) is True
+
+    def test_custom_retry_on_includes_code(self):
+        cfg = RetryConfig(max_retries=3, retry_on=[408, 520])
+        assert _should_retry(408, 0, cfg) is True
+        assert _should_retry(520, 0, cfg) is True
+
+    def test_custom_retry_on_excludes_code(self):
+        cfg = RetryConfig(max_retries=3, retry_on=[429])
+        assert _should_retry(500, 0, cfg) is False

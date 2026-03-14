@@ -51,7 +51,7 @@ def _calculate_delay(attempt: int, retry_after: float | None, config: RetryConfi
 
 
 def _should_retry(status_code: int, attempt: int, config: RetryConfig) -> bool:
-    return attempt < config.max_retries and status_code in config.retryable_statuses
+    return attempt < config.max_retries and status_code in config.retry_on
 
 
 # ---------------------------------------------------------------------------
