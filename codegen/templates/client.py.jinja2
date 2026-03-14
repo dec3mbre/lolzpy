@@ -1,0 +1,137 @@
+{# Template for generating sync and async client classes from parsed OpenAPI operations. #}
+{# Variables: package_name (str), groups (dict[str, list[ParsedOperation]]), has_literal (bool) #}
+"""{{ package_name }} API client methods.
+
+Auto-generated from OpenAPI spec — do not edit manually.
+Regenerate with: python -m codegen.generate
+"""
+
+from __future__ import annotations
+
+from typing import Any{% if has_literal %}, Literal{% endif %}
+
+from lolz_sdk._base import AsyncAPIClient, SyncAPIClient
+
+{% for group_name, operations in groups.items() %}
+
+# ===========================================================================
+# {{ group_name | title | replace("_", " ") }}
+# ===========================================================================
+
+
+class Sync{{ group_name | pascal }}:
+    """Synchronous {{ group_name | title | replace("_", " ") }} API methods."""
+
+    def __init__(self, client: SyncAPIClient) -> None:
+        self._client = client
+{% for op in operations %}
+
+    def {{ op.method_name }}(
+        self,
+{% for p in op.path_params %}
+        {{ p.python_name }}: {{ p.python_type }},
+{% endfor %}
+{% for p in op.required_body_params %}
+        {{ p.python_name }}: {{ p.python_type }},
+{% endfor %}
+{% for p in op.required_query_params %}
+        {{ p.python_name }}: {{ p.python_type }},
+{% endfor %}
+        *,
+{% for p in op.optional_query_params %}
+        {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
+{% endfor %}
+{% for p in op.optional_body_params %}
+        {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
+{% endfor %}
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+{% if op.description %}
+        """{{ op.description | truncate(200) }}"""
+{% endif %}
+{% if op.query_params or op.body_params %}
+        params: dict[str, Any] = {}
+{% for p in op.query_params %}
+        if {{ p.python_name }} is not None:
+            params["{{ p.name }}"] = {{ p.python_name }}
+{% endfor %}
+{% if op.body_params %}
+        json_data: dict[str, Any] = {}
+{% for p in op.body_params %}
+        if {{ p.python_name }} is not None:
+            json_data["{{ p.name }}"] = {{ p.python_name }}
+{% endfor %}
+{% endif %}
+{% endif %}
+        return self._client._request(
+            "{{ op.http_method }}",
+            f"{{ op.path_template }}",
+{% if op.query_params %}
+            params=params,
+{% endif %}
+{% if op.body_params %}
+            json=json_data,
+{% endif %}
+            **kwargs,
+        )
+{% endfor %}
+
+
+class Async{{ group_name | pascal }}:
+    """Asynchronous {{ group_name | title | replace("_", " ") }} API methods."""
+
+    def __init__(self, client: AsyncAPIClient) -> None:
+        self._client = client
+{% for op in operations %}
+
+    async def {{ op.method_name }}(
+        self,
+{% for p in op.path_params %}
+        {{ p.python_name }}: {{ p.python_type }},
+{% endfor %}
+{% for p in op.required_body_params %}
+        {{ p.python_name }}: {{ p.python_type }},
+{% endfor %}
+{% for p in op.required_query_params %}
+        {{ p.python_name }}: {{ p.python_type }},
+{% endfor %}
+        *,
+{% for p in op.optional_query_params %}
+        {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
+{% endfor %}
+{% for p in op.optional_body_params %}
+        {{ p.python_name }}: {{ p.python_type }} | None = {{ p.default if p.default else "None" }},
+{% endfor %}
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+{% if op.description %}
+        """{{ op.description | truncate(200) }}"""
+{% endif %}
+{% if op.query_params or op.body_params %}
+        params: dict[str, Any] = {}
+{% for p in op.query_params %}
+        if {{ p.python_name }} is not None:
+            params["{{ p.name }}"] = {{ p.python_name }}
+{% endfor %}
+{% if op.body_params %}
+        json_data: dict[str, Any] = {}
+{% for p in op.body_params %}
+        if {{ p.python_name }} is not None:
+            json_data["{{ p.name }}"] = {{ p.python_name }}
+{% endfor %}
+{% endif %}
+{% endif %}
+        return await self._client._request(
+            "{{ op.http_method }}",
+            f"{{ op.path_template }}",
+{% if op.query_params %}
+            params=params,
+{% endif %}
+{% if op.body_params %}
+            json=json_data,
+{% endif %}
+            **kwargs,
+        )
+{% endfor %}
+
+{% endfor %}
