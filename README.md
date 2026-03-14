@@ -6,22 +6,98 @@
 [![PyPI](https://img.shields.io/pypi/v/lolz-sdk)](https://pypi.org/project/lolz-sdk/)
 [![Typed](https://img.shields.io/badge/typing-typed-green.svg)](https://peps.python.org/pep-0561/)
 
-Typed Python SDK for the [LOLZ Forum](https://lolz.live) and [ZT.Market](https://lzt.market) APIs.
-
-- **Full sync & async** support via [`curl_cffi`](https://github.com/yifeikong/curl_cffi) (browser TLS fingerprinting)
-- **Pydantic v2** typed response models, auto-generated from OpenAPI schemas
-- **Token-bucket rate limiting** (thread-safe sync + asyncio-safe async)
-- **Automatic retry** with exponential backoff and `Retry-After` header support
-- **Exception hierarchy** — `AuthError`, `RateLimitError`, `NotFoundError`, `ServerError`
-- **Grouped API methods** — `client.forum.users.get_me()`, `client.market.purchasing.fast_buy()`
-- **151 Forum + 115 Market** operations, all auto-generated from official OpenAPI specs
-- **Proxy support** — HTTP, HTTPS, SOCKS5
-- **PEP 561** typed package
-- MIT licence
+Типизированный Python SDK для API [LOLZ Forum](https://lolz.live) и [ZT.Market](https://lzt.market).
 
 ---
 
-## Installation
+## Преимущества SDK
+
+| Возможность | lolz-sdk | Аналоги |
+|---|:---:|:---:|
+| **Типизированные ответы** (Pydantic v2) | ✅ | ❌ `dict` |
+| **Иерархия исключений** (`AuthError`, `RateLimitError`, …) | ✅ | ❌ общий `Exception` |
+| **Token-bucket rate limiting** (thread-safe + asyncio-safe) | ✅ | ❌ `time.sleep` |
+| **Автоматический retry** с экспоненциальным backoff и jitter | ✅ | ❌ |
+| **Поддержка `Retry-After` заголовка** | ✅ | ❌ |
+| **Браузерный TLS fingerprint** (обход Cloudflare) | ✅ curl_cffi | ❌ httpx |
+| **Полное покрытие Market API** (115 операций) | ✅ | Частичное |
+| **Полное покрытие Forum API** (151 операция) | ✅ | Частичное |
+| **Авто-генерация из OpenAPI** спецификаций | ✅ | ❌ Ручной код |
+| **Unit-тесты** | 114 тестов | 0 |
+| **CI/CD** (GitHub Actions) | ✅ | ❌ |
+| **PEP 561** (типизированный пакет) | ✅ | ❌ |
+| **Переключение sync/async** в рантайме | ✅ | ✅ |
+| **Группированные методы** (`client.forum.users.get_me()`) | ✅ | ✅ |
+| **Поддержка прокси** (HTTP, HTTPS, SOCKS5) | ✅ | ✅ |
+
+---
+
+## Почему именно этот стек
+
+### curl_cffi вместо httpx / requests
+
+[curl_cffi](https://github.com/yifeikong/curl_cffi) — обёртка над libcurl с поддержкой **браузерного TLS fingerprint**. LOLZ API защищён Cloudflare — стандартные HTTP-клиенты (`httpx`, `requests`, `aiohttp`) отправляют TLS-отпечаток Python, который легко блокируется. `curl_cffi` имитирует отпечаток настоящего браузера (Chrome, Firefox, Safari), что на порядок повышает стабильность работы.
+
+| | curl_cffi | httpx | requests |
+|---|:---:|:---:|:---:|
+| TLS fingerprint браузера | ✅ | ❌ | ❌ |
+| Sync + Async в одной библиотеке | ✅ | ✅ | ❌ |
+| HTTP/2 | ✅ | ✅ | ❌ |
+| SOCKS5 прокси | ✅ | Через плагин | Через плагин |
+| Скорость | ≈ libcurl (C) | Python | Python |
+
+### Pydantic v2 вместо сырых `dict`
+
+Все ответы API десериализуются в **типизированные модели Pydantic v2**. Это даёт:
+
+- **Автодополнение в IDE** — IDE подсказывает доступные поля и их типы
+- **Валидация на лету** — неожиданный формат ответа сразу выбросит `ValidationError` вместо `KeyError` в рантайме
+- **Скорость** — Pydantic v2 написан на Rust, валидация в 5-50× быстрее v1
+- **Документируемость** — модели служат живой документацией API
+
+```python
+me = lolz.forum.users.get_me()
+print(me.user.username)      # IDE знает тип: str
+print(me.user.user_id)       # IDE знает тип: int
+# me.nonexistent_field       # IDE покажет ошибку ещё до запуска
+```
+
+### Авто-генерация из OpenAPI
+
+Клиентский код и модели **генерируются автоматически** из официальных OpenAPI-схем LOLZ. Это гарантирует:
+
+- **Полное покрытие** — все 266 операций (151 Forum + 115 Market) без ручного пропуска
+- **Актуальность** — обновление API = перегенерация одной командой
+- **Отсутствие человеческих ошибок** — опечатки и несовпадение сигнатур исключены
+
+### Token-bucket rate limiting
+
+Вместо примитивного `time.sleep(3)` между запросами используется **алгоритм token bucket**:
+
+- Потокобезопасный (sync) и asyncio-safe (async)
+- Равномерное распределение запросов, а не burst + пауза
+- Настраиваемый лимит через параметр `rate_limit`
+
+### Иерархия исключений
+
+Вместо единого `Exception` — конкретные классы с полезной информацией:
+
+```python
+try:
+    user = lolz.forum.users.get(user_id=123)
+except AuthError as e:
+    # e.status_code = 401/403, e.message = "..."
+except RateLimitError as e:
+    # e.retry_after = 2.5 (секунды, из заголовка Retry-After)
+except NotFoundError:
+    # 404
+except ServerError:
+    # 5xx
+```
+
+---
+
+## Установка
 
 ```bash
 pip install lolz-sdk
@@ -29,9 +105,9 @@ pip install lolz-sdk
 
 ---
 
-## Quick Start
+## Быстрый старт
 
-### Synchronous
+### Синхронный клиент
 
 ```python
 from lolz_sdk import LolzSync
@@ -46,7 +122,7 @@ with LolzSync(token="YOUR_TOKEN") as lolz:
     items = lolz.market.category.all(category_name="steam")
 ```
 
-### Asynchronous
+### Асинхронный клиент
 
 ```python
 import asyncio
@@ -60,20 +136,20 @@ async def main():
 asyncio.run(main())
 ```
 
-### Unified Client (runtime mode switching)
+### Универсальный клиент (переключение в рантайме)
 
 ```python
 from lolz_sdk import Lolz
 
-# Starts in sync mode
+# По умолчанию — синхронный режим
 lolz = Lolz(token="YOUR_TOKEN")
 me = lolz.forum.users.get_me()
 
-# Switch to async at runtime
+# Переключение на async
 lolz.use_async()
 me = await lolz.forum.users.get_me()
 
-# Switch back
+# Обратно на sync
 lolz.use_sync()
 me = lolz.forum.users.get_me()
 lolz.close()
@@ -81,41 +157,41 @@ lolz.close()
 
 ---
 
-## Client Parameters
+## Параметры клиента
 
-| Parameter | Type | Default | Description |
+| Параметр | Тип | По умолчанию | Описание |
 |---|---|---|---|
-| `token` | `str` | **required** | API bearer token |
-| `proxy` | `str \| None` | `None` | Proxy URL (see below) |
-| `timeout` | `float` | `30.0` | HTTP timeout in seconds |
-| `retry` | `RetryConfig \| None` | `RetryConfig()` | Retry configuration |
-| `rate_limit` | `float` | `0.0` | Max requests/sec (0 = unlimited) |
-| `impersonate` | `str` | `"chrome"` | Browser TLS fingerprint |
-| `forum_base_url` | `str` | `"https://prod-api.lolz.live"` | Forum API base URL |
-| `market_base_url` | `str` | `"https://prod-api.lzt.market"` | Market API base URL |
+| `token` | `str` | **обязательный** | Bearer-токен API |
+| `proxy` | `str \| None` | `None` | URL прокси (см. ниже) |
+| `timeout` | `float` | `30.0` | Таймаут HTTP-запроса (секунды) |
+| `retry` | `RetryConfig \| None` | `RetryConfig()` | Настройки повторных запросов |
+| `rate_limit` | `float` | `0.0` | Макс. запросов/сек (0 = без лимита) |
+| `impersonate` | `str` | `"chrome"` | TLS-отпечаток браузера |
+| `forum_base_url` | `str` | `"https://prod-api.lolz.live"` | Базовый URL Forum API |
+| `market_base_url` | `str` | `"https://prod-api.lzt.market"` | Базовый URL Market API |
 
-The `Lolz` unified client also accepts `async_mode: bool = False`.
+Универсальный клиент `Lolz` также принимает `async_mode: bool = False`.
 
 ---
 
-## Proxy Support
+## Прокси
 
 ```python
 from lolz_sdk import LolzSync
 
-# HTTP proxy
+# HTTP
 lolz = LolzSync(token="YOUR_TOKEN", proxy="http://user:pass@host:8080")
 
-# SOCKS5 proxy
+# SOCKS5
 lolz = LolzSync(token="YOUR_TOKEN", proxy="socks5://user:pass@host:1080")
 
-# HTTPS proxy
+# HTTPS
 lolz = LolzSync(token="YOUR_TOKEN", proxy="https://host:8443")
 ```
 
 ---
 
-## Retry Configuration
+## Настройка retry
 
 ```python
 from lolz_sdk import LolzSync, RetryConfig
@@ -123,15 +199,15 @@ from lolz_sdk import LolzSync, RetryConfig
 lolz = LolzSync(
     token="YOUR_TOKEN",
     retry=RetryConfig(
-        max_retries=5,          # Max retry attempts (default: 3)
-        initial_delay=1.0,      # Initial backoff delay in seconds (default: 0.5)
-        max_delay=16.0,         # Max backoff delay (default: 8.0)
-        max_retry_after=120.0,  # Max Retry-After header value to respect (default: 60.0)
+        max_retries=5,          # Макс. попыток (по умолчанию: 3)
+        initial_delay=1.0,      # Начальная задержка в секундах (по умолчанию: 0.5)
+        max_delay=16.0,         # Макс. задержка (по умолчанию: 8.0)
+        max_retry_after=120.0,  # Макс. Retry-After из заголовка (по умолчанию: 60.0)
     ),
 )
 ```
 
-Retries automatically on: `429`, `500`, `502`, `503`, `504` with exponential backoff + ±25% jitter.
+Автоматический retry на: `429`, `500`, `502`, `503`, `504` с экспоненциальным backoff ± 25% jitter.
 
 ---
 
@@ -140,15 +216,15 @@ Retries automatically on: `429`, `500`, `502`, `503`, `504` with exponential bac
 ```python
 from lolz_sdk import LolzSync
 
-# Token-bucket: max 3 requests per second
+# Token-bucket: максимум 3 запроса в секунду
 lolz = LolzSync(token="YOUR_TOKEN", rate_limit=3.0)
 ```
 
-The rate limiter is thread-safe (sync) and asyncio-safe (async). Set `rate_limit=0.0` to disable.
+Rate limiter потокобезопасен (sync) и asyncio-safe (async). `rate_limit=0.0` — без ограничений.
 
 ---
 
-## Error Handling
+## Обработка ошибок
 
 ```python
 from lolz_sdk import LolzSync, AuthError, RateLimitError, NotFoundError, ServerError, LolzError
@@ -157,98 +233,98 @@ with LolzSync(token="YOUR_TOKEN") as lolz:
     try:
         user = lolz.forum.users.get(user_id=123)
     except AuthError as e:
-        print(f"Auth failed ({e.status_code}): {e.message}")
+        print(f"Ошибка авторизации ({e.status_code}): {e.message}")
     except RateLimitError as e:
-        print(f"Rate limited, retry after {e.retry_after}s")
+        print(f"Лимит запросов, повтор через {e.retry_after}с")
     except NotFoundError:
-        print("User not found")
+        print("Пользователь не найден")
     except ServerError as e:
-        print(f"Server error: {e.status_code}")
+        print(f"Ошибка сервера: {e.status_code}")
     except LolzError as e:
-        print(f"API error: {e.message}")
+        print(f"Ошибка API: {e.message}")
 ```
 
-### Exception Hierarchy
+### Иерархия исключений
 
-| Exception | HTTP Codes | Description |
+| Исключение | HTTP-коды | Описание |
 |---|---|---|
-| `LolzError` | all | Base exception |
-| `AuthError` | 401, 403 | Authentication / authorization failure |
-| `NotFoundError` | 404 | Resource not found |
-| `RateLimitError` | 429 | Rate limit exceeded (includes `retry_after`) |
-| `ServerError` | 5xx | Server-side error |
-| `ValidationError` | — | Response doesn't match expected Pydantic model |
+| `LolzError` | все | Базовое исключение |
+| `AuthError` | 401, 403 | Ошибка аутентификации / авторизации |
+| `NotFoundError` | 404 | Ресурс не найден |
+| `RateLimitError` | 429 | Превышен лимит запросов (содержит `retry_after`) |
+| `ServerError` | 5xx | Ошибка на стороне сервера |
+| `ValidationError` | — | Ответ не соответствует Pydantic-модели |
 
 ---
 
-## Forum API Examples
+## Примеры Forum API
 
 ```python
 from lolz_sdk import LolzSync
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
-    # Users
+    # Пользователи
     me = lolz.forum.users.get_me()
     user = lolz.forum.users.get(user_id=2410024)
     followers = lolz.forum.users.followers(user_id=2410024)
 
-    # Threads
+    # Темы
     threads = lolz.forum.threads.list(forum_id=876, limit=20)
     thread = lolz.forum.threads.get(thread_id=1234567)
     new_thread = lolz.forum.threads.create(
         forum_id=876,
         thread_title="Hello World",
-        post_body="My first thread via SDK.",
+        thread_body="Моя первая тема через SDK.",
     )
 
-    # Posts
+    # Посты
     posts = lolz.forum.posts.list(thread_id=1234567)
-    new_post = lolz.forum.posts.create(thread_id=1234567, post_body="Reply via SDK")
+    new_post = lolz.forum.posts.create(thread_id=1234567, post_body="Ответ через SDK")
 
-    # Conversations
+    # Диалоги
     convs = lolz.forum.conversations.list()
     new_conv = lolz.forum.conversations.create(
         recipient_id=2410024,
-        message_body="Hi!",
-        conversation_title="Hello",
+        message_body="Привет!",
+        conversation_title="Приветствие",
     )
 
-    # Search
+    # Поиск
     results = lolz.forum.search.search(q="python sdk")
 ```
 
 ---
 
-## Market API Examples
+## Примеры Market API
 
 ```python
 from lolz_sdk import LolzSync
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
-    # Profile
+    # Профиль
     profile = lolz.market.profile.get_me()
 
-    # Browse items
+    # Просмотр аккаунтов
     items = lolz.market.category.all(category_name="steam")
 
-    # Purchase
+    # Покупка
     bought = lolz.market.purchasing.fast_buy(item_id=12345678, price=100, currency="rub")
 
-    # Manage listings
+    # Управление лотами
     listings = lolz.market.managing.list()
 
-    # Payments
+    # Платежи
     payments = lolz.market.payments.list()
 
-    # Cart
+    # Корзина
     cart = lolz.market.cart.list()
 ```
 
 ---
 
-## Context Managers
+## Контекстные менеджеры
 
-All client classes support context managers for automatic cleanup:
+Все клиенты поддерживают контекстные менеджеры для автоматического закрытия соединений:
 
 ```python
 # Sync
@@ -259,71 +335,71 @@ with LolzSync(token="YOUR_TOKEN") as lolz:
 async with LolzAsync(token="YOUR_TOKEN") as lolz:
     ...
 
-# Unified — sync
+# Универсальный — sync
 with Lolz(token="YOUR_TOKEN") as lolz:
     ...
 
-# Unified — async
+# Универсальный — async
 async with Lolz(token="YOUR_TOKEN", async_mode=True) as lolz:
     ...
 ```
 
 ---
 
-## Project Structure
+## Структура проекта
 
 ```
 lolz_sdk/
-├── __init__.py             # Public API: LolzSync, LolzAsync, Lolz
-├── _version.py             # Version string
-├── py.typed                # PEP 561 marker
-├── core/                   # Public: config, exceptions, types
+├── __init__.py             # Публичный API: LolzSync, LolzAsync, Lolz
+├── _version.py             # Версия пакета
+├── py.typed                # PEP 561 маркер
+├── core/                   # Публичное: конфигурация, исключения, типы
 │   ├── config.py           # RetryConfig
-│   ├── exceptions.py       # Exception hierarchy
-│   └── types.py            # Type aliases
-├── _internal/              # Private: transport layer
+│   ├── exceptions.py       # Иерархия исключений
+│   └── types.py            # Алиасы типов
+├── _internal/              # Приватное: транспортный слой
 │   ├── base_client.py      # SyncAPIClient, AsyncAPIClient
 │   ├── rate_limit.py       # TokenBucketSync, TokenBucketAsync
-│   └── retry.py            # Retry logic, backoff
-├── forum/                  # Forum API (auto-generated)
-│   ├── _client.py          # 151 operations in 18 groups
-│   └── _models.py          # Pydantic v2 models
-└── market/                 # Market API (auto-generated)
-    ├── _client.py           # 115 operations in 14 groups
-    └── _models.py           # Pydantic v2 models
+│   └── retry.py            # Логика retry, backoff
+├── forum/                  # Forum API (авто-генерация)
+│   ├── _client.py          # 151 операция в 18 группах
+│   └── _models.py          # Pydantic v2 модели
+└── market/                 # Market API (авто-генерация)
+    ├── _client.py          # 115 операций в 14 группах
+    └── _models.py          # Pydantic v2 модели
 
-codegen/                    # Code generation tooling
-├── schemas/                # OpenAPI specs (forum.json, market.json)
+codegen/                    # Инструменты кодогенерации
+├── schemas/                # OpenAPI-схемы (forum.json, market.json)
 ├── parser.py               # OpenAPI → ParsedSpec
 ├── renderer.py             # Jinja2 → Python
-├── templates/              # Jinja2 templates
+├── templates/              # Jinja2 шаблоны
 └── generate.py             # CLI: python -m codegen --all
 ```
 
 ---
 
-## Development
+## Разработка
 
 ```bash
-# Install dev dependencies
+# Установка dev-зависимостей
 pip install -e ".[dev]"
 
-# Run tests
+# Запуск тестов
 pytest tests/ -v
 
-# Lint
+# Линтинг
 ruff check lolz_sdk/
 
-# Type check
+# Проверка типов
 pyright lolz_sdk/
 
-# Regenerate clients from OpenAPI schemas
+# Перегенерация клиентов из OpenAPI-схем
 pip install -e ".[codegen]"
 python -m codegen --all
 ```
 
 ---
 
-## License
+## Лицензия
 
-MIT — see [LICENSE](LICENSE).
+MIT — см. [LICENSE](LICENSE).
