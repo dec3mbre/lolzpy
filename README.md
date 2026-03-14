@@ -19,7 +19,7 @@
 | **Token-bucket rate limiting** (thread-safe + asyncio-safe) | ✅ | ❌ `time.sleep` |
 | **Автоматический retry** с экспоненциальным backoff и jitter | ✅ | ❌ |
 | **Поддержка `Retry-After` заголовка** | ✅ | ❌ |
-| **Браузерный TLS fingerprint** (обход Cloudflare) | ✅ curl_cffi | ❌ httpx |
+| **Браузерный TLS fingerprint** | ✅ curl_cffi | ❌ httpx |
 | **Полное покрытие Market API** (115 операций) | ✅ | Частичное |
 | **Полное покрытие Forum API** (151 операция) | ✅ | Частичное |
 | **Авто-генерация из OpenAPI** спецификаций | ✅ | ❌ Ручной код |
