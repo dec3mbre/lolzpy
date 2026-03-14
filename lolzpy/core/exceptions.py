@@ -10,11 +10,21 @@ from typing import Any
 class LolzError(Exception):
     """Base exception for all lolzpy errors."""
 
-    def __init__(self, message: str, *, status_code: int | None = None, response_data: Any = None) -> None:
+    def __init__(
+        self,
+        message: str,
+        *,
+        status_code: int | None = None,
+        response_data: Any = None,
+        request_url: str | None = None,
+        request_method: str | None = None,
+    ) -> None:
         super().__init__(message)
         self.message = message
         self.status_code = status_code
         self.response_data = response_data
+        self.request_url = request_url
+        self.request_method = request_method
 
 
 class AuthError(LolzError):
@@ -35,8 +45,16 @@ class RateLimitError(LolzError):
         status_code: int | None = 429,
         response_data: Any = None,
         retry_after: float | None = None,
+        request_url: str | None = None,
+        request_method: str | None = None,
     ) -> None:
-        super().__init__(message, status_code=status_code, response_data=response_data)
+        super().__init__(
+            message,
+            status_code=status_code,
+            response_data=response_data,
+            request_url=request_url,
+            request_method=request_method,
+        )
         self.retry_after = retry_after
 
 
@@ -52,6 +70,9 @@ def raise_for_status(
     status_code: int,
     response_data: Any = None,
     headers: Mapping[str, str | None] | None = None,
+    *,
+    request_url: str | None = None,
+    request_method: str | None = None,
 ) -> None:
     """Raise an appropriate LolzError subclass based on the HTTP status code."""
     if 200 <= status_code < 400:
@@ -61,11 +82,13 @@ def raise_for_status(
     if isinstance(response_data, dict):
         message = response_data.get("error", response_data.get("message", message))
 
+    ctx = {"request_url": request_url, "request_method": request_method}
+
     if status_code == 401 or status_code == 403:
-        raise AuthError(message, status_code=status_code, response_data=response_data)
+        raise AuthError(message, status_code=status_code, response_data=response_data, **ctx)
 
     if status_code == 404:
-        raise NotFoundError(message, status_code=status_code, response_data=response_data)
+        raise NotFoundError(message, status_code=status_code, response_data=response_data, **ctx)
 
     if status_code == 429:
         retry_after: float | None = None
@@ -75,10 +98,11 @@ def raise_for_status(
                 with contextlib.suppress(ValueError, TypeError):
                     retry_after = float(raw)
         raise RateLimitError(
-            message, status_code=status_code, response_data=response_data, retry_after=retry_after
+            message, status_code=status_code, response_data=response_data,
+            retry_after=retry_after, **ctx,
         )
 
     if status_code >= 500:
-        raise ServerError(message, status_code=status_code, response_data=response_data)
+        raise ServerError(message, status_code=status_code, response_data=response_data, **ctx)
 
-    raise LolzError(message, status_code=status_code, response_data=response_data)
+    raise LolzError(message, status_code=status_code, response_data=response_data, **ctx)

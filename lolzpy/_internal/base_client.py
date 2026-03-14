@@ -10,7 +10,7 @@ from lolzpy._internal.rate_limit import TokenBucketAsync, TokenBucketSync
 from lolzpy._internal.retry import request_with_retry_async, request_with_retry_sync
 from lolzpy.core.config import RetryConfig
 from lolzpy.core.exceptions import ValidationError, raise_for_status
-from lolzpy.core.types import T
+from lolzpy.core.types import BrowserType, T
 
 if TYPE_CHECKING:
     from curl_cffi.requests.impersonate import BrowserTypeLiteral
@@ -25,15 +25,17 @@ class BaseClient:
         token: str,
         *,
         proxy: str | None = None,
-        timeout: float = 30.0,
+        connect_timeout: float = 10.0,
+        read_timeout: float = 30.0,
         retry: RetryConfig | None = None,
         rate_limit: float = 0.0,
-        impersonate: str = "chrome",
+        impersonate: BrowserType = "chrome",
     ) -> None:
         self._base_url = base_url.rstrip("/")
         self._token = token
         self._proxy = proxy
-        self._timeout = timeout
+        self._connect_timeout = connect_timeout
+        self._read_timeout = read_timeout
         self._retry = retry or RetryConfig()
         self._rate_limit = rate_limit
         self._impersonate = impersonate
@@ -50,6 +52,9 @@ class BaseClient:
         model: type[T] | None = None,
         wrapper_key: str | None = None,
         is_list: bool = False,
+        *,
+        request_url: str | None = None,
+        request_method: str | None = None,
     ) -> Any:
         """Parse an HTTP response, optionally validating against a Pydantic model.
 
@@ -61,6 +66,8 @@ class BaseClient:
             response.status_code,
             response_data=_try_json(response),
             headers=dict(response.headers),
+            request_url=request_url,
+            request_method=request_method,
         )
         data = _try_json(response)
         if model is None:
@@ -89,7 +96,7 @@ class SyncAPIClient(BaseClient):
         self._session = Session(
             impersonate=cast("BrowserTypeLiteral", self._impersonate),
             proxy=self._proxy,
-            timeout=self._timeout,
+            timeout=(self._connect_timeout, self._read_timeout),
             headers=self._headers(),
         )
         self._limiter: TokenBucketSync | None = TokenBucketSync(self._rate_limit) if self._rate_limit > 0 else None
@@ -136,7 +143,10 @@ class SyncAPIClient(BaseClient):
             data=data,
             **kwargs,
         )
-        return self._parse_response(response, model, wrapper_key, is_list)
+        return self._parse_response(
+            response, model, wrapper_key, is_list,
+            request_url=url, request_method=method,
+        )
 
 
 class AsyncAPIClient(BaseClient):
@@ -147,7 +157,7 @@ class AsyncAPIClient(BaseClient):
         self._session = AsyncSession(
             impersonate=cast("BrowserTypeLiteral", self._impersonate),
             proxy=self._proxy,
-            timeout=self._timeout,
+            timeout=(self._connect_timeout, self._read_timeout),
             headers=self._headers(),
         )
         self._limiter: TokenBucketAsync | None = (
@@ -196,7 +206,10 @@ class AsyncAPIClient(BaseClient):
             data=data,
             **kwargs,
         )
-        return self._parse_response(response, model, wrapper_key, is_list)
+        return self._parse_response(
+            response, model, wrapper_key, is_list,
+            request_url=url, request_method=method,
+        )
 
 
 # ---------------------------------------------------------------------------
