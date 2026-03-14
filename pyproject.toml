@@ -61,3 +61,7 @@ pythonVersion = "3.12"
 typeCheckingMode = "standard"
 include = ["lolz_sdk"]
 exclude = ["codegen", "tests"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
