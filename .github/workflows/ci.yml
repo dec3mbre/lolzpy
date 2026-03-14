@@ -15,8 +15,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install ruff
-      - run: ruff check lolz_sdk/
-      - run: ruff format --check lolz_sdk/
+      - run: ruff check lolzpy/
+      - run: ruff format --check lolzpy/
 
   typecheck:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
-      - run: pyright lolz_sdk/
+      - run: pyright lolzpy/
 
   test:
     runs-on: ubuntu-latest

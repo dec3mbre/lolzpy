@@ -6,7 +6,7 @@ import inspect
 
 import pytest
 
-from lolz_sdk import Lolz, LolzAsync, LolzSync, RetryConfig
+from lolzpy import Lolz, LolzAsync, LolzSync, RetryConfig
 
 # ---------------------------------------------------------------------------
 # LolzSync

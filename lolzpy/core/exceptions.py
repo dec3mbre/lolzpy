@@ -1,4 +1,4 @@
-"""Exception hierarchy for lolz-sdk."""
+"""Exception hierarchy for lolzpy."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Any
 
 
 class LolzError(Exception):
-    """Base exception for all lolz-sdk errors."""
+    """Base exception for all lolzpy errors."""
 
     def __init__(self, message: str, *, status_code: int | None = None, response_data: Any = None) -> None:
         super().__init__(message)

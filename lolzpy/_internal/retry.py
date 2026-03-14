@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Any, cast
 from curl_cffi.requests import AsyncSession, Response, Session
 from curl_cffi.requests.exceptions import RequestException, SessionClosed
 
-from lolz_sdk.core.config import RetryConfig
+from lolzpy.core.config import RetryConfig
 
 if TYPE_CHECKING:
     from curl_cffi.requests.session import HttpMethod

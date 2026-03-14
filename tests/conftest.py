@@ -1,1 +1,1 @@
-"""Shared test fixtures for lolz-sdk."""
+"""Shared test fixtures for lolzpy."""

@@ -1,6 +1,6 @@
 """forum API — auto-generated from OpenAPI spec."""
 
-from lolz_sdk.forum._client import (  # noqa: F401
+from lolzpy.forum._client import (  # noqa: F401
     AsyncAssets,
     AsyncBatch,
     AsyncCategories,

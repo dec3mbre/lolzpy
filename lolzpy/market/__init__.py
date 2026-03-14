@@ -1,6 +1,6 @@
 """market API — auto-generated from OpenAPI spec."""
 
-from lolz_sdk.market._client import (  # noqa: F401
+from lolzpy.market._client import (  # noqa: F401
     AsyncAutoPayments,
     AsyncCart,
     AsyncCategory,

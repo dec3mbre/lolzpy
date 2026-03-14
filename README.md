@@ -1,9 +1,9 @@
-# lolz-sdk
+# lolzpy
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://github.com/your-org/lolz-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/lolz-sdk/actions)
-[![PyPI](https://img.shields.io/pypi/v/lolz-sdk)](https://pypi.org/project/lolz-sdk/)
+[![CI](https://github.com/your-org/lolzpy/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/lolzpy/actions)
+[![PyPI](https://img.shields.io/pypi/v/lolzpy)](https://pypi.org/project/lolzpy/)
 [![Typed](https://img.shields.io/badge/typing-typed-green.svg)](https://peps.python.org/pep-0561/)
 
 Типизированный Python SDK для API [LOLZ Forum](https://lolz.live) и [ZT.Market](https://lzt.market).
@@ -12,7 +12,7 @@
 
 ## Преимущества SDK
 
-| Возможность | lolz-sdk | Аналоги |
+| Возможность | lolzpy | Аналоги |
 |---|:---:|:---:|
 | **Типизированные ответы** (Pydantic v2) | ✅ | ❌ `dict` |
 | **Иерархия исключений** (`AuthError`, `RateLimitError`, …) | ✅ | ❌ общий `Exception` |
@@ -100,7 +100,7 @@ except ServerError:
 ## Установка
 
 ```bash
-pip install lolz-sdk
+pip install lolzpy
 ```
 
 ---
@@ -110,7 +110,7 @@ pip install lolz-sdk
 ### Синхронный клиент
 
 ```python
-from lolz_sdk import LolzSync
+from lolzpy import LolzSync
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
     # Forum
@@ -126,7 +126,7 @@ with LolzSync(token="YOUR_TOKEN") as lolz:
 
 ```python
 import asyncio
-from lolz_sdk import LolzAsync
+from lolzpy import LolzAsync
 
 async def main():
     async with LolzAsync(token="YOUR_TOKEN") as lolz:
@@ -139,7 +139,7 @@ asyncio.run(main())
 ### Универсальный клиент (переключение в рантайме)
 
 ```python
-from lolz_sdk import Lolz
+from lolzpy import Lolz
 
 # По умолчанию — синхронный режим
 lolz = Lolz(token="YOUR_TOKEN")
@@ -177,7 +177,7 @@ lolz.close()
 ## Прокси
 
 ```python
-from lolz_sdk import LolzSync
+from lolzpy import LolzSync
 
 # HTTP
 lolz = LolzSync(token="YOUR_TOKEN", proxy="http://user:pass@host:8080")
@@ -194,7 +194,7 @@ lolz = LolzSync(token="YOUR_TOKEN", proxy="https://host:8443")
 ## Настройка retry
 
 ```python
-from lolz_sdk import LolzSync, RetryConfig
+from lolzpy import LolzSync, RetryConfig
 
 lolz = LolzSync(
     token="YOUR_TOKEN",
@@ -214,7 +214,7 @@ lolz = LolzSync(
 ## Rate Limiting
 
 ```python
-from lolz_sdk import LolzSync
+from lolzpy import LolzSync
 
 # Token-bucket: максимум 3 запроса в секунду
 lolz = LolzSync(token="YOUR_TOKEN", rate_limit=3.0)
@@ -227,7 +227,7 @@ Rate limiter потокобезопасен (sync) и asyncio-safe (async). `rat
 ## Обработка ошибок
 
 ```python
-from lolz_sdk import LolzSync, AuthError, RateLimitError, NotFoundError, ServerError, LolzError
+from lolzpy import LolzSync, AuthError, RateLimitError, NotFoundError, ServerError, LolzError
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
     try:
@@ -260,7 +260,7 @@ with LolzSync(token="YOUR_TOKEN") as lolz:
 ## Примеры Forum API
 
 ```python
-from lolz_sdk import LolzSync
+from lolzpy import LolzSync
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
     # Пользователи
@@ -298,7 +298,7 @@ with LolzSync(token="YOUR_TOKEN") as lolz:
 ## Примеры Market API
 
 ```python
-from lolz_sdk import LolzSync
+from lolzpy import LolzSync
 
 with LolzSync(token="YOUR_TOKEN") as lolz:
     # Профиль
@@ -349,7 +349,7 @@ async with Lolz(token="YOUR_TOKEN", async_mode=True) as lolz:
 ## Структура проекта
 
 ```
-lolz_sdk/
+lolzpy/
 ├── __init__.py             # Публичный API: LolzSync, LolzAsync, Lolz
 ├── _version.py             # Версия пакета
 ├── py.typed                # PEP 561 маркер
@@ -388,10 +388,10 @@ pip install -e ".[dev]"
 pytest tests/ -v
 
 # Линтинг
-ruff check lolz_sdk/
+ruff check lolzpy/
 
 # Проверка типов
-pyright lolz_sdk/
+pyright lolzpy/
 
 # Перегенерация клиентов из OpenAPI-схем
 pip install -e ".[codegen]"

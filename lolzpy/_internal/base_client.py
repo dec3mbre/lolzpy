@@ -6,11 +6,11 @@ from typing import TYPE_CHECKING, Any, cast
 
 from curl_cffi.requests import AsyncSession, Response, Session
 
-from lolz_sdk._internal.rate_limit import TokenBucketAsync, TokenBucketSync
-from lolz_sdk._internal.retry import request_with_retry_async, request_with_retry_sync
-from lolz_sdk.core.config import RetryConfig
-from lolz_sdk.core.exceptions import ValidationError, raise_for_status
-from lolz_sdk.core.types import T
+from lolzpy._internal.rate_limit import TokenBucketAsync, TokenBucketSync
+from lolzpy._internal.retry import request_with_retry_async, request_with_retry_sync
+from lolzpy.core.config import RetryConfig
+from lolzpy.core.exceptions import ValidationError, raise_for_status
+from lolzpy.core.types import T
 
 if TYPE_CHECKING:
     from curl_cffi.requests.impersonate import BrowserTypeLiteral

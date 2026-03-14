@@ -1,15 +1,15 @@
-"""lolz-sdk — Typed Python SDK for LOLZ Forum & Market APIs (sync + async).
+"""lolzpy — Typed Python SDK for LOLZ Forum & Market APIs (sync + async).
 
 Usage::
 
     # Typed, separate clients (recommended):
-    from lolz_sdk import LolzSync, LolzAsync
+    from lolzpy import LolzSync, LolzAsync
 
     with LolzSync(token="YOUR_TOKEN") as lolz:
         me = lolz.forum.users.get_me()
 
     # Unified client with runtime mode switching:
-    from lolz_sdk import Lolz
+    from lolzpy import Lolz
 
     lolz = Lolz(token="YOUR_TOKEN")
     me = lolz.forum.users.get_me()
@@ -18,10 +18,10 @@ Usage::
     me = await lolz.forum.users.get_me()
 """
 
-from lolz_sdk._internal.base_client import AsyncAPIClient, SyncAPIClient
-from lolz_sdk._version import __version__
-from lolz_sdk.core.config import RetryConfig
-from lolz_sdk.core.exceptions import (
+from lolzpy._internal.base_client import AsyncAPIClient, SyncAPIClient
+from lolzpy._version import __version__
+from lolzpy.core.config import RetryConfig
+from lolzpy.core.exceptions import (
     AuthError,
     LolzError,
     NotFoundError,
@@ -29,7 +29,7 @@ from lolz_sdk.core.exceptions import (
     ServerError,
     ValidationError,
 )
-from lolz_sdk.forum._client import (
+from lolzpy.forum._client import (
     AsyncAssets,
     AsyncCategories,
     AsyncChatbox,
@@ -65,13 +65,13 @@ from lolz_sdk.forum._client import (
     SyncThreads,
     SyncUsers,
 )
-from lolz_sdk.forum._client import (
+from lolzpy.forum._client import (
     AsyncBatch as AsyncForumBatch,
 )
-from lolz_sdk.forum._client import (
+from lolzpy.forum._client import (
     SyncBatch as SyncForumBatch,
 )
-from lolz_sdk.market._client import (
+from lolzpy.market._client import (
     AsyncAutoPayments,
     AsyncCart,
     AsyncCategory,
@@ -95,16 +95,16 @@ from lolz_sdk.market._client import (
     SyncPublishing,
     SyncPurchasing,
 )
-from lolz_sdk.market._client import (
+from lolzpy.market._client import (
     AsyncDefault as AsyncMarketBatch,
 )
-from lolz_sdk.market._client import (
+from lolzpy.market._client import (
     AsyncList as AsyncMarketList,
 )
-from lolz_sdk.market._client import (
+from lolzpy.market._client import (
     SyncDefault as SyncMarketBatch,
 )
-from lolz_sdk.market._client import (
+from lolzpy.market._client import (
     SyncList as SyncMarketList,
 )
 

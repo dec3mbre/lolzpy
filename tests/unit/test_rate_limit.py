@@ -1,4 +1,4 @@
-"""Tests for lolz_sdk._internal.rate_limit — token bucket rate limiters."""
+"""Tests for lolzpy._internal.rate_limit — token bucket rate limiters."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import time
 
 import pytest
 
-from lolz_sdk._internal.rate_limit import TokenBucketAsync, TokenBucketSync
+from lolzpy._internal.rate_limit import TokenBucketAsync, TokenBucketSync
 
 # ---------------------------------------------------------------------------
 # TokenBucketSync

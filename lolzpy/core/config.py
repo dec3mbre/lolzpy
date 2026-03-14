@@ -1,4 +1,4 @@
-"""Configuration dataclasses for lolz-sdk."""
+"""Configuration dataclasses for lolzpy."""
 
 from __future__ import annotations
 

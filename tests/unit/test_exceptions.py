@@ -1,10 +1,10 @@
-"""Tests for lolz_sdk.core.exceptions."""
+"""Tests for lolzpy.core.exceptions."""
 
 from __future__ import annotations
 
 import pytest
 
-from lolz_sdk.core.exceptions import (
+from lolzpy.core.exceptions import (
     AuthError,
     LolzError,
     NotFoundError,

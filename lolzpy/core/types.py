@@ -1,4 +1,4 @@
-"""Type aliases and shared type definitions for lolz-sdk."""
+"""Type aliases and shared type definitions for lolzpy."""
 
 from __future__ import annotations
 

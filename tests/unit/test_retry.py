@@ -1,11 +1,11 @@
-"""Tests for lolz_sdk._internal.retry — retry logic and delay calculation."""
+"""Tests for lolzpy._internal.retry — retry logic and delay calculation."""
 
 from __future__ import annotations
 
 import pytest
 
-from lolz_sdk._internal.retry import _calculate_delay, _parse_retry_after, _should_retry
-from lolz_sdk.core.config import RetryConfig
+from lolzpy._internal.retry import _calculate_delay, _parse_retry_after, _should_retry
+from lolzpy.core.config import RetryConfig
 
 # ---------------------------------------------------------------------------
 # RetryConfig

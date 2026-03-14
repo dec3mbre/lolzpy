@@ -1,7 +1,7 @@
-"""lolz_sdk.core — public configuration and exception types."""
+"""lolzpy.core — public configuration and exception types."""
 
-from lolz_sdk.core.config import RetryConfig
-from lolz_sdk.core.exceptions import (
+from lolzpy.core.config import RetryConfig
+from lolzpy.core.exceptions import (
     AuthError,
     LolzError,
     NotFoundError,
@@ -10,7 +10,7 @@ from lolz_sdk.core.exceptions import (
     ValidationError,
     raise_for_status,
 )
-from lolz_sdk.core.types import T
+from lolzpy.core.types import T
 
 __all__ = [
     "RetryConfig",

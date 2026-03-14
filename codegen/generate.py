@@ -18,19 +18,19 @@ from codegen.renderer import render_client, render_init
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 SCHEMAS_DIR = Path(__file__).resolve().parent / "schemas"
-SDK_DIR = ROOT_DIR / "lolz_sdk"
+SDK_DIR = ROOT_DIR / "lolzpy"
 
 # Schema registry — add new schemas here
 SCHEMAS: dict[str, dict[str, str]] = {
     "forum": {
         "schema": str(SCHEMAS_DIR / "forum.json"),
         "output_dir": str(SDK_DIR / "forum"),
-        "module_path": "lolz_sdk.forum",
+        "module_path": "lolzpy.forum",
     },
     "market": {
         "schema": str(SCHEMAS_DIR / "market.json"),
         "output_dir": str(SDK_DIR / "market"),
-        "module_path": "lolz_sdk.market",
+        "module_path": "lolzpy.market",
     },
 }
 
@@ -129,7 +129,7 @@ def main() -> None:
         config = {
             "schema": args.schema,
             "output_dir": str(SDK_DIR / args.name),
-            "module_path": f"lolz_sdk.{args.name}",
+            "module_path": f"lolzpy.{args.name}",
         }
         generate_one(args.name, config)
     else:
