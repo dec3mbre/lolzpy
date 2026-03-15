@@ -168,9 +168,9 @@ class Links2(BaseModel):
     followers: Annotated[str, Field(title="Followers")]
     followings: Annotated[str, Field(title="Followings")]
     ignore: Annotated[str, Field(title="Ignore")]
-    background_l: Annotated[str, Field(title="Background Large")]
-    background_m: Annotated[str, Field(title="Background Medium")]
-    status: Annotated[str, Field(title="Status")]
+    background_l: Annotated[str | None, Field(title="Background Large")] = None
+    background_m: Annotated[str | None, Field(title="Background Medium")] = None
+    status: Annotated[str | None, Field(title="Status")] = None
     timeline: Annotated[str, Field(title="Timeline")]
 
 
@@ -198,7 +198,7 @@ class UserGroup(BaseModel):
     display_banner_selectable: Annotated[bool, Field(title="Display")]
     display_icon_selectable: Annotated[bool, Field(title="Display")]
     is_primary_group: Annotated[bool, Field(title="Is")]
-    user_group_icon_class: Annotated[str, Field(title="User")]
+    user_group_icon_class: Annotated[str | None, Field(title="User")] = None
 
 
 class Choice(BaseModel):
@@ -219,9 +219,9 @@ class FieldModel(BaseModel):
     position: Annotated[str, Field(title="Position")]
     is_required: Annotated[bool, Field(title="Is")]
     value: Annotated[str | None, Field(title="Value")] = None
-    is_multi_choice: Annotated[bool, Field(title="Is")]
-    choices: Annotated[list[Choice], Field(title="Choices")]
-    values: Annotated[list[Any], Field(title="Values")]
+    is_multi_choice: Annotated[bool | None, Field(title="Is")] = None
+    choices: Annotated[list[Choice] | None, Field(title="Choices")] = None
+    values: Annotated[list[Any] | None, Field(title="Values")] = None
 
 
 class UserExternalAuthentication(BaseModel):
@@ -337,14 +337,14 @@ class RespUserModel(BaseModel):
     user_is_ignored: Annotated[bool, Field(title="User")]
     user_is_visitor: Annotated[bool, Field(title="User")]
     user_group_id: Annotated[int, Field(title="User")]
-    curator_titles: Annotated[list[str], Field(title="Curator")]
+    curator_titles: Annotated[list[str] | None, Field(title="Curator")] = None
     user_groups: Annotated[list[UserGroup], Field(title="User")]
     fields: Annotated[list[FieldModel], Field(title="Fields")]
     user_timezone_offset: Annotated[int, Field(title="User")]
     user_external_authentications: Annotated[list[UserExternalAuthentication], Field(title="User")]
     self_permissions: Annotated[SelfPermissions, Field(title="Self")]
     edit_permissions: Annotated[EditPermissions, Field(title="Edit")]
-    birthday: Annotated[Birthday, Field(title="Birthday")]
+    birthday: Annotated[Birthday | None, Field(title="Birthday")] = None
     secret_answer_rendered: Annotated[str, Field(title="Secret")]
     secret_answer_first_letter: Annotated[str, Field(title="Secret")]
     user_following: Annotated[UserFollowing, Field(title="User")]
