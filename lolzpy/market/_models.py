@@ -68,15 +68,14 @@ class CustomFields(BaseModel):
     model_config = ConfigDict(
         populate_by_name=True,
     )
+    # live-fix: all custom fields are optional — not every user has every field
     field_4: Annotated[str | None, Field(alias="_4", title="")] = None
     allow_self_unban: Annotated[list[Any] | None, Field(alias="allowSelfUnban", title="Allow Self Unban")] = None
     ban_reason: Annotated[str | None, Field(title="Ban")] = None
     discord: Annotated[str | None, Field(title="Discord")] = None
     github: Annotated[str | None, Field(title="Github")] = None
     jabber: Annotated[str | None, Field(title="Jabber")] = None
-    lzt_award_user_trophy: Annotated[str | None, Field(alias="lztAwardUserTrophy", title="Lzt Award User Trophy")] = (
-        None
-    )
+    lzt_award_user_trophy: Annotated[str | None, Field(alias="lztAwardUserTrophy", title="Lzt Award User Trophy")] = None
     lzt_likes_increasing: Annotated[str | None, Field(alias="lztLikesIncreasing", title="Lzt Likes Increasing")] = None
     lzt_likes_zeroing: Annotated[str | None, Field(alias="lztLikesZeroing", title="Lzt Likes Zeroing")] = None
     lzt_sympathy_increasing: Annotated[
@@ -168,7 +167,7 @@ class Rendered(BaseModel):
     )
     username: Annotated[str, Field(title="Username")]
     avatars: Annotated[Avatars, Field(title="Avatars")]
-    backgrounds: Annotated[Backgrounds | None, Field(title="Backgrounds")] = None
+    backgrounds: Annotated[Backgrounds | None, Field(title="Backgrounds")] = None  # live-fix: can be non-dict
     link: Annotated[str, Field(title="Link")]
 
     @field_validator("backgrounds", mode="before")
@@ -215,9 +214,9 @@ class UserModel(BaseModel):
     )
     active_items_count: Annotated[int, Field(title="Active")]
     activity_visible: Annotated[bool, Field(title="Activity")]
-    age: Annotated[int | None, Field(title="Age")] = None
+    age: Annotated[int | None, Field(title="Age")] = None  # live-fix: not always present
     balance: Annotated[str, Field(title="Balance")]
-    balances: Annotated[list[Balance] | None, Field(title="Balances")] = None
+    balances: Annotated[list[Balance] | None, Field(title="Balances")] = None  # live-fix: not always present
     bump_item_period: Annotated[int, Field(title="Bump")]
     can_edit: Annotated[bool, Field(title="Can")]
     can_follow: Annotated[bool, Field(title="Can")]
@@ -237,11 +236,11 @@ class UserModel(BaseModel):
     custom_fields: Annotated[CustomFields, Field(title="Custom")]
     custom_title: Annotated[str, Field(title="Custom")]
     deposit: Annotated[int, Field(title="Deposit")]
-    dob: Annotated[Dob | None, Field(title="Dob")] = None
-    feedback_data: Annotated[FeedbackData | None, Field(title="Feedback")] = None
+    dob: Annotated[Dob | None, Field(title="Dob")] = None  # live-fix: not always present
+    feedback_data: Annotated[FeedbackData | None, Field(title="Feedback")] = None  # live-fix: can be non-dict
     hold: Annotated[str, Field(title="Hold")]
     homepage: Annotated[str, Field(title="Homepage")]
-    imap_data: Annotated[ImapData | None, Field(title="Imap")] = None
+    imap_data: Annotated[ImapData | None, Field(title="Imap")] = None  # live-fix: can be non-dict
     is_admin: Annotated[bool, Field(title="Is")]
     is_banned: Annotated[bool, Field(title="Is")]
     is_followed: Annotated[bool, Field(title="Is")]
@@ -262,11 +261,11 @@ class UserModel(BaseModel):
     register_date: Annotated[int, Field(title="Register")]
     rendered: Annotated[Rendered, Field(title="Rendered")]
     restore_count: Annotated[int, Field(title="Restore")]
-    restore_data: Annotated[RestoreData | None, Field(title="Restore")] = None
+    restore_data: Annotated[RestoreData | None, Field(title="Restore")] = None  # live-fix: can be non-dict
     short_link: Annotated[str, Field(title="Short")]
     sold_items_count: Annotated[int, Field(title="Sold")]
     tags: Annotated[list[Tag], Field(title="Tags")]
-    telegram_client: Annotated[TelegramClient | None, Field(title="Telegram")] = None
+    telegram_client: Annotated[TelegramClient | None, Field(title="Telegram")] = None  # live-fix: can be non-dict
     trophy_points: Annotated[int, Field(title="Trophy")]
 
     @field_validator("feedback_data", "imap_data", "restore_data", "telegram_client", mode="before")
