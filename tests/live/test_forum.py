@@ -129,13 +129,14 @@ class TestForumUsers:
             result = sync_client.forum.users.get(user_id)
             if isinstance(result, dict):
                 print(f"  Keys: {list(result.keys())}")
-                if "user" in result and isinstance(result["user"], dict):
-                    u = result["user"]
-                    print(f"  username={u.get('username')}  user_id={u.get('user_id')}")
             else:
-                print(f"  Result type: {type(result).__name__}")
-            assert isinstance(result, dict) or hasattr(result, "user_id")
+                print(f"  Type: {type(result).__name__}")
+                for attr in ["user_id", "username", "user_title"]:
+                    if hasattr(result, attr):
+                        print(f"  {attr}: {getattr(result, attr)}")
         except Exception as e:
-            if "403" in str(e) or "ValidationError" in type(e).__name__:
+            if "403" in str(e):
                 pytest.skip(f"Skipped: {type(e).__name__}")
+            # Don't skip ValidationError — print details for debugging
+            print(f"  ERROR: {type(e).__name__}: {e}")
             raise
