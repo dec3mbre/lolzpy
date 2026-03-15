@@ -293,3 +293,8 @@ LOLZ_TOKEN=your_token pytest tests/live/test_market.py -v -s
 ```
 
 Без `LOLZ_TOKEN` live-тесты автоматически пропускаются.
+
+### Примеры
+
+Готовый скрипт для знакомства с SDK — [`examples/quickstart.py`](examples/quickstart.py).
+Вставьте свой токен, запустите и посмотрите, как работают основные методы Forum и Market API.
