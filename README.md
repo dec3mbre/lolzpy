@@ -268,13 +268,29 @@ python -m codegen.generate --schema codegen/schemas/market.json --name market
 ```bash
 pip install -e ".[dev]"
 
-pytest tests/ -v   # 200 тестов
+pytest tests/ -v   # юнит и интеграционные тесты
 ruff check lolzpy/
 pyright lolzpy/
 ```
 
----
+### Live-тесты (реальный API)
 
-## Лицензия
+Live-тесты отправляют запросы к настоящему API. Для запуска нужен токен:
 
-[MIT](LICENSE)
+```bash
+LOLZ_TOKEN=your_token pytest tests/live/ -v -s
+```
+
+| Флаг | Описание |
+|---|---|
+| `-v` | Подробный вывод |
+| `-s` | Показать `print()` — ответы API |
+
+Можно запустить отдельно Forum или Market:
+
+```bash
+LOLZ_TOKEN=your_token pytest tests/live/test_forum.py -v -s
+LOLZ_TOKEN=your_token pytest tests/live/test_market.py -v -s
+```
+
+Без `LOLZ_TOKEN` live-тесты автоматически пропускаются.
