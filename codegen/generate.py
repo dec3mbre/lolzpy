@@ -13,6 +13,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+from codegen.live_fixes import apply_live_fixes
 from codegen.parser import parse_spec
 from codegen.renderer import render_client, render_init
 
@@ -115,8 +116,11 @@ def generate_one(name: str, config: dict[str, str]) -> None:
     # Generate client
     generate_client(schema_path, name, output_dir, module_path)
 
-    # Format
+    # Format first, then apply live-fixes (so formatter doesn't rewrite patches)
     format_output(output_dir)
+
+    # Apply live-fix patches (make certain fields Optional)
+    apply_live_fixes(models_path, name)
 
 
 def main() -> None:

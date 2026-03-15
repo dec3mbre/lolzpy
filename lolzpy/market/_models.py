@@ -78,9 +78,7 @@ class CustomFields(BaseModel):
     lzt_award_user_trophy: Annotated[str | None, Field(alias="lztAwardUserTrophy", title="Lzt Award User Trophy")] = None
     lzt_likes_increasing: Annotated[str | None, Field(alias="lztLikesIncreasing", title="Lzt Likes Increasing")] = None
     lzt_likes_zeroing: Annotated[str | None, Field(alias="lztLikesZeroing", title="Lzt Likes Zeroing")] = None
-    lzt_sympathy_increasing: Annotated[
-        str | None, Field(alias="lztSympathyIncreasing", title="Lzt Sympathy Increasing")
-    ] = None
+    lzt_sympathy_increasing: Annotated[str | None, Field(alias="lztSympathyIncreasing", title="Lzt Sympathy Increasing")] = None
     lzt_sympathy_zeroing: Annotated[str | None, Field(alias="lztSympathyZeroing", title="Lzt Sympathy Zeroing")] = None
     lzt_unban_amount: Annotated[str | None, Field(alias="lztUnbanAmount", title="Lzt Unban Amount")] = None
     maecenas_value: Annotated[str | None, Field(alias="maecenasValue", title="Maecenas Value")] = None
@@ -267,12 +265,6 @@ class UserModel(BaseModel):
     tags: Annotated[list[Tag], Field(title="Tags")]
     telegram_client: Annotated[TelegramClient | None, Field(title="Telegram")] = None  # live-fix: can be non-dict
     trophy_points: Annotated[int, Field(title="Trophy")]
-
-    @field_validator("feedback_data", "imap_data", "restore_data", "telegram_client", mode="before")
-    @classmethod
-    def _coerce_non_dict_to_none(cls, v: Any) -> Any:
-        return v if isinstance(v, dict) else None
-
     user_allow_ask_discount: Annotated[bool, Field(title="User")]
     user_id: Annotated[int, Field(title="User")]
     user_title: Annotated[str, Field(title="User")]
@@ -280,6 +272,11 @@ class UserModel(BaseModel):
     view_url: Annotated[str, Field(title="View")]
     visible: Annotated[bool, Field(title="Visible")]
     warning_points: Annotated[int, Field(title="Warning")]
+
+    @field_validator("feedback_data", "imap_data", "restore_data", "telegram_client", mode="before")
+    @classmethod
+    def _coerce_non_dict_to_none(cls, v: Any) -> Any:
+        return v if isinstance(v, dict) else None
 
 
 class BalanceModel(BaseModel):
